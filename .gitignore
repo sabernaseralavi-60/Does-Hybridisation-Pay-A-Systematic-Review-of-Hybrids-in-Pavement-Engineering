@@ -1,0 +1,12 @@
+.quarto/
+manuscript_files/
+manuscript.tex
+manuscript.log
+manuscript.aux
+manuscript.bbl
+manuscript.blg
+manuscript.spl
+__pycache__/
+*.pyc
+.DS_Store
+*.bak

@@ -1,0 +1,178 @@
+---
+title: "Does Hybridisation Pay? A Systematic Review of Metaheuristic Optimisation and Machine Learning Hybrids in Pavement Engineering (2005--2026)"
+
+author:
+  - name: Seyed Saber Naseralavi
+    email: naseralavi@uk.ac.ir
+    affiliations:
+      - id: uk
+        name: Shahid Bahonar University of Kerman
+        department: Department of Civil Engineering
+        city: Kerman
+        country: Iran
+    attributes:
+      corresponding: true
+  - name: Ali Reza Ghanizadeh
+    affiliations:
+      - id: sut
+        name: Sirjan University of Technology
+        department: Department of Civil Engineering
+        city: Sirjan
+        country: Iran
+
+abstract: |
+  PLACEHOLDER — structured abstract, ~280 words, written last so that every
+  number in it traces to the audit. Do not draft this before Section 9 is final.
+
+keywords:
+  - pavement engineering
+  - metaheuristic optimisation
+  - machine learning
+  - hybrid models
+  - systematic review
+  - methodological rigour
+
+date: last-modified
+---
+
+```{python}
+#| label: setup
+import csv, collections
+from pathlib import Path
+
+DB = Path("data/seed_bibliography.csv")
+rows = list(csv.DictReader(DB.open(encoding="utf-8-sig")))
+primary = [r for r in rows if "prior review" not in r["role_in_review"]]
+reviews = [r for r in rows if "prior review" in r["role_in_review"]]
+```
+
+> **Draft status.** This file renders to PDF, Word and HTML from one source.
+> Sections marked *PLACEHOLDER* are not yet written. Every citation resolves
+> against `references.bib`, which is generated from
+> `data/seed_bibliography.csv`; a citation key that is not in the verified
+> database fails the render rather than passing silently.
+
+# Introduction {#sec-intro}
+
+PLACEHOLDER — see `docs/01_SCOPE_AND_TAXONOMY.md` §1 for the argument this section
+must carry: hybridisation is the field's dominant claim of novelty, and the marginal
+benefit of hybridisation over a properly tuned base learner is almost never tested.
+
+The review literature this study builds on is summarised in @fig-coverage. Prior
+surveys catalogue where neural and hybrid methods have been applied
+[@Yang2021research; @Gopalakrishnan2018learning; @Cao2020pavement]; two recent
+contributions name the underlying problem without converting it into per-study
+evidence [@Tamagusko2023learning; @MharziAlaoui2026algorithm].
+
+![Coverage of the prior review literature on artificial-intelligence methods in
+pavement engineering. Scoring: 2 = substantive dedicated treatment, 1 = touched in
+passing, 0 = absent.](figures/fig01_coverage_gap.png){#fig-coverage width=100%}
+
+# Review methodology {#sec-method}
+
+*Full draft in `docs/02_MANUSCRIPT_S2_methodology.md`; transferred here section by
+section as each is finalised.*
+
+## Scope and framing question
+
+PLACEHOLDER — transfer from the draft.
+
+## Information sources and search
+
+Records were identified from OpenAlex, Scopus, Web of Science Core Collection and
+Semantic Scholar, with backward and forward snowballing from the
+`{python} len(reviews)` prior reviews listed in @tbl-reviews. The window runs from
+1 January 2005 to 30 June 2026.
+
+```{python}
+#| label: tbl-reviews
+#| tbl-cap: "Prior reviews of artificial-intelligence methods in pavement engineering, with the territory each occupies."
+from IPython.display import Markdown
+lines = ["| Review | Year | Venue | Territory |", "|---|---|---|---|"]
+for r in sorted(reviews, key=lambda x: int(x["year"])):
+    first = r["authors"].split(";")[0].split(",")[0]
+    extra = " et al." if ";" in r["authors"] else ""
+    lines.append(f"| {first}{extra} | {r['year']} | {r['venue']} | {r['pavement_domain']} |")
+Markdown("\n".join(lines))
+```
+
+## Eligibility
+
+PLACEHOLDER — transfer from the draft, including the structural (not lexical)
+definition of hybridity in `docs/01_SCOPE_AND_TAXONOMY.md` §2.
+
+# Bibliometric landscape {#sec-biblio}
+
+PLACEHOLDER — written after the harvest completes.
+
+# Taxonomy of hybridisation {#sec-taxonomy}
+
+PLACEHOLDER — the H1--H7 taxonomy with theoretical justification and characteristic
+failure mode, from `docs/01_SCOPE_AND_TAXONOMY.md` §3.
+
+# Hybrid models in material and mix modelling {#sec-materials}
+
+PLACEHOLDER.
+
+# Hybrid models in structural evaluation and inverse analysis {#sec-structural}
+
+PLACEHOLDER — anchored on back-calculation [@Ghanizadeh2020neural;
+@Ghanizadeh2025implementing; @Elbagalati2017neural].
+
+# Hybrid models in performance prediction {#sec-performance}
+
+PLACEHOLDER.
+
+# Physics-informed, fusion, stacking, decomposition and symbolic hybrids {#sec-other-hybrids}
+
+PLACEHOLDER — @Pasupunuri2024roughness for the physics-informed case;
+@Ghanizadeh2024formulation for the symbolic--numeric case.
+
+# The hybridisation premium {#sec-premium}
+
+PLACEHOLDER — the paper's central analysis. Definition and the evidence already in
+hand are in `docs/01_SCOPE_AND_TAXONOMY.md` §4
+[@Azam2022resilient; @Duan2024resilient; @Zeiada2025benchmarking].
+
+# Interpretability and uncertainty in hybrid pipelines {#sec-interpretability}
+
+PLACEHOLDER.
+
+# From premium to decision {#sec-decision}
+
+PLACEHOLDER — built on the cost-of-prediction-error curve in @Hosseini2021accuracy.
+
+# PAVE-ML: a reporting and appraisal checklist {#sec-paveml}
+
+PLACEHOLDER — instrument in `docs/03_PAVE-ML_instrument.md`.
+
+# Research agenda {#sec-agenda}
+
+PLACEHOLDER.
+
+# Conclusions {#sec-conclusions}
+
+PLACEHOLDER.
+
+# Declaration of competing interest {.unnumbered}
+
+The authors declare no competing financial interests or personal relationships that
+could have influenced the work reported in this paper.
+
+# Declaration of generative AI in the writing process {.unnumbered}
+
+PLACEHOLDER — to be completed per the target journal's wording before submission.
+Elsevier requires a statement naming the tool, the purpose of use, and confirmation
+that the authors reviewed and take full responsibility for the content. Disclosed
+use is permitted; undisclosed use is not.
+
+# Data availability {.unnumbered}
+
+The screening database, coding rubric, harvesting scripts and the full analysis
+pipeline that produced every figure and table in this paper are available at
+[REPOSITORY URL].
+
+# References {.unnumbered}
+
+::: {#refs}
+:::

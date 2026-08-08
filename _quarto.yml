@@ -1,0 +1,47 @@
+project:
+  type: default
+  output-dir: output
+  render:
+    - manuscript.qmd
+
+bibliography: references.bib
+
+# Switching target journal = change this one line.
+#   Elsevier titles (Automation in Construction, Construction and Building
+#   Materials, Transportation Geotechnics, Journal of Road Engineering) all use
+#   elsarticle, so they share this format.
+#   Wiley (CACAIE) and Taylor & Francis (IJPE) need a different extension; the
+#   .qmd body does not change.
+csl: _extensions/quarto-journals/elsevier/bib/elsevier-harvard.csl
+
+format:
+  elsevier-pdf:
+    keep-tex: true
+    pdf-engine: pdflatex   # not lualatex: no CTAN access here for TU-encoding fonts
+    journal:
+      name: Automation in Construction
+      formatting: preprint      # preprint | review | doubleblind
+      model: 3p                 # 1p | 3p | 5p
+      cite-style: number        # Elsevier numeric citation style
+    number-sections: true
+    fig-pos: "H"
+    linestretch: 1.5
+
+  docx:
+    toc: false
+    number-sections: true
+    reference-doc: assets/manuscript-reference.docx
+    fig-width: 6.5
+
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    embed-resources: true
+    fig-width: 8
+
+execute:
+  echo: false
+  warning: false
+  freeze: auto
