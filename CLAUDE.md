@@ -207,4 +207,145 @@ most primary-study sources are concentrated (MDPI journals) specifically because
 methodological rigour audit is better received by a venue with a thinner, more critical
 reviewer pool than by the high-volume venues it is partly auditing. Revisit this once the
 corpus is closer to final — see `README.md` "Journal targeting" section for the full
-reasoning and alternatives.
+reasoning and alternatives. Two additional Q1 venues worth adding to the shortlist from
+external review (see below): **Computer-Aided Civil and Infrastructure Engineering**
+(Wiley, IF ~9.6 — the strongest venue specifically for AI-in-infrastructure methodology
+papers) and **Transportation Research Part C: Emerging Technologies** (Elsevier — strong
+fit for the data-driven/emerging-technology framing).
+
+## External review feedback received 2026-08-09 — tracking
+
+A human-facing review of the manuscript-in-progress (not a journal reviewer — a
+pre-submission critique) produced nine points. Four were fixed directly in the session
+that received them, because they were concrete, checkable, and fixable without the full
+harvest. The rest depend on corpus completion and are already reflected in "Suggested
+priority order" above, but are indexed here against the reviewer's own language so you
+can verify each is actually closed before submission rather than assuming it is.
+
+**Fixed already (verify, don't just trust this note):**
+
+- Section 10 ("Interpretability and uncertainty in hybrid pipelines") was **silently
+  empty** — a literal `PLACEHOLDER.` — while the manuscript referenced "§10" thirteen
+  times elsewhere, all but three of which actually meant the PAVE-ML section (real
+  section 12). This was a genuine, embarrassing bug: written content plus a systematic
+  cross-reference numbering fix. **Before you trust any other §N cross-reference in this
+  manuscript, spot-check a few** — this class of bug (write content, refer to it by a
+  number that later shifts as sections get inserted) can recur, and the fastest way to
+  reintroduce it is inserting a new numbered section without re-checking every `§N`
+  reference after it.
+- The full 24-item PAVE-ML checklist is now reproduced as an actual table in the main
+  text (`@tbl-paveml`, in `manuscript.qmd` §12), not just described in prose with a
+  pointer to supplementary material. If you edit the checklist itself, edit both this
+  table AND `docs/03_PAVE-ML_instrument.md` — they are not currently generated from one
+  source, which is a minor technical-debt item you could fix by making the docs file
+  the single source of truth and having the Quarto table read from it.
+- Added Figure 4: a conceptual diagram contrasting random vs. section-grouped
+  cross-validation, built from `analysis/fig_leakage_diagram.py`, using the real 33-section
+  structure of the Alnaqbi CRCP substrate rather than a generic illustration. This
+  directly answers the reviewer's request for a "conceptual image showing how random
+  split causes inflated R² > 0.90."
+- Fixed a LaTeX build break caused by a raw `≥` Unicode character inside a Python-cell
+  string (pdflatex choked on it inside `\cite`-adjacent content). **Lesson: any Unicode
+  beyond basic Latin punctuation inside a `{python}` code cell that generates table/prose
+  content should be treated as a potential PDF-build risk** — prefer spelling things out
+  ("at least 2") over inserting symbols (`≥`) in generated text, even though the same
+  symbol is often fine in plain Markdown prose outside a code cell.
+
+**Not yet done — genuinely gated on the full harvest, already in the priority list above:**
+
+- PRISMA 2020 flow diagram with real identification/screening/exclusion counts — cannot
+  be produced honestly until the harvest and screening are actually complete; do not
+  approximate this with seed-corpus numbers presented as final.
+- Quantitative meta-analysis of the hybridisation premium — a forest plot or boxplot
+  showing the Δ distribution across every study where it's computable, plus a
+  significance test (Wilcoxon signed-rank or an effect-size measure) on that
+  distribution. This needs far more than the five illustrative rows currently in
+  `docs/table_premium_evidence.md` — realistically dozens of full-text-verified Δ values
+  are needed before a distributional claim or a significance test means anything. Do not
+  run a significance test on five points and report a p-value; that would be worse than
+  not running one.
+- Rewriting Figures 2–3 and Section 3 from the completed corpus rather than the
+  seed-corpus snapshot they currently and honestly are.
+- Cohen's κ from actual double-coding — see the dedicated section immediately below,
+  because the reviewer's request here needs a direct answer, not just a checklist item.
+
+**Noted but not actioned (judgment calls for the human authors, not fixes):**
+
+- *Tone on the Alnaqbi critique.* The reviewer is right to flag this as a risk — a
+  methodologically-framed critique of a specific, identifiable, overlapping author team
+  can read as personal even when it isn't intended that way, and reviewers from adjacent
+  groups may react defensively. The manuscript already tries to keep this
+  pattern-not-person (see `docs/03_PAVE-ML_instrument.md` Part D: "Judge the convention,
+  not the authors... Report distributions and trends. Name individual papers only as
+  positive exemplars, or where a specific methodological point cannot be made without
+  the example"), and Section 7's language leans on phrases like "none of this is
+  concealed... the pattern is not hidden, only undiscussed" rather than accusatory
+  framing. Still, do one final tone pass on Section 7 and Section 11 specifically before
+  submission, ideally by someone who was not involved in finding the pattern and can
+  read it cold.
+- *Reporting-gap-not-capability-gap framing.* The reviewer asked for more emphasis on
+  this. It's already the explicit final line of the Conclusions
+  ("...therefore substantially a reporting gap rather than a capability gap, which is
+  the most optimistic reading available...") — good to know this instinct was already
+  built in, but worth reading that paragraph once more with fresh eyes before
+  submission to confirm it still lands as constructive rather than defensive.
+
+## On double-coding via an AI persona — please read this before trying it
+
+The human authors asked whether the §2/§12 double-coding commitment (independent 15%
+sample, Cohen's κ reported per field) could be satisfied by having you — Claude Code —
+code a sample once, then code it again "as a different researcher persona," with the
+authors reviewing the final output. **I don't think this is a good idea, and I want to
+explain why rather than just refusing, because the reasoning matters for how you handle
+this if the authors push on it.**
+
+Inter-rater reliability statistics exist to answer one specific question: *if a
+different person, with a different background and different unconscious assumptions,
+applied this same rubric to this same text, would they land in roughly the same place?*
+That question is only answered by genuine independence. Two passes from the same
+underlying model, even under different system prompts or persona framing, share the
+same training, the same tendencies to weight the same phrases the same way, and the same
+blind spots — there is no genuine independence to measure, so a resulting κ would very
+likely come out artificially high, and would misrepresent to readers what was actually
+tested. A reader who sees "independently double-coded by two reviewers, κ = 0.82" will
+reasonably understand that as two different human judgments converging — not two
+outputs from one model with a different persona instruction.
+
+There's a sharper reason this matters more here than in almost any other paper: **this
+review's entire thesis is that the pavement-ML literature under-discloses methodological
+shortcuts — leakage dressed up as a clean split, a metaheuristic's advantage measured
+against an unfair baseline, "double-checked" claims that don't hold up under full-text
+reading.** Quietly substituting an AI self-review for a promised independent human
+check, without disclosing that substitution plainly in the methods section, would be
+exactly the kind of undisclosed methodological shortcut PAVE-ML item by item is built to
+catch — in this specific paper, that is not a hypothetical embarrassment, it is the
+literal failure mode the paper spends its own pages criticizing other authors for.
+
+**What I'd suggest instead, in order of preference:**
+
+1. **Get an actual second human coder** for the 15% sample — a graduate student, a
+   colleague, or one of the two named co-authors, working blind from the coded database
+   (i.e., given the PAVE-ML rubric and the raw papers, not shown the existing codes)
+   and reconciled afterward. This is what the manuscript currently promises and is the
+   version that survives review.
+2. **If no second human is available**, revise §2.7 and the reliability paragraph in
+   §12 to honestly describe what was actually done — e.g. "coding was performed by a
+   single reviewer with AI-assisted literature retrieval and full-text extraction; no
+   independent double-coding was performed" — and add this explicitly as a stated
+   limitation in the Limitations discussion (§2.8), rather than keeping language that
+   promises a κ statistic that doesn't exist. A reviewer who sees an honestly-stated
+   single-coder limitation will ding the paper less than one who discovers a
+   quietly-substituted or inflated reliability claim.
+3. **A middle option that is honest but weaker than either of the above**: you (a single
+   Claude instance) re-code a sample blind to your own prior codes after enough of a gap
+   that you're not just recalling them, and report this explicitly as a
+   **within-model self-consistency check**, not as inter-rater reliability, not
+   reported as Cohen's κ against a second "rater," and not substituted for the
+   language in §2.7/§12 that currently promises genuine double-coding. This has some
+   value (it can catch cases where the rubric itself is ambiguous enough that even
+   the same reasoning process diverges) but does not and should not be presented as
+   satisfying the reliability commitment currently in the manuscript.
+
+Whichever path the human authors choose, the manuscript's methods section needs to
+accurately describe what was actually done — that's the one non-negotiable part.
+

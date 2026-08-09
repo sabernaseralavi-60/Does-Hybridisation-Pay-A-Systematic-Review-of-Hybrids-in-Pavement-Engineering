@@ -6,13 +6,15 @@ engineering (2005–2026).
 **Authors:** S. S. Naseralavi (Shahid Bahonar University of Kerman) · A. R. Ghanizadeh (Sirjan
 University of Technology)
 **Target journal:** *Automation in Construction* (Elsevier) — see [Journal targeting](#journal-targeting)
-**Status:** manuscript renders clean to PDF/Word/HTML (26 pages). Sections 1–14 all have
-real, cited content grounded in a 90-record verified database (75 classified primary
-studies). A significant finding emerged this round: at least 8 papers by one overlapping
-author team share a single ~33-section LTPP substrate, each pairing a different
-metaheuristic/learner combination with a different target variable — and one of them has
-now been full-text-verified (not just abstract-flagged) to confirm ungrouped cross-validation
-and a self-admitted absence of external validation. What remains: expanding the corpus from 84
+**Status:** manuscript renders clean to PDF/Word/HTML (32 pages). All 14 sections now have
+real, cited content — including Section 10 (Interpretability), which an external review
+caught as a silently-empty placeholder despite being cross-referenced 13 times elsewhere
+under the wrong section number; both the content and every cross-reference are now fixed.
+The full 24-item PAVE-ML checklist is reproduced as a table in the main text (not just
+described), and Figure 4 now shows the leakage mechanism (random vs. section-grouped
+cross-validation) as a concrete diagram rather than only prose. Database: 90 records, 75
+classified primary studies. See `CLAUDE.md` for the full external-review tracking and the
+project handoff for continuing in Claude Code / Cowork. What remains: expanding the corpus from 90
 to the 300–500
 records a full systematic review of this kind needs, full-text coding (vs. abstract-level) of
 every PAVE-ML field, the double-coding reliability pass, and the abstract (deliberately still a
@@ -163,9 +165,10 @@ thinner there. The MDPI concentration is best used a different way — it tells 
 The current target is **Automation in Construction** (Elsevier; 2-year mean citedness 11.9,
 h-index 240), which publishes critical reviews that deliver a usable instrument. Retargeting to
 any other Elsevier title — *Construction and Building Materials*, *Transportation Geotechnics*,
-*Journal of Road Engineering* — is a one-line change in `_quarto.yml`, because they share the
-`elsarticle` class. Moving to Wiley or Taylor & Francis needs a different Quarto extension but no
-change to the manuscript body.
+*Journal of Road Engineering*, or *Transportation Research Part C: Emerging Technologies* — is a
+one-line change in `_quarto.yml`, because they share the `elsarticle` class. **Computer-Aided
+Civil and Infrastructure Engineering** (Wiley, IF ~9.6) is the strongest non-Elsevier alternative
+specifically for AI-in-infrastructure methodology papers, but needs a different Quarto extension.
 
 **This decision should be revisited once the harvest is complete** and the venue distribution
 rests on 400+ records rather than 48.

@@ -1,7 +1,15 @@
 # PAVE-ML — appraisal and reporting instrument, with operational coding rules
 
-**Manuscript role:** Table 11 (§12) plus the decision rules that make §11 reproducible.
-**Version:** 0.9 (Phase 2 draft — to be frozen before full-text coding begins).
+**Manuscript role:** Reproduced as Table 4 in the main text (`manuscript.qmd` §12,
+`@tbl-paveml`); this document supplies the operational decision rules, worked
+examples, and reliability procedure that make the table's coding reproducible
+rather than a matter of reader judgement — see §2 (Review methodology) for how
+this connects to the review's overall protocol.
+**Version:** 1.0 — includes the 4 hybrid-specific items (12a–12d), added to keep
+this file in sync with the manuscript table after they were introduced during
+taxonomy design; previously these existed only in `01_SCOPE_AND_TAXONOMY.md` and
+the manuscript itself, which was a real (now-fixed) inconsistency, not a
+hypothetical one — see `CLAUDE.md` if you're wondering why this note is here.
 
 ---
 
@@ -22,7 +30,7 @@ point of an audit.
 
 ---
 
-## Part A — the 20-item PAVE-ML checklist
+## Part A — the 24-item PAVE-ML checklist (20 general + 4 hybrid-specific)
 
 Items are grouped in five domains. Each is answered **Yes / No / Not applicable**, with a
 required source (page, section, or figure) for every Yes.
@@ -53,6 +61,10 @@ required source (page, section, or figure) for every Yes.
 | 10 | The hyperparameter search is described — space, method, budget — and the partition used to select hyperparameters is named and is not the reported test partition. |
 | 11 | At least one baseline is a *tuned* conventional model, and, where a domain model exists for the target (e.g. Witczak or Hirsch for dynamic modulus, the MEPDG transfer functions for IRI, rutting or faulting, layered-elastic solutions for pavement response), it is included as a comparator. |
 | 12 | Where a metaheuristic is used, it is stated whether it optimises hyperparameters or model weights, and the comparison against a conventionally tuned version of the same learner is reported. |
+| 12a *(hybrid-specific)* | The base learner is reported both with and without the hybridising component, on the same partition and metric. |
+| 12b *(hybrid-specific)* | Search budget is stated for both hybrid and baseline — function evaluations, iterations × population, or wall-clock time — so that parity can be assessed. |
+| 12c *(hybrid-specific)* | Stochastic optimisers are run more than once and the spread across runs is reported, not the best run. |
+| 12d *(hybrid-specific)* | Where a newly named optimiser is proposed, it is compared against at least two established optimisers on the same problem, and the No-Free-Lunch implication is acknowledged. |
 
 ### D4. Evaluation, uncertainty and interpretation
 
@@ -74,7 +86,7 @@ required source (page, section, or figure) for every Yes.
 
 ---
 
-## Part B — operational coding rules for §11
+## Part B — operational coding rules (the fields cited throughout the review's analysis sections)
 
 These map the checklist onto the database fields defined in `00_MANUSCRIPT_ARCHITECTURE.md` §3.5.
 
