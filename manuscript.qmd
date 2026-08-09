@@ -594,11 +594,16 @@ distinct failure mode that a reader unfamiliar with the taxonomy in §4 would no
 otherwise anticipate.
 
 **H4, architecture fusion**, is best represented in the seed corpus by four vision
-and one network-level study discussed in detail below, plus three further
+and one network-level study discussed in detail below, plus four further
 CNN–transformer crack-detection studies added from a 2026 harvest pass
-[@Luo2023strans; @Zhang2026dual; @Deng2025enhancing] that were coded at title/abstract
-level rather than full-text verified — together they show the CNN+transformer fusion
-pattern recurring from 2023 through 2026 rather than appearing once. Sun et al.'s
+[@Luo2023strans; @Zhang2026dual; @Deng2025enhancing; @Guo2023transformer] that were
+search- or title-confirmed rather than full-text verified — together they show the
+CNN+transformer fusion pattern recurring from 2023 through 2026 rather than
+appearing once. The best-cited of the four, Guo et al.'s Swin-Transformer-encoder,
+attention-augmented-UperNet-decoder network [@Guo2023transformer], reports 102
+citations at the time of writing — more than any other H4 record in the corpus —
+and an explicit within-paper comparison against CNN-only baselines, which is the
+staged-ablation pattern this section otherwise has to go looking for. Sun et al.'s
 PCDETR [@Sun2023automatic] fuses a
 Swin-Transformer and a ResNet backbone for pavement crack detection and reports
 near-identical average precision on the authors' own dataset and on COCO (45.6% vs.
@@ -631,12 +636,17 @@ implementation — and is cited throughout this review (§9, §12) as the type's
 positive case; Yu et al. [@Yu2020highway] stack five heterogeneous learners for
 tunnel pavement performance within a digital-twin framework and report strong
 deployment integration, but without the explicit leakage-avoidance statement
-that distinguishes Huang et al.'s design. Three further stacking studies from the
-2026 harvest pass [@Guan2025enhanced; @Wang2025intelligent; @Gupta2026stacked] are
-coded H5 at title/abstract level only and have not yet been checked for which side
-of the Huang/Yu leakage-practice split they fall on — this is exactly the kind of
-question the full-text verification queue exists to answer, not something to guess
-from a title.
+that distinguishes Huang et al.'s design. Four further stacking studies from the
+2026 harvest pass [@Guan2025enhanced; @Wang2025intelligent; @Gupta2026stacked;
+@Peng2026asphalt] are coded H5; the last of these is search-confirmed rather than
+title-only — Peng et al. name their base and meta-models explicitly (ridge
+regression, k-NN, MLP and random forest stacked under an SVM meta-learner) and
+report lower variance and bias for the stacked model than for the individual base
+models, though the exact comparator protocol still needs full-text confirmation
+before that becomes a quoted premium figure. None of the four has yet been checked
+for which side of the Huang/Yu leakage-practice split it falls on — this is
+exactly the kind of question the full-text verification queue exists to answer,
+not something to guess from a title.
 
 **H6, decomposition then learn**, was reported through the previous phase of this
 review as the one taxonomy type with no confirmed pavement-specific exemplar in the
@@ -657,9 +667,31 @@ recorded against a separate, earlier verification attempt on a ScienceDirect-hos
 paper (documented in the database, not repeated here) — so whether the
 decomposition step was fitted before or after the train/test split — the exact H6
 failure mode this taxonomy names — remains unread rather than assumed either way.
-The corrected finding is therefore that H6 is rare but not absent, and that its
-absence in earlier phases reflected search coverage, not a property of the
-literature; the research agenda in §13 is updated accordingly.
+A follow-up search pass the same day found two further, older H6 records that a
+single query had missed: Nejad and Zakeri's paired 2011 studies
+[@Nejad2011optimum; @MoghadasNejad2011expert] each couple a wavelet-domain
+decomposition (wavelet–Radon transform in one, wavelet transform alone in the
+other) to a distinct trained neural-network classifier for pavement distress
+recognition — the same two authors, the same journal and year, two related but
+architecturally different H6 designs rather than one. H6 in this corpus is
+therefore no longer a single exemplar but a small evidence base of four records
+spanning 2011 to 2025, which changes what can honestly be said about it: not
+"does H6 exist in pavement engineering" (yes), but "how often is it done safely,"
+which full-text verification of these four is now positioned to answer. A fifth,
+superficially similar record is worth naming precisely because it is *not* H6:
+Ayenu-Prah and Attoh-Okine's bidimensional empirical-mode-decomposition study
+[@AyenuPrah2008evaluating] — at 170 citations, the best-cited record this pass
+touched — pairs BEMD with a Sobel edge detector, a fixed classical operator, not
+a trained model, so it fails the structural test in §2.3 despite matching every
+keyword an automated screen would use to flag it as H6. It is the cleanest
+available illustration of the type's boundary: decomposition followed by a fixed
+operator is not H6; decomposition followed by something that learns from data is.
+The corrected finding is therefore that H6 is rare but not absent, that its
+absence in earlier phases reflected search coverage rather than a property of the
+literature, and that the field's own vocabulary ("wavelet-based," "EMD-based")
+does not reliably distinguish the two cases — exactly the vocabulary problem §1
+opens with, recurring one taxonomy type later. The research agenda in §13 is
+updated accordingly.
 
 **H3 (physics-informed)** and **H7 (symbolic–numeric)** are each
 introduced in §6 and §5 respectively [@Pasupunuri2024roughness;

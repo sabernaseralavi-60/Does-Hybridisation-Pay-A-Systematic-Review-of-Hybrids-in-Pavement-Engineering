@@ -6,14 +6,14 @@ engineering (2005–2026).
 **Authors:** S. S. Naseralavi (Shahid Bahonar University of Kerman) · A. R. Ghanizadeh (Sirjan
 University of Technology)
 **Target journal:** *Automation in Construction* (Elsevier) — see [Journal targeting](#journal-targeting)
-**Status:** manuscript renders clean to PDF/Word/HTML (37 pages). All 14 sections now have
+**Status:** manuscript renders clean to PDF/Word/HTML (38 pages). All 14 sections now have
 real, cited content — including Section 10 (Interpretability), which an external review
 caught as a silently-empty placeholder despite being cross-referenced 13 times elsewhere
 under the wrong section number; both the content and every cross-reference are now fixed.
 The full 24-item PAVE-ML checklist is reproduced as a table in the main text (not just
 described), and Figure 4 now shows the leakage mechanism (random vs. section-grouped
-cross-validation) as a concrete diagram rather than only prose. Database: **138 records**,
-122 classified primary studies. See `CLAUDE.md` for the full external-review tracking and the
+cross-validation) as a concrete diagram rather than only prose. Database: **147 records**,
+131 classified primary studies. See `CLAUDE.md` for the full external-review tracking and the
 project handoff for continuing in Claude Code / Cowork.
 
 **2026-08-09 update — the real harvest now works.** A prior Claude Code session ran in a
@@ -25,16 +25,22 @@ against Crossref instead. It returned 2,332 unique, pavement-gated candidate rec
 run (`data/corpus_raw.csv`, `data/prisma_query_log.csv`) — the PRISMA *identification* stage,
 done for real for the first time. `analysis/screen_corpus.py` narrowed that to 97
 structural candidates (`data/corpus_screened.csv`); 44 of those, hand-verified against the
-structural definition in `docs/01_SCOPE_AND_TAXONOMY.md` §2, were added to the database this
-session (`analysis/add_batch4.py`), taking the corpus from 94 to 138 records. One of them
-overturns a previously-reported finding: H6 (decomposition-then-learn) was reported as
-"confirmed absent after two independent search sweeps" — a third, wider sweep found a
-genuine, abstract-confirmed H6 exemplar (`@Kaloop2020wavelet`), so §8/§13 now read H6 as
-rare, not absent. What remains: continuing to screen `data/corpus_screened.csv` (53 more
-structural candidates not yet reviewed) and the wider 2,332-record raw pool toward the
-150–500 records a full systematic review of this kind needs, full-text coding (vs.
-abstract-level) of every PAVE-ML field, the double-coding reliability pass, and the abstract
-(deliberately still a placeholder — it should not be written before the findings it
+structural definition in `docs/01_SCOPE_AND_TAXONOMY.md` §2, were added in a first pass
+(`analysis/add_batch4.py`, 94→138 records), and a second, smaller, deliberately targeted pass
+(`analysis/add_batch5.py`, 138→147 records) added 9 more records chosen specifically to
+correct a taxonomy skew the first pass itself flagged (H1/H7 were unusually easy to find and
+code from titles alone). Batch 5 found a genuine two-paper H6 evidence base (Nejad & Zakeri
+2011, a matched pair from the same authors/journal/year) and, just as importantly, one
+deliberate *negative* case kept in the database on purpose (`@AyenuPrah2008evaluating`,
+170 citations) — wavelet decomposition paired with a fixed Sobel filter, not a trained model,
+the cleanest available illustration of the H6/not-H6 boundary. Combined, these two passes
+overturn a previously-reported finding: H6 (decomposition-then-learn) was reported as
+"confirmed absent after two independent search sweeps" — a wider sweep found four genuine
+exemplars, so §8/§13 now read H6 as rare, not absent. What remains: continuing to screen
+`data/corpus_screened.csv` (~138 candidates still unreviewed) and the wider 2,332-record raw
+pool toward the 150–500 records a full systematic review of this kind needs, full-text coding
+(vs. abstract-level) of every PAVE-ML field, the double-coding reliability pass, and the
+abstract (deliberately still a placeholder — it should not be written before the findings it
 summarises exist).
 
 ---
@@ -131,7 +137,7 @@ The one thing that needs you is pushing to GitHub, which needs your credentials
 | Path | What it does | Runs where |
 |---|---|---|
 | `analysis/make_bib.py` | Regenerates `references.bib` from the CSV. | drafting side |
-| `analysis/build_seed_db.py` · `add_batch2.py` · `add_batch3.py` · `add_batch4.py` | Build and extend the verified database, in the order they were run. `add_batch4.py` (2026-08-09) is the first batch sourced from a real bulk harvest rather than one-at-a-time manual search — see its docstring for the full verification-depth disclosure per record. | drafting side |
+| `analysis/build_seed_db.py` · `add_batch2.py` · `add_batch3.py` · `add_batch4.py` · `add_batch5.py` | Build and extend the verified database, in the order they were run. `add_batch4.py` (2026-08-09) is the first batch sourced from a real bulk harvest rather than one-at-a-time manual search; `add_batch5.py` (same day) is a small, deliberately targeted follow-up correcting a taxonomy skew batch 4 itself flagged. See each script's docstring for the full verification-depth disclosure per record. | drafting side |
 | `analysis/classify_hybridity.py` | Hand-verified H1–H7 classification of every primary study (not a keyword guess — checked against the structural definition in `docs/01_SCOPE_AND_TAXONOMY.md` §2). Re-run after adding records. **Its path to `seed_bibliography.csv` was broken** (pointed at `analysis/` from before the file moved to `data/`) **until 2026-08-09** — fixed alongside a switch to atomic writes so a mid-run crash can no longer truncate the real database file, which is exactly what happened once while fixing this and was recovered from `git checkout`. | drafting side |
 | `analysis/fig_coverage_gap.py` | Produces Figure 1 (review-landscape coverage matrix). | drafting side |
 | `analysis/fig_taxonomy_distribution.py` | Produces Figure 2 (H1–H7 distribution in the seed corpus). | drafting side |
@@ -173,7 +179,7 @@ Requires Quarto ≥ 1.5, Python ≥ 3.10, a TeX installation with `lmodern`, and
 
 ## Journal targeting
 
-Venue distribution of the 122 primary studies in the database as of 2026-08-09 (approximate —
+Venue distribution of the 131 primary studies in the database as of 2026-08-09 (approximate —
 the `venue` field mixes full and abbreviated journal names for some entries, a known minor
 data-quality item, not yet worth a cleanup pass on its own):
 

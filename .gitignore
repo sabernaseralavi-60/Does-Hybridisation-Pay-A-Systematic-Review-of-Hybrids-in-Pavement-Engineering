@@ -13,3 +13,6 @@ __pycache__/
 
 /.quarto/
 **/*.quarto_ipynb
+
+# Contains a GitHub PAT -- never commit this
+github.md

@@ -127,61 +127,71 @@ as a working fallback, reusing `harvest_openalex.py`'s exact 261-query vocabular
 Crossref instead, and it worked: 2,332 unique pavement-gated records in one ~13-minute run
 (`data/corpus_raw.csv`, `data/prisma_query_log.csv`). `analysis/screen_corpus.py` narrowed
 that to 97 structural candidates (`data/corpus_screened.csv`); 44 were hand-verified and
-added (`analysis/add_batch4.py`). **If you're picking this up next: don't re-run the
-harvest, screen `data/corpus_screened.csv`'s remaining ~53 candidates first** — the
-identification-stage work is already done and sitting on disk.
+added in a first pass (`analysis/add_batch4.py`, 94→138), and a second, smaller, deliberately
+targeted pass added 9 more (`analysis/add_batch5.py`, 138→147) chosen specifically to correct
+a taxonomy skew the first pass itself flagged (H1/H7 were unusually easy to find and code
+from titles). **If you're picking this up next: don't re-run the harvest, screen
+`data/corpus_screened.csv`'s remaining ~138 candidates first** — the identification-stage
+work is already done and sitting on disk. When selecting the next batch, keep weighting
+toward H2/H4/H5/H6 the way batch 5 did — a third batch that just grabs the next easiest
+PINN/GEP titles will re-introduce the same skew.
 
-- **138 records** in `data/seed_bibliography.csv`: 122 primary studies (all hand-classified
+- **147 records** in `data/seed_bibliography.csv`: 131 primary studies (all hand-classified
   against the H1–H7 taxonomy), 16 prior reviews used for positioning (§1).
-- **H1–H7 distribution among classified primaries:** H1=27 (+1 joint H1;H4, +3 joint H1;H5),
-  H2=11 (+1 joint H2;H4), H3=10 (+1 joint H3;H6), H4=8, H5=5, **H6=2** (no longer confirmed
-  absent — see below), H7=17; 25 coded `none`, 11 coded `context`.
+- **H1–H7 distribution among classified primaries:** H1=28 (+1 joint H1;H4, +3 joint H1;H5),
+  H2=11 (+1 joint H2;H4), H3=11 (+1 joint H3;H4, +1 joint H3;H6), H4=9, H5=6, **H6=4** (no
+  longer confirmed absent — see below), H7=17; 27 coded `none`, 11 coded `context`.
 - **The H6 finding changed, and this matters.** Earlier phases reported H6 (decomposition-
   then-learn) as "confirmed absent after two independent search sweeps." That was an honest
-  report of what those two sweeps covered, not a false claim — but a third, wider sweep found
-  a genuine, abstract-confirmed H6 exemplar: `10.1080/10298436.2020.1776281` (Kaloop et al.,
-  wavelet decomposition integrated with OP-ELM for rigid-pavement IRI, benchmarked against
-  plain OP-ELM/ANN/regression on LTPP data — the abstract states the coupling explicitly). A
-  second, more tentative candidate (`10.1016/j.ymssp.2025.112468`) is coded H6 provisionally.
-  Manuscript §8 and §13 (research agenda) were updated to reflect this; do not revert them to
-  the old "H6=0" framing. Full-text access to both records was attempted and blocked (403 from
-  both publishers) — leakage risk on both is honestly coded unknown, not inferred either way.
-  **This is the single highest-priority full-text verification target for the next session.**
-- **Verification depth on the 44 new (batch 4) records is genuinely mixed and disclosed
-  per-record.** ~12 were checked against a real Crossref-deposited abstract (quoted or closely
-  paraphrased in the CSV `note` field and in `add_batch4.py`'s docstring); the rest are coded
-  at title level only, which is defensible for `hybrid_type` in this literature (titles are
-  unusually literal about method) but is NOT full-text verification — every note says which
-  category it's in. Do not upgrade a title-level note to a stronger claim without actually
-  reading the paper.
+  report of what those two sweeps covered, not a false claim — but two wider sweeps (batches 4
+  and 5) found four genuine H6 records: `10.1080/10298436.2020.1776281` (Kaloop et al.,
+  wavelet+OP-ELM, abstract-confirmed), `10.1016/j.ymssp.2025.112468` (Zhang et al., EEMD+K-means,
+  provisional), and `10.1016/j.eswa.2011.01.089` + `10.1016/j.eswa.2010.12.060` (Nejad & Zakeri,
+  a matched 2011 pair — same authors, journal, year, two related but distinct
+  wavelet/Radon+neural-network designs, search-confirmed). A fifth record,
+  `10.1155/2008/861701` (Ayenu-Prah & Attoh-Okine, 170 citations), was deliberately kept and
+  coded `none`, not H6 — it pairs decomposition with a fixed Sobel filter, not a trained model,
+  and is now cited in §8 as the cleanest available H6/not-H6 boundary illustration. Manuscript
+  §8 and §13 were updated to reflect this; do not revert them to the old "H6=0" framing. None
+  of the four H6 records' leakage risk is known — every full-text attempt on them was blocked
+  (403 from every publisher tried: Taylor & Francis, Elsevier, and a Penn State PURE mirror).
+  **This remains the single highest-priority full-text verification target.**
+- **Verification depth across the 53 batch 4+5 records is genuinely mixed and disclosed
+  per-record.** Roughly 15 were checked against a real abstract (Crossref-deposited, or
+  surfaced via `WebSearch` when the publisher page itself blocked `WebFetch` — the latter is
+  weaker and is labelled "search-confirmed" in the CSV `note` field, not conflated with reading
+  the actual page); the rest are coded at title level only, defensible for `hybrid_type` in
+  this literature but explicitly NOT full-text verification. Do not upgrade a title-level or
+  search-confirmed note to a stronger claim without actually reading the paper.
 - **A real, previously-undocumented bug was found and fixed**: `classify_hybridity.py` (and
   the historical `add_batch2.py`/`add_batch3.py`/`build_seed_db.py`) resolved
   `seed_bibliography.csv`'s path relative to `analysis/`, from before the file was moved to
   `data/` — only `make_bib.py` had ever been fixed. Running `classify_hybridity.py` in this
   state would have silently written to a wrong, freshly-created `analysis/seed_bibliography.csv`
-  instead of the real database. Fixed by hardcoding the correct path AND switching both
-  `classify_hybridity.py` and `add_batch4.py` to atomic writes (write to `.tmp`, then
-  `replace()`) — this class of bug had already truncated the real 94-record database to empty
-  once during this session (Python's `open(path, "w")` truncates on open, before any write
-  error), recovered via `git checkout HEAD -- data/seed_bibliography.csv`. **If you add a
-  fifth batch script, copy `add_batch4.py`'s path-resolution and atomic-write pattern, not the
-  older scripts'.**
+  instead of the real database. Fixed by hardcoding the correct path AND switching
+  `classify_hybridity.py`, `add_batch4.py` and `add_batch5.py` to atomic writes (write to
+  `.tmp`, then `replace()`) — this class of bug had already truncated the real 94-record
+  database to empty once during this session (Python's `open(path, "w")` truncates on open,
+  before any write error), recovered via `git checkout HEAD -- data/seed_bibliography.csv`.
+  **If you add a sixth batch script, copy `add_batch5.py`'s path-resolution and atomic-write
+  pattern, not the older scripts'.**
 - **Four records remain full-text verified from earlier phases** (fetched and read in full,
   not just abstract): `10.1186/s44147-025-00706-9`, `10.1186/s44147-025-00623-x` (identical
   leakage mechanism — ungrouped 5-fold CV — in the Alnaqbi CRCP series), `10.3390/app132312862`
   (a *different* leakage mechanism — pre-split Boruta feature selection), `10.3390/ma18122913`
   (a genuine *positive* exemplar — leakage-safe stacking, with an honest caveat that external
   validation is still absent). Plus `10.1038/s41598-024-81311-3` (Duan, the nuanced mixed
-  case). These remain the template for full-text verification; the H6 records above are the
-  next natural candidates once full-text access is obtainable.
+  case). These remain the template for full-text verification; the four H6 records above are
+  the next natural candidates once full-text access is obtainable.
 - **All 14 manuscript sections have real, cited prose** — none are empty placeholders — and
-  Sections 5–8 grew real content this session (H4 CNN-transformer recurrence, H5 batch-4
-  stacking additions, the corrected H6 finding, the H3/PINN growth-phase framing). §3's
-  figures are still captioned as seed-corpus snapshots, not final bibliometric claims — still
-  true and still honest at 138 records, though less true than it was at 90.
+  Sections 5–8 grew real content this session (H4 CNN-transformer recurrence including the
+  102-citation Guo et al. record, H5 stacking additions, the corrected H6 finding with its
+  two-paper evidence base and boundary case, the H3/PINN growth-phase framing). §3's figures
+  are still captioned as seed-corpus snapshots, not final bibliometric claims — still true and
+  still honest at 147 records, though less true than it was at 90.
 - **The abstract is deliberately still a placeholder.** Do not write it until the
   findings it would summarize are actually final — this is intentional, not an oversight.
-- **Builds clean**: `quarto render manuscript.qmd` → 37-page PDF, DOCX, HTML, zero
+- **Builds clean**: `quarto render manuscript.qmd` → 38-page PDF, DOCX, HTML, zero
   citation warnings, zero LaTeX errors, as of the last commit. Two more stray `\textendash`
   LaTeX macros were found and fixed this session (rule 5 below) — this bug class keeps
   recurring; grep for it before every render, not just when told to.
@@ -217,7 +227,7 @@ identification-stage work is already done and sitting on disk.
    reasonable but imperfect proxy (see its docstring) and is worth spot-checking against the
    eligibility criteria in `manuscript.qmd` §2.3 / `docs/01_SCOPE_AND_TAXONOMY.md` §2 rather
    than trusted blindly. Target a final included corpus in the 150–250 range per the original
-   brief (currently 122 primary studies) — realistically another 1–2 batches of similar size
+   brief (currently 131 primary studies) — realistically another 1–2 batches of similar size
    to batch 4 gets there.
 3. **Classify each newly included study** against H1–H7 using `analysis/classify_hybridity.py`
    as the running record — extend `CLASSIFICATION`, don't hand-edit the CSV's
@@ -240,7 +250,7 @@ identification-stage work is already done and sitting on disk.
    in case that was transient, and try a direct PDF link or an institutional-access route
    before concluding it's a repeat of the Ghorbani/ScienceDirect failure.
 5. **Continue fleshing out Sections 5–8** and rewrite §3's bibliometric figures from the
-   completed corpus rather than the seed-corpus snapshot — genuinely closer now (138 records)
+   completed corpus rather than the seed-corpus snapshot — genuinely closer now (147 records)
    but still explicitly captioned as provisional, and should stay that way until the corpus is
    much closer to final.
 6. **Double-coding reliability** (§2's κ commitment) — **already resolved**, see the dedicated

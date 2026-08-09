@@ -166,6 +166,17 @@ CLASSIFICATION = {
     "10.1061/jpeodx.pveng-1834": ("H7", "GEP for dynamic modulus and phase angle"),
     # none -- metaheuristic present but not coupled to a data-driven learner
     "10.3141/2170-08": ("none", "GA fits a semi-empirical curve-shift model directly; ANN run as a separate uncoupled comparator, same exclusion logic as cscm.2022.e00991"),
+
+    # --- batch 5 (2026-08-09 harvest, taxonomy-balance follow-up) ---
+    "10.1016/j.conbuildmat.2023.131852": ("H4", "Swin Transformer encoder + UperNet decoder w/ attention, search-confirmed"),
+    "10.1016/j.eswa.2011.01.089": ("H6", "wavelet+Radon decomposition feeding a dynamic-threshold neural network classifier, search-confirmed"),
+    "10.1016/j.eswa.2010.12.060": ("H6", "wavelet decomposition feeding a radon neural network expert system, search-confirmed; companion to eswa.2011.01.089"),
+    "10.32604/sdhm.2026.075421": ("H5", "explicit stacking: Ridge+KNN+MLP+RF base models -> SVM meta-model, search-confirmed"),
+    "10.3390/su14105938": ("H1", "improved beetle antennae search tunes NN hyperparameters; abstract-confirmed vs random-hyperparameter comparison"),
+    "10.3141/2305-14": ("none", "GA calibrates MEPDG k-value coefficients directly, not coupled to a learner -- same exclusion as 2170-08"),
+    "10.1080/10298436.2025.2543554": ("H3;H4", "physics-informed graph attention network -- GNN architecture (H4-adjacent) + physics constraint (H3), title-level"),
+    "10.1080/10298436.2026.2708277": ("H3", "physics-informed back-calculation method, title-level"),
+    "10.1155/2008/861701": ("none", "BEMD decomposition + Sobel edge detector (fixed classical operator, not a trained learner) -- deliberate H6/not-H6 boundary case, search-confirmed"),
 }
 
 
