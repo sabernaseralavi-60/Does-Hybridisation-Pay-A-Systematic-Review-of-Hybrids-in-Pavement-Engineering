@@ -708,6 +708,22 @@ detail are available, whether the premium plausibly clears this bar or not. This
 section will be completed once that judgement can be made study by study rather
 than asserted in general.
 
+A related and more immediate question is how often the gap between training and
+test performance is even visible enough to judge, and here one paper in the seed
+corpus supplies a rare, self-reported answer rather than requiring an external
+audit to surface it. Jalal et al. [@Jalal2024swarm] report four
+metaheuristic-tuned ANN variants (PSO, GWO, SMA and MPA) for expansive-soil swell
+pressure and unconfined compressive strength, with training R^2^ above 0.9 for
+the UCS models — and then state plainly, in their own results section, that
+"the UCS models witnessed an overfitting problem because the aforementioned R
+values of the metaheuristics were 0.62, 0.56, and 0.58" on the test partition.
+This is, so far, the only paper in the corpus to name its own train-test gap in
+these terms rather than reporting a single headline R^2^ and moving on, and it is
+a useful reminder that the rigour audit's purpose is not to catch something no
+author could have noticed — the gap is visible in the paper's own tables — but to
+make visible-but-unremarked-upon gaps like this one a counted, systematic finding
+rather than an exception a careful reader happens to spot.
+
 # PAVE-ML: a reporting and appraisal checklist {#sec-paveml}
 
 The audit this review conducts is only as trustworthy as the coding rules behind

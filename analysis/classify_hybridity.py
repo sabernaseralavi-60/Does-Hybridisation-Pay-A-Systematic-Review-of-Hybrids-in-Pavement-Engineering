@@ -100,6 +100,12 @@ CLASSIFICATION = {
     "10.3390/constrmater6010006": ("H1", "GA tunes GBM hyperparameters"),
     "10.1007/s44290-025-00381-y": ("H1", "GA tunes SVR hyperparameters"),
     "10.1016/j.conbuildmat.2023.133523": ("none", "tuned XGBoost, no metaheuristic coupling described in available summary"),
+    "10.1016/j.cscm.2022.e01774": ("H7", "MEP produces closed-form equations; compared against ANN/ANFIS/DT-Bagging, no coupling"),
+    "10.3390/eng6080183": ("H7", "GEP closed-form equation, no metaheuristic coupling"),
+    "10.20944/preprints202004.0029.v1": ("H2", "genetic algorithm drives random forest structure (RF-GA)"),
+    "10.1038/s41598-024-65547-7": ("H1", "four separate metaheuristics (PSO/GWO/SMA/MPA) tune ANN"),
+    "10.3390/infrastructures6090129": ("H1", "four separate metaheuristics (PSO/FF/GA/GWO) tune ANFIS"),
+    "10.1155/2023/1827117": ("H7", "GEP/MEP closed-form equations, no metaheuristic coupling"),
 }
 
 
