@@ -275,6 +275,18 @@ consequence of that gap for the premium estimate.
 ![Distribution of hybridisation types among primary studies coded in the seed
 corpus.](figures/fig02_taxonomy_distribution.png){#fig-taxonomy width=100%}
 
+@fig-year-trend shows the same primary studies by publication year. The visible
+concentration after 2020 is consistent with the review's opening claim that
+hybridisation-as-novelty accelerated through the current decade, but the figure
+must be read as what it is — the yield of targeted, taxonomy-driven searches run
+during protocol development, not a random or exhaustive sample — and it is
+captioned accordingly rather than presented as a bibliometric trend claim the seed
+corpus cannot support on its own.
+
+![Publication years of primary studies in the seed corpus. This is a targeted-search
+yield, not a claim about the field's true publication trajectory; the completed
+harvest will supersede this figure.](figures/fig03_seed_corpus_years.png){#fig-year-trend width=90%}
+
 # Taxonomy of hybridisation {#sec-taxonomy}
 
 The field's literature treats "hybrid" as a single, undifferentiated label. This
@@ -459,18 +471,28 @@ at least one clear exemplar worth setting out in detail because each illustrates
 distinct failure mode that a reader unfamiliar with the taxonomy in §4 would not
 otherwise anticipate.
 
-**H4, architecture fusion**, is best represented in the seed corpus by three vision
-studies. Sun et al.'s PCDETR [@Sun2023automatic] fuses a Swin-Transformer and a
-ResNet backbone for pavement crack detection and reports near-identical average
-precision on the authors' own dataset and on COCO (45.6% vs. 45.8%) — a similarity
-close enough across two very different image domains to warrant scrutiny rather
-than to be read at face value as evidence of robust transfer. Alshawabkeh et al.
-[@Alshawabkeh2023automated] and Elhariri et al. [@Elhariri2020filter] both couple
-deep and hand-crafted feature extraction with a metaheuristic feature-selection
-stage (jointly H1 and H4 under the taxonomy in §4), and both report a staged,
-within-paper ablation — deep features alone, then with the added classifier, then
-with the added optimiser — which is the design §9's premium construct depends on
-and which most H1 studies elsewhere in the corpus do not provide.
+**H4, architecture fusion**, is best represented in the seed corpus by four vision
+and one network-level study. Sun et al.'s PCDETR [@Sun2023automatic] fuses a
+Swin-Transformer and a ResNet backbone for pavement crack detection and reports
+near-identical average precision on the authors' own dataset and on COCO (45.6% vs.
+45.8%) — a similarity close enough across two very different image domains to
+warrant scrutiny rather than to be read at face value as evidence of robust
+transfer. Alshawabkeh et al. [@Alshawabkeh2023automated] and Elhariri et al.
+[@Elhariri2020filter] both couple deep and hand-crafted feature extraction with a
+metaheuristic feature-selection stage (jointly H1 and H4 under the taxonomy in §4),
+and both report a staged, within-paper ablation — deep features alone, then with
+the added classifier, then with the added optimiser — which is the design §9's
+premium construct depends on and which most H1 studies elsewhere in the corpus do
+not provide. At the network rather than the image level, Pan, Du and Parlikad's
+PaveGNet [@Pan2025spatiotemporal] fuses a graph module encoding inter-section
+topology with a temporal module encoding distress evolution, and is, at the time of
+writing, this review's clearest example of the staged-ablation design done well:
+independently substituting the temporal, spatial and exogenous-variable components
+and reporting the ranking-error contribution of each (a fall from 9.005% to 2.670%
+for the full model against a spatiotemporal graph-convolution baseline). It is a
+useful positive counterpoint to place beside the H1 studies earlier in this
+section, and is the closest the seed corpus comes to network-level, rather than
+single-section, hybridisation evidence.
 
 **H5, heterogeneous stacking**, has one clear positive and one ambiguous exemplar
 in the corpus, both already introduced in §9: Huang et al.
@@ -483,12 +505,14 @@ without the explicit leakage-avoidance statement that distinguishes Huang et al.
 design.
 
 **H6, decomposition then learn**, is the one taxonomy type with, at the time of
-writing, no confirmed pavement-specific exemplar in the seed corpus — every
-wavelet- or VMD-based candidate located in the search so far belongs to an adjacent
-domain (bridge deflection monitoring, energy-price forecasting) rather than to
-pavement engineering directly. Its absence is reported here as a finding in its own
-right, to be confirmed or overturned once the completed harvest is available, rather
-than silently omitted.
+writing, no confirmed pavement-specific exemplar in the seed corpus, and the
+absence has now survived two independent, differently worded search sweeps rather
+than reflecting a single missed query — every wavelet- or VMD-based candidate
+located so far belongs to an adjacent domain (bridge deflection monitoring,
+energy-price forecasting) rather than to pavement engineering directly. Its absence
+is reported here as a tentative finding in its own right, to be confirmed or
+overturned once the completed harvest is available, rather than silently omitted
+or, on the other hand, overstated on the basis of two searches.
 
 **H3 (physics-informed)** and **H7 (symbolic\textendash numeric)** are each
 introduced in §6 and §5 respectively [@Pasupunuri2024roughness;

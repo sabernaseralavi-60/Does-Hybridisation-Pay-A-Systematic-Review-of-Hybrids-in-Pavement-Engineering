@@ -86,6 +86,12 @@ CLASSIFICATION = {
     "10.1007/s44290-024-00128-1": ("none", "GPR/SVM comparators, no coupling"),
     "10.1007/s44285-025-00061-4": ("H1", "PSO tunes GBM hyperparameters"),
     "10.1007/s42947-022-00213-7": ("none", "ML ensemble + SHAP, no metaheuristic/architecture coupling"),
+    "10.1109/access.2020.2991968": ("H1;H4", "multi-objective salp swarm feature selection (H1) over fused hand-crafted+CNN features (H4)"),
+    "10.1111/mice.70169": ("H4", "PaveGNet: graph + temporal architecture fusion, no metaheuristic coupling"),
+    "10.3390/su152316337": ("none", "SVM vs CatBoost comparison, no metaheuristic/architecture coupling"),
+    "10.1109/access.2022.3196660": ("H1", "adaptive mutation dipper-throated optimization tunes/selects features for random forest — the vocabulary-trap exemplar"),
+    "10.3390/infrastructures11040127": ("context", "mechanistic-only (NCHRP 1-37A vs locally calibrated model), no ML — kept for Section 11 decision-consequence discussion"),
+    "10.32604/cmc.2023.042183": ("H1", "whale optimization algorithm selects deep (ResNet-18) features for random forest classification"),
 }
 
 
@@ -105,6 +111,13 @@ def main() -> None:
         entry = CLASSIFICATION.get(doi)
         if entry and entry[0] != "skip":
             r["hybrid_type"] = entry[0]
+            coded += 1
+        elif r.get("hybrid_type") and r["hybrid_type"] not in ("", "not-yet-coded"):
+            # Already classified by a prior run/manual edit and not (yet) present
+            # in CLASSIFICATION above -- preserve it rather than silently reset to
+            # not-yet-coded. Whoever adds a record's hybrid_type by hand should
+            # still backfill CLASSIFICATION at the next convenient edit so the
+            # reasoning trail stays in one place.
             coded += 1
         else:
             r["hybrid_type"] = "not-yet-coded"
