@@ -92,6 +92,13 @@ CLASSIFICATION = {
     "10.1109/access.2022.3196660": ("H1", "adaptive mutation dipper-throated optimization tunes/selects features for random forest — the vocabulary-trap exemplar"),
     "10.3390/infrastructures11040127": ("context", "mechanistic-only (NCHRP 1-37A vs locally calibrated model), no ML — kept for Section 11 decision-consequence discussion"),
     "10.32604/cmc.2023.042183": ("H1", "whale optimization algorithm selects deep (ResNet-18) features for random forest classification"),
+    "10.1007/s41062-025-02249-7": ("H1", "PSO tunes GBM hyperparameters"),
+    "10.1007/s43995-025-00214-0": ("H1", "GA tunes SVR hyperparameters"),
+    "10.1186/s44147-025-00623-x": ("H1", "PSO tunes GBM hyperparameters"),
+    "10.1007/s41024-025-00667-9": ("H1", "GA tunes GBM hyperparameters"),
+    "10.1007/s41024-024-00499-z": ("H1", "GA tunes SVR hyperparameters"),
+    "10.3390/constrmater6010006": ("H1", "GA tunes GBM hyperparameters"),
+    "10.1007/s44290-025-00381-y": ("H1", "GA tunes SVR hyperparameters"),
 }
 
 

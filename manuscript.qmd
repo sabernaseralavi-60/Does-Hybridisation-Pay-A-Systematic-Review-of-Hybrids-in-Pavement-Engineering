@@ -436,24 +436,55 @@ Performance and deterioration prediction — international roughness index, rutt
 cracking, faulting, remaining service life — is the sub-domain most heavily
 dependent on the Long-Term Pavement Performance (LTPP) database in the seed corpus,
 and correspondingly the sub-domain where the near-duplicate-substrate problem named
-in the review methodology is most concrete rather than abstract. Two studies by
-overlapping author teams, @Alnaqbi2025learning and a related 2026 gradient-boosting
-variant, both draw on the same 395-observation, 33-section continuously-reinforced-
-concrete-pavement LTPP substrate and both report R^2^ above 0.99 under five-fold
-cross-validation; whether the cross-validation folds respect the 33-section grouping
-(so that no section contributes records to both the training and test partition
-within a fold) is the single full-text question that would resolve whether these
-results reflect genuine predictive skill or record-level leakage of the kind §2.3
-and the PAVE-ML leakage-risk rule (§10) are built to detect, and it is flagged
-explicitly for priority full-text extraction.
+in the review methodology is most concrete rather than abstract. A single
+overlapping author team — Alnaqbi, Zeiada and Al-Khateeb, joined variously by
+Abuzwidah, Hamad and Barakat across different papers — has published at least
+eight studies located so far, all drawing on what appears to be the same
+approximately 33-section, 385–395-observation continuously-reinforced-concrete-
+pavement substrate from LTPP, each pairing a different metaheuristic (chiefly PSO
+or a genetic algorithm) with a different base learner (chiefly SVR or a gradient
+boosting machine) to predict a different single target variable — international
+roughness index [@Alnaqbi2025learning; @Alnaqbi2025tuned; @Alnaqbi2025high],
+longitudinal cracking [@Alnaqbi2025predictive; @Alnaqbi2025optimized], spalling
+[@Alnaqbi2024approach], friction number [@Alnaqbi2026friction], and punchouts
+[@Alnaqbi2025optimizing] — each reported as a separate publication, each evaluated
+by five-fold cross-validation, and each reporting R^2^ in the 0.90–0.99 range. Two
+pairs within this set differ from one another only in which metaheuristic tunes
+the same base learner on the same target and the same substrate:
+@Alnaqbi2025predictive (PSO-GBM) and @Alnaqbi2025optimized (GA-GBM) both predict
+longitudinal cracking; @Alnaqbi2025learning (PSO-SVR), @Alnaqbi2025tuned (PSO-GBM)
+and @Alnaqbi2025high (GA-SVR) all predict IRI on what the papers describe as the
+identical 395-observation, 33-section pool.
 
-Wei et al. [@Wei2023optimizing] illustrate the same concern in a different form: a
-tree-structured Parzen estimator tunes a CatBoost model for rigid-pavement faulting
-on 160 LTPP observations across 17 candidate variables, with Boruta feature
-selection applied as a preprocessing step whose position relative to the train/test
-split is not established from the abstract alone — precisely the ambiguous case the
-PAVE-ML leakage-risk rule (§10) codes as `moderate` pending full-text confirmation,
-rather than assumed innocent or guilty by default.
+None of this is concealed — @Alnaqbi2025optimizing's own reference list cites six
+other papers from the same series, so the pattern is not hidden, only
+undiscussed. What none of the eight papers examined so far states explicitly is
+whether the five-fold cross-validation in each is grouped at the section level, so
+that no CRCP section contributes observations to both the training and the test
+partition within a fold. With roughly twelve observations per section on average
+(395 observations across 33 sections), an ungrouped random split would place
+multiple, highly correlated records from the same physical section on both sides
+of most folds — precisely the leakage pathway the PAVE-ML rule for
+`leakage_risk` (§10) is written to catch, and precisely the reason each of these
+eight papers is coded `high` risk pending full-text confirmation rather than
+assumed innocent by the convention adopted in §2. Xiao et al.'s TPE-CatBoost
+faulting model [@Xiao2023optimizing] adds a second, independent instance of the
+same ambiguity on a different substrate: Boruta feature selection is described as
+preceding TPE hyperparameter tuning, but neither the paper's abstract nor its
+available summary states whether Boruta was fitted on the training partition alone
+or on the full 160-observation pool before any split was made.
+
+Two things distinguish this section's treatment of the near-duplicate-substrate
+problem from a general methodological aside. First, the count is now large enough
+— eight identified papers, likely more once the full harvest is complete — that
+the completed review can report a systematic finding rather than gesture at a
+concern: what fraction of this specific author team's substrate-sharing series
+groups its cross-validation folds by section, once every paper's methods section
+has been read in full. Second, the pattern usefully illustrates a broader point
+this review returns to in §11: an unlimited supply of near-identical papers
+reporting R^2^ above 0.90 on the same underlying 33 physical objects, whatever its
+cause, produces exactly the appearance of a mature and thoroughly validated
+sub-field that the rigour audit is designed to test.
 
 Deng and Shi's practitioner-facing review of rutting models [@Deng2023rutting] adds
 a data point this review's own audit cannot generate on its own: a survey of which
@@ -683,11 +714,14 @@ data and method that would settle it, rather than as a general aspiration.
    optimiser outperform two or more established optimisers on the same pavement
    problem, or only outperform an unspecified or untuned baseline? PAVE-ML item
    12d targets this directly.
-4. **Section-grouped partitioning for LTPP-derived studies.** Several
-   performance-prediction studies share overlapping LTPP substrates (§7). A
-   systematic re-derivation, from the LTPP database directly, of whether published
-   cross-validation folds respect section-level grouping would settle a question
-   the published papers' abstracts cannot.
+4. **Section-grouped partitioning for the CRCP substrate series.** At least eight
+   papers by one overlapping author team share a single ~33-section CRCP LTPP
+   substrate (§7). A systematic re-derivation, from the LTPP database directly,
+   of whether each paper's published cross-validation folds respect section-level
+   grouping would settle a question none of the eight papers' available abstracts
+   answers, and would be the single highest-value full-text verification task for
+   the completed audit given how much of the corpus's rutting/cracking/IRI
+   evidence currently traces to this one substrate.
 5. **The H6 gap.** No pavement-specific decomposition-then-learn (H6) study was
    located in the seed corpus (§8). Is this a genuine absence in the pavement
    literature, or an artefact of the search terms used so far? The completed
@@ -726,8 +760,8 @@ data and method that would settle it, rather than as a general aspiration.
 
 ::: {.content-visible when-format="html"}
 > **Status note.** The conclusions below are provisional, drawn from the
-> seed-corpus evidence assembled during protocol development (n = 55 primary
-> studies, of which 26 are coded as hybrid under the structural definition in
+> seed-corpus evidence assembled during protocol development (n = 68 primary
+> studies, of which 34 are coded as hybrid under the structural definition in
 > §2.3). They are stated with the confidence the current evidence supports, not
 > the confidence a completed 300\textendash 500-study audit would carry, and every
 > numbered point below is written so that the completed audit can confirm,
