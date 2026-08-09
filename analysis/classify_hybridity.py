@@ -99,6 +99,7 @@ CLASSIFICATION = {
     "10.1007/s41024-024-00499-z": ("H1", "GA tunes SVR hyperparameters"),
     "10.3390/constrmater6010006": ("H1", "GA tunes GBM hyperparameters"),
     "10.1007/s44290-025-00381-y": ("H1", "GA tunes SVR hyperparameters"),
+    "10.1016/j.conbuildmat.2023.133523": ("none", "tuned XGBoost, no metaheuristic coupling described in available summary"),
 }
 
 
