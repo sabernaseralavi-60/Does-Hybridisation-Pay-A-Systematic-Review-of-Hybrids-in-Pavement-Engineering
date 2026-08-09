@@ -6,7 +6,7 @@ engineering (2005–2026).
 **Authors:** S. S. Naseralavi (Shahid Bahonar University of Kerman) · A. R. Ghanizadeh (Sirjan
 University of Technology)
 **Target journal:** *Automation in Construction* (Elsevier) — see [Journal targeting](#journal-targeting)
-**Status:** manuscript renders clean to PDF/Word/HTML (25 pages). Sections 1–14 all have
+**Status:** manuscript renders clean to PDF/Word/HTML (26 pages). Sections 1–14 all have
 real, cited content grounded in an 84-record verified database (69 classified primary
 studies). A significant finding emerged this round: at least 8 papers by one overlapping
 author team share a single ~33-section LTPP substrate, each pairing a different
@@ -31,17 +31,21 @@ Being direct about this, since it matters more than any file listing below:
   already demonstrate, across more queries.
 - **Full-text coding.** Almost every PAVE-ML field (leakage risk, external validation, baseline
   strength, etc.) is still coded from abstracts, but this is now demonstrated to be tractable,
-  not just designed-for: two records (`10.1186/s44147-025-00706-9` and
+  not just designed-for: three records were fetched and read in full, and all three confirmed
+  a leakage-risk coding rather than merely flagging one. Two (`10.1186/s44147-025-00706-9` and
   `10.1186/s44147-025-00623-x`, the first two papers in the Alnaqbi same-substrate series
-  discussed in Section 7) were fetched and read in full, which confirmed — rather than merely
-  flagged — that both use an ungrouped 5-fold split at the observation level and that both
-  papers' own Limitations/Future Directions sections admit no external validation,
-  independently of each other. That the two confirmations are identical despite being
-  different papers on different target variables is itself evidence the pattern generalises
-  across the rest of the series. The first verification also surfaced a second
-  overlapping-author cluster (Wang/Xiao/Liu) publishing on a related substrate, found only by
-  following the first paper's own reference list. Scaling this from 2 records to the ~60 that
-  need it is the highest-value remaining task, and the method is now proven twice over, not
+  discussed in Section 7) independently confirmed the identical mechanism — an ungrouped 5-fold
+  split at the observation level, plus a self-admitted absence of external validation in each
+  paper's own Limitations/Future Directions section. The third (`10.3390/app132312862`, Xiao
+  et al.'s TPE-CatBoost faulting model) confirmed a **structurally different** leakage
+  mechanism on an unrelated substrate: Boruta feature selection performed on the full dataset
+  in the paper's own "Data Preparation" section, before the train/test split appears in "Model
+  Construction" — and the paper's own conclusion attributes part of its headline accuracy gain
+  directly to that contaminated step. Three confirmations, two mechanisms, zero exonerations is
+  the current full-text record. The first verification also surfaced a second overlapping-author
+  cluster (Wang/Xiao/Liu) publishing on a related substrate, found only by following the first
+  paper's own reference list. Scaling this from 3 records to the ~60 that need it is the
+  highest-value remaining task, and the method is now proven three times over, not
   hypothetical.
 - **Double-coding reliability.** Section 2 commits to an independent 15% double-coded sample
   with Cohen's κ reported per field. This requires a second coder — a role this assistant
