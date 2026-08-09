@@ -177,6 +177,20 @@ CLASSIFICATION = {
     "10.1080/10298436.2025.2543554": ("H3;H4", "physics-informed graph attention network -- GNN architecture (H4-adjacent) + physics constraint (H3), title-level"),
     "10.1080/10298436.2026.2708277": ("H3", "physics-informed back-calculation method, title-level"),
     "10.1155/2008/861701": ("none", "BEMD decomposition + Sobel edge detector (fixed classical operator, not a trained learner) -- deliberate H6/not-H6 boundary case, search-confirmed"),
+
+    # --- batch 6 (2026-08-09 harvest, third increment) ---
+    "10.1016/j.conbuildmat.2022.128955": ("H1", "Bayesian optimization tunes SVR for icing prediction"),
+    "10.3390/asi6050093": ("H7", "ANN+GEP hybrid; GEP produces the final closed-form equation, abstract-confirmed"),
+    "10.1016/j.istruc.2024.106837": ("H7", "GEP vs MEP for subgrade resilient modulus"),
+    "10.1007/s00521-022-07305-2": ("H7", "GEP for Idaho pavement distress models"),
+    "10.3389/fbuil.2022.895210": ("H7", "ANN+GEP for PCI/IRI, Jordan road network, search-confirmed"),
+    "10.1080/10298436.2022.2147672": ("none", "WOA optimises the downstream M&R schedule, not the RF prediction model itself -- same category as RL M&R policy papers coded context"),
+    "10.1016/j.conbuildmat.2025.143170": ("H1;H3", "Bayesian optimization tunes a physics-informed network for density prediction"),
+    "10.1186/s40703-021-00149-0": ("none", "DEA + Taguchi are classical statistical/OR methods, not a metaheuristic-learner coupling"),
+    "10.3390/ma18245635": ("H1", "GA hyperparameter optimization for ML road-performance model"),
+    "10.1051/matecconf/202439605016": ("H1", "Bayesian optimization tunes SVR for resilient modulus"),
+    "10.1007/s42947-026-00761-2": ("H1", "PSO tunes SVR; same Alnaqbi/Al-Khateeb/Zeiada author team as the documented CRCP same-substrate series, likely a 9th entry"),
+    "10.1155/adce/8657453": ("H7", "GEP rutting prediction model, LTPP data"),
 }
 
 

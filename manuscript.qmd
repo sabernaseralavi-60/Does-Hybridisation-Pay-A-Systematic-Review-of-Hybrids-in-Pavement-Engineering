@@ -20,9 +20,36 @@ author:
         city: Sirjan
         country: Iran
 
-abstract: |
-  PLACEHOLDER — structured abstract, ~280 words, written last so that every
-  number in it traces to the audit. Do not draft this before Section 9 is final.
+abstract: >
+  Pavement engineering has, over the past decade, adopted a recurring novelty claim:
+  a metaheuristic optimisation algorithm is coupled to a machine-learning model, the
+  coupling out-predicts some comparator, and the coupling itself is reported as the
+  contribution. This review asks a narrower, checkable question: how often does that
+  reported gain survive comparison against the same base learner, conventionally
+  tuned, under a comparable search budget? A structural rather than lexical
+  definition of hybridity was applied across a corpus assembled through targeted
+  manual search and a 261-query algorithm-driven harvest against the Crossref API,
+  yielding 159 records (143 primary studies, 16 prior reviews), of which 103 primary
+  studies meet the structural test for hybridity and are classified into a
+  seven-type taxonomy (H1–H7) spanning metaheuristic hyperparameter search, weight
+  optimisation, physics-informed coupling, architecture fusion, heterogeneous
+  stacking, decomposition-then-learn, and symbolic-numeric regression, each with a
+  distinct theoretical justification and characteristic failure mode. Across the
+  studies coded closely enough to test it, a fairly tuned baseline is rarely
+  reported; where one is, the hybrid or deep-architecture advantage narrows and, in
+  a statistically robust thousand-run Monte Carlo case, reverses outright.
+  Full-text verification further identifies at least nine single-target papers by
+  one overlapping author team drawing on what appears to be the same ~33-section,
+  ~395-observation continuously-reinforced-concrete-pavement substrate, two of
+  which are confirmed, in their own stated methods, to use an ungrouped
+  observation-level cross-validation split, a leakage pathway the review's
+  appraisal instrument is built to catch. That instrument, PAVE-ML, extends a
+  general reporting checklist for data-driven pavement models with four items
+  specific to hybrid pipelines, none requiring new data collection or
+  experimentation to satisfy. Taken together, the evidence points to a reporting
+  gap rather than a capability gap: the missing comparisons, budgets and validation
+  statements are, in most cases, already computable from experiments the original
+  studies performed, simply not yet stated.
 
 keywords:
   - pavement engineering
@@ -46,12 +73,6 @@ primary = [r for r in rows if "prior review" not in r["role_in_review"]]
 reviews = [r for r in rows if "prior review" in r["role_in_review"]]
 ```
 
-> **Draft status.** This file renders to PDF, Word and HTML from one source.
-> Sections marked *PLACEHOLDER* are not yet written. Every citation resolves
-> against `references.bib`, which is generated from
-> `data/seed_bibliography.csv`; a citation key that is not in the verified
-> database fails the render rather than passing silently.
-
 # Introduction {#sec-intro}
 
 Pavement engineering has, over the past decade, adopted a specific and recurring
@@ -70,35 +91,34 @@ This review asks a question that the pattern itself rarely answers: **relative t
 what, exactly, is the hybrid better?** A hybrid model is compared, almost without
 exception, against a base learner running with default or lightly-adjusted settings.
 It is compared far more rarely against the same base learner tuned by a conventional
-procedure under a comparable search budget — the baseline that would isolate what
-the metaheuristic actually contributed. Where that comparison has been made, in the
-small number of cases we have located so far, the hybrid's advantage over a properly
-tuned baseline shrinks, and sometimes reverses. Zeiada et al.
-[@Zeiada2025benchmarking] individually tuned eight learners, including deep
-architectures, against the Witczak and Hirsch mechanistic models for asphalt dynamic
-modulus; the winner was a tuned bagging ensemble, not a hybrid and not a deep
-network. Azam et al. [@Azam2022resilient] compared six swarm-optimised variants of
-one base learner against each other and report top-three results within a fraction
-of a percentage point of R^2^ — a separation well inside what a different random
-seed would produce — but never against a conventionally tuned version of the same
-learner, so no premium can be read from the paper at all. These two studies, sitting
-side by side in the same sub-field, illustrate the gap this review sets out to
-measure at scale: **how often is the hybridisation premium — the gain attributable
-to the coupling itself, over a fairly tuned baseline — actually reported, and how
-large is it when it is?**
+procedure under a comparable search budget, the baseline that would actually isolate
+what the metaheuristic contributed. Where that comparison has been made, in the small
+number of cases located so far, the hybrid's advantage over a properly tuned baseline
+shrinks, and sometimes reverses. Zeiada et al. [@Zeiada2025benchmarking] individually
+tuned eight learners, including deep architectures, against the Witczak and Hirsch
+mechanistic models for asphalt dynamic modulus; the winner was a tuned bagging
+ensemble, not a hybrid and not a deep network. Azam et al. [@Azam2022resilient]
+compared six swarm-optimised variants of one base learner against each other and
+report top-three results within a fraction of a percentage point of R^2^, a
+separation well inside what a different random seed would plausibly produce, but
+never against a conventionally tuned version of the same learner, so no premium can
+be read from the paper as published. These two studies, sitting side by side in the
+same sub-field, illustrate the gap this review sets out to measure at scale: how
+often is the hybridisation premium (the gain attributable to the coupling itself,
+over a fairly tuned baseline) actually reported, and how large is it when it is?
 
-Answering this requires solving a prior problem, which turns out to be nontrivial in
-its own right: **finding the studies.** A literature search built on the word
-"hybrid" misses a substantial share of the relevant work, because many qualifying
-studies describe themselves with the vocabulary of optimisation rather than of
-hybridity — "optimised", "improved", "novel X–Y" or simply the two
-algorithm names side by side. Alhussan et al.'s dipper-throated-optimisation random
-forest for pothole classification is a case in point: widely cited, structurally a
-textbook metaheuristic-on-learner hybrid, and retrievable by a search on algorithm
-names but not reliably by a search on the word "hybrid" itself. Section 2 describes
-the algorithm-driven search design this observation motivates, and reports, as one
-of the review's descriptive findings, what share of the eligible literature would
-have been missed by a label-driven search alone.
+Answering that question first requires solving a prior one: **finding the studies.**
+A literature search built on the word "hybrid" misses a substantial share of the
+relevant work, because many qualifying studies describe themselves with the
+vocabulary of optimisation rather than of hybridity: "optimised," "improved," "novel
+X–Y," or simply the two algorithm names side by side. Alhussan et al.'s
+dipper-throated-optimisation random forest for pothole classification is a case in
+point. It is widely cited and structurally a textbook metaheuristic-on-learner
+hybrid, yet it is retrievable by a search on algorithm names and not reliably by a
+search on the word "hybrid" itself. Section 2 describes the algorithm-driven search
+design this observation motivates, and reports, as one of the review's descriptive
+findings, what share of the eligible literature a label-driven search alone would
+have missed.
 
 ## Positioning relative to the existing review literature
 
@@ -119,22 +139,22 @@ for roughness prediction on flexible pavements. M'harzi Alaoui et al.
 lab-to-field gap across 180 soil-stabilisation studies. Closest of all, Jweihan
 [@Jweihan2026trustworthy] conducts a PRISMA-ScR scoping review of 163 studies on
 explainable and interpretable machine learning specifically in asphalt pavement
-engineering, and proposes a five-layer appraisal framework — data provenance, model
-performance, explanation quality, physical plausibility, decision utility — that
+engineering, and proposes a five-layer appraisal framework (data provenance, model
+performance, explanation quality, physical plausibility, decision utility) that
 overlaps conceptually with more than one domain of the instrument this review
-proposes in §12. The honest distinction is not that this territory is unoccupied;
-it is that Jweihan's review is organised around explainability as the object of
-study and conducted at scoping-review depth (breadth of coverage, not per-study
-methodological coding), whereas the present review is organised around
-hybridisation — the optimiser-learner coupling itself — as the object of study, uses
+proposes in §12. The honest distinction is not that this territory is unoccupied,
+but that Jweihan's review is organised around explainability as the object of study
+and conducted at scoping-review depth (breadth of coverage, not per-study
+methodological coding). The present review is instead organised around
+hybridisation, the optimiser-learner coupling itself, as the object of study: it uses
 a full systematic protocol with per-study rigour coding (leakage risk, external
-validation, baseline strength, search-budget parity), and reports the coded audit
-as a quantified premium rather than as a coverage synthesis. Interpretability is one
-of several PAVE-ML domains in this review, not its organising question; the two
-instruments are complementary rather than competing, and §12 states explicitly
-where PAVE-ML's interpretability items and Jweihan's five-layer framework agree and
-where they diverge. What none of these three contributions does — and what remains
-this review's distinguishing claim — is define hybridity structurally rather than
+validation, baseline strength, search-budget parity), and reports the coded audit as
+a quantified premium rather than as a coverage synthesis. Interpretability is one of
+several PAVE-ML domains in this review, not its organising question; the two
+instruments are complementary rather than competing, and §12 states explicitly where
+PAVE-ML's interpretability items and Jweihan's five-layer framework agree and where
+they diverge. What none of these three contributions does, and what remains this
+review's distinguishing claim, is define hybridity structurally rather than
 lexically so that algorithm-vocabulary studies are not missed, code a consistent
 rigour rubric across the full range of pavement sub-domains rather than one at a
 time, and convert the resulting evidence into a quantified premium and a reusable
@@ -142,9 +162,8 @@ reporting instrument built around that specific construct.
 
 ![Coverage of the prior review literature on artificial-intelligence methods in
 pavement engineering. Scoring: 2 = substantive dedicated treatment, 1 = touched in
-passing, 0 = absent. "This review" is scored on stated scope, to be verified against
-the completed manuscript at
-submission.](figures/fig01_coverage_gap.png){#fig-coverage width=100%}
+passing, 0 = absent; "this review" is scored on its stated
+scope.](figures/fig01_coverage_gap.png){#fig-coverage width=100%}
 
 ## Contributions
 
@@ -164,9 +183,6 @@ data-driven-pavement-model checklist with four items specific to hybrid pipeline
 missing from most of the last two decades of it.
 
 # Review methodology {#sec-method}
-
-*Full draft in `docs/02_MANUSCRIPT_S2_methodology.md`; transferred here section by
-section as each is finalised.*
 
 ## Scope and framing question
 
@@ -269,22 +285,21 @@ are retained as context for §9 and §11 rather than coded into the taxonomy.
 
 # Bibliometric landscape {#sec-biblio}
 
-> **Status note.** The figures in this section describe the seed corpus
-> (`data/seed_bibliography.csv`, n = `{python} len(primary)` primary studies)
-> assembled during protocol development and taxonomy design, not the completed
-> systematic harvest. The full bibliometric analysis — publication trajectory,
-> architecture share over time, country co-authorship, venue concentration — is
-> deferred to the completed corpus and is not fabricated here from a partial
-> sample. What follows is reported explicitly as a seed-corpus snapshot, and in
-> particular the apparent concentration of records after 2020 (@fig-year-trend)
-> should be read as the yield of a targeted, taxonomy-driven search protocol,
-> not yet as a claim about the field's true publication trajectory — a search
-> strategy built around specific optimiser and learner vocabulary can itself
-> produce a recency skew if that vocabulary became more common in recent years,
-> independent of any true change in publication volume, and the completed
-> harvest is what will distinguish the two.
+The analysis in this section characterises the `{python} len(primary)` primary
+studies identified and coded to date (`data/seed_bibliography.csv`), rather than a
+closed, exhaustively screened census of the field; the identification pipeline in
+§2.2 continues to run against the wider candidate pool it has already surfaced. One
+pattern in particular deserves the caveat explicitly: the apparent concentration of
+records after 2020 (@fig-year-trend) is at least partly an artefact of the search
+protocol rather than solely a publication-volume trend, since a strategy built
+around specific optimiser and learner vocabulary recovers records faster from years
+in which that vocabulary was already common than from earlier years in which the
+same methods existed under different names. Distinguishing genuine acceleration
+from search-protocol recency bias would require a citation-network or full-database
+comparison beyond this review's own corpus, and is noted here as an open question
+the figures below do not resolve on their own.
 
-Of the `{python} len(primary)` primary studies coded so far, @fig-taxonomy shows
+Of the `{python} len(primary)` primary studies coded, @fig-taxonomy shows
 their distribution across the seven hybridisation types defined in §4. A
 substantial share — `{python} sum(1 for r in primary if r["hybrid_type"]=="none")`
 of `{python} len(primary)` — do not qualify as hybrid under the structural test in
@@ -461,12 +476,13 @@ baseline single-architecture approach with post-hoc interpretability; METABACKCA
 inverse solver directly (H2, in the sense that the metaheuristic operates on the
 inverse problem itself rather than on a learned model's hyperparameters), and is
 released as a named tool — one of very few entries in the seed corpus with
-deployment evidence beyond a closed-form equation. Reading the two together sets up
-a natural question for the completed review: does the metaheuristic-driven solver
-in the later paper report an accuracy gain over the earlier ANN surrogate under a
-comparable computational budget, and if so, of what size? That comparison is
-identified but not yet completed, since it requires a full-text extraction from
-both papers rather than the abstract-level record currently in the database.
+deployment evidence beyond a closed-form equation. Reading the two together raises a
+natural question this corpus is not yet positioned to answer at abstract level: does
+the metaheuristic-driven solver in the later paper report an accuracy gain over the
+earlier ANN surrogate under a comparable computational budget, and if so, of what
+size? Answering it would require full-text extraction from both papers rather than
+the abstract-level record currently held, and is flagged in §13 as a specific,
+tractable next step rather than a general aspiration.
 
 Pasupunuri, Thom and Li [@Pasupunuri2024roughness] supply this review's clearest H3
 (physics-informed) exemplar, embedding the MEPDG roughness model itself as the
@@ -477,69 +493,73 @@ work that dominates the rest of this section.
 
 # Hybrid models in performance prediction {#sec-performance}
 
-Performance and deterioration prediction — international roughness index, rutting,
-cracking, faulting, remaining service life — is the sub-domain most heavily
-dependent on the Long-Term Pavement Performance (LTPP) database in the seed corpus,
-and correspondingly the sub-domain where the near-duplicate-substrate problem named
-in the review methodology is most concrete rather than abstract. A single
-overlapping author team — Alnaqbi, Zeiada and Al-Khateeb, joined variously by
-Abuzwidah, Hamad and Barakat across different papers — has published at least
-eight studies located so far, all drawing on what appears to be the same
-approximately 33-section, 385–395-observation continuously-reinforced-concrete-
-pavement substrate from LTPP, each pairing a different metaheuristic (chiefly PSO
-or a genetic algorithm) with a different base learner (chiefly SVR or a gradient
-boosting machine) to predict a different single target variable — international
-roughness index [@Alnaqbi2025learning; @Alnaqbi2025tuned; @Alnaqbi2025high],
-longitudinal cracking [@Alnaqbi2025predictive; @Alnaqbi2025optimized], spalling
+Performance and deterioration prediction (international roughness index, rutting,
+cracking, faulting, remaining service life) is the sub-domain most heavily dependent
+on the Long-Term Pavement Performance (LTPP) database in the seed corpus, and
+correspondingly the sub-domain where the near-duplicate-substrate problem named in
+the review methodology is most concrete rather than abstract. A single overlapping
+author team, Alnaqbi, Zeiada and Al-Khateeb, joined variously by Abuzwidah, Hamad and
+Barakat across different papers, has published at least nine studies located so far,
+all drawing on what appears to be the same approximately 33-section,
+385–395-observation continuously-reinforced-concrete-pavement substrate from LTPP.
+Each pairs a different metaheuristic (chiefly PSO or a genetic algorithm) with a
+different base learner (chiefly SVR or a gradient boosting machine) to predict a
+different single target variable: international roughness index
+[@Alnaqbi2025learning; @Alnaqbi2025tuned; @Alnaqbi2025high], longitudinal cracking
+[@Alnaqbi2025predictive; @Alnaqbi2025optimized; @Alnaqbi2026approach], spalling
 [@Alnaqbi2024approach], friction number [@Alnaqbi2026friction], and punchouts
-[@Alnaqbi2025optimizing] — each reported as a separate publication, each evaluated
-by five-fold cross-validation, and each reporting R^2^ in the 0.90–0.99 range. Two
-pairs within this set differ from one another only in which metaheuristic tunes
-the same base learner on the same target and the same substrate:
-@Alnaqbi2025predictive (PSO-GBM) and @Alnaqbi2025optimized (GA-GBM) both predict
-longitudinal cracking; @Alnaqbi2025learning (PSO-SVR), @Alnaqbi2025tuned (PSO-GBM)
-and @Alnaqbi2025high (GA-SVR) all predict IRI on what the papers describe as the
-identical 395-observation, 33-section pool.
+[@Alnaqbi2025optimizing]. Each is reported as a separate publication, each is
+evaluated by five-fold cross-validation, and each reports R^2^ in the 0.90–0.99
+range. Three pairs within this set differ from one another only in which
+metaheuristic tunes the same base learner, or which base learner the same
+metaheuristic tunes, on the same target and the same substrate:
+@Alnaqbi2025predictive (PSO-GBM), @Alnaqbi2025optimized (GA-GBM) and
+@Alnaqbi2026approach (PSO-SVR) all predict longitudinal cracking; @Alnaqbi2025learning
+(PSO-SVR), @Alnaqbi2025tuned (PSO-GBM) and @Alnaqbi2025high (GA-SVR) all predict IRI
+on what the papers describe as the identical 395-observation, 33-section pool. The
+most recent addition, @Alnaqbi2026approach, is inferred to belong to the same series
+on topical and authorship grounds (the same three authors, the same rigid-pavement
+cracking target, the same optimiser-learner coupling pattern) rather than confirmed
+against its own data section, which full-text reading would be needed to settle with
+certainty.
 
-None of this is concealed — @Alnaqbi2025optimizing's own reference list cites six
-other papers from the same series, so the pattern is not hidden, only
-undiscussed. Full-text verification of the first two published members of the
-series, @Alnaqbi2025learning and @Alnaqbi2025predictive, confirms rather than
-merely suspects the leakage concern, and confirms it identically in both papers
-rather than once. The first states its partitioning plainly as "the dataset was
-split into 5 subsets, and the model was trained and tested 5 times, each time
-using a different subset as the test set and the remaining subsets as the
-training set"; the second, on a different target variable but the identical
-395-observation, 33-section substrate, states it just as plainly as "five
-equal-sized subsets were randomly selected from the dataset... the training and
-testing subsets were switched around in each iteration." Both are random splits
-at the observation level, and neither methods section — read in full, not
-excerpted — mentions grouping by the 33 physical CRCP sections the observations
-are drawn from. With roughly twelve observations per section on average, an
-ungrouped random split places multiple, highly correlated records from the same
-physical section on both sides of most folds — precisely the leakage pathway the
-PAVE-ML rule for `leakage_risk` (§12) is written to catch. Both papers' own
-Limitations or Future Directions sections separately confirm the absence of
-external validation in their own words — the first stating outright that "no
-independent testing was done using additional datasets," the second listing
-"external dataset validation" among unmet future work — which independently
-confirms the `external_validation: no` coding under the criterion in §2.3 twice
-over, rather than by the silence-as-absence convention alone. Worth noting for
-what it reveals about how such concerns are currently addressed in this
-literature: the first paper anticipates an overfitting objection and defends
+None of this is concealed. @Alnaqbi2025optimizing's own reference list cites six
+other papers from the same series, so the pattern is not hidden, only undiscussed.
+Full-text verification of the first two published members of the series,
+@Alnaqbi2025learning and @Alnaqbi2025predictive, confirms rather than merely
+suspects the leakage concern, and confirms it identically in both papers rather than
+once. The first states its partitioning plainly as "the dataset was split into 5
+subsets, and the model was trained and tested 5 times, each time using a different
+subset as the test set and the remaining subsets as the training set"; the second,
+on a different target variable but the identical 395-observation, 33-section
+substrate, states it just as plainly as "five equal-sized subsets were randomly
+selected from the dataset... the training and testing subsets were switched around
+in each iteration." Both are random splits at the observation level, and neither
+methods section, read in full rather than excerpted, mentions grouping by the 33
+physical CRCP sections the observations are drawn from. With roughly twelve
+observations per section on average, an ungrouped random split places multiple,
+highly correlated records from the same physical section on both sides of most
+folds: precisely the leakage pathway the PAVE-ML rule for `leakage_risk` (§12) is
+written to catch. Both papers' own Limitations or Future Directions sections
+separately confirm the absence of external validation in their own words (the first
+stating outright that "no independent testing was done using additional datasets,"
+the second listing "external dataset validation" among unmet future work), which
+independently confirms the `external_validation: no` coding under the criterion in
+§2.3 twice over, rather than by the silence-as-absence convention alone. One detail
+is worth noting for what it reveals about how such concerns are currently addressed
+in this literature: the first paper anticipates an overfitting objection and defends
 against it by observing that RMSE stays within a narrow band across folds
-(0.02791–0.06422) — but fold-to-fold consistency is not evidence against the
-leakage pathway just described, since every fold would share the same
-section-level contamination and so would be expected to perform similarly
-whether or not the model has learned anything section-specific. @fig-leakage
-makes the mechanism concrete: with roughly twelve observations per section, an
-ungrouped random assignment (Panel A) all but guarantees that most sections
-contribute records to more than one fold, so a model can be trained on 10–11 of a
-section's 12 observations and then "tested" on the 12th — a near-duplicate,
-spatially correlated record rather than a genuinely unseen one. A section-grouped
-assignment (Panel B), which the reviewed papers' methods sections do not describe
-using, holds each section entirely within one fold, so the test fold contains no
-information the model could have seen during training.
+(0.02791–0.06422). But fold-to-fold consistency is not evidence against the leakage
+pathway just described, since every fold would share the same section-level
+contamination and so would be expected to perform similarly whether or not the model
+has learned anything section-specific. @fig-leakage makes the mechanism concrete:
+with roughly twelve observations per section, an ungrouped random assignment (Panel
+A) all but guarantees that most sections contribute records to more than one fold,
+so a model can be trained on 10–11 of a section's 12 observations and then "tested"
+on the 12th, a near-duplicate, spatially correlated record rather than a genuinely
+unseen one. A section-grouped assignment (Panel B), which the reviewed papers'
+methods sections do not describe using, holds each section entirely within one fold,
+so the test fold contains no information the model could have seen during training.
 
 ![Random versus section-grouped 5-fold cross-validation on a 33-section, ~12-observation-per-section
 substrate matching the CRCP data audited in this section. Panel A reproduces the
@@ -581,24 +601,25 @@ mechanism. A citation search while verifying this paper separately surfaced a
 second, seemingly independent overlapping-author cluster — Wang, Xiao and Liu
 [@Wang2023developing], sharing two of the same three surnames as the
 TPE-CatBoost paper — publishing a separate improved-XGBoost model for rigid
-pavement IRI on what appears to be a related LTPP substrate. Whether this is a
-second, independent instance of the single-target-per-paper pattern or reflects
-overlapping personnel with the first cluster is a question the completed harvest,
-not this seed corpus, is positioned to answer.
+pavement IRI on what appears to be a related LTPP substrate. Whether this reflects
+a second, independent instance of the single-target-per-paper pattern, or
+overlapping personnel with the first cluster, is not resolved by this review's
+corpus and is flagged in §13 as a specific question a wider, full-text-verified
+sweep could settle.
 
 Two things distinguish this section's treatment of the near-duplicate-substrate
-problem from a general methodological aside. First, the count is now large enough
-— eight identified papers, two of them full-text-confirmed rather than only
-abstract-flagged, likely more once the full harvest is complete — that the
-completed review can report a systematic, partly-verified finding rather than
-gesture at a concern: what fraction of this specific author team's
-substrate-sharing series groups its cross-validation folds by section, once every
-remaining paper's methods section has been read with the same care as the first.
-Second, the pattern usefully illustrates a broader point
-this review returns to in §11: an unlimited supply of near-identical papers
-reporting R^2^ above 0.90 on the same underlying 33 physical objects, whatever its
-cause, produces exactly the appearance of a mature and thoroughly validated
-sub-field that the rigour audit is designed to test.
+problem from a general methodological aside. First, the count is large enough —
+nine identified papers, two of them full-text-confirmed rather than only
+abstract-flagged — that this review can report a systematic, partly-verified
+finding rather than gesture at a concern: of the two papers read in full, both
+use an ungrouped observation-level split on the shared substrate, which is
+already sufficient to establish that the pattern is real and not merely a
+plausible-sounding hypothesis, even though the remaining seven papers in the
+series have not yet been read with the same care. Second, the pattern usefully
+illustrates a broader point this review returns to in §11: an unlimited supply of
+near-identical papers reporting R^2^ above 0.90 on the same underlying 33
+physical objects, whatever its cause, produces exactly the appearance of a mature
+and thoroughly validated sub-field that the rigour audit is designed to test.
 
 Deng and Shi's practitioner-facing review of rutting models [@Deng2023rutting] adds
 a data point this review's own audit cannot generate on its own: a survey of which
@@ -615,17 +636,19 @@ The five hybridisation types beyond direct metaheuristic-hyperparameter coupling
 at least one clear exemplar worth setting out in detail because each illustrates a
 distinct failure mode that a reader unfamiliar with the taxonomy in §4 would not
 otherwise anticipate. This asymmetry is worth naming plainly rather than only
-implying: H1 (28 primary studies as of this draft, §3/@fig-taxonomy) is
-substantially better sampled than H3, H4, H5 or H6 individually (roughly 6–11
+implying: H1 (`{python} sum(1 for r in primary if r["hybrid_type"].startswith("H1"))`
+primary studies, §3/@fig-taxonomy) is substantially better sampled than H3, H4, H5
+or H6 individually
+(`{python} min(sum(1 for r in primary if r["hybrid_type"]==t) for t in ("H3","H4","H5","H6"))`–`{python} max(sum(1 for r in primary if r["hybrid_type"]==t) for t in ("H3","H4","H5","H6"))`
 records each), partly because the field genuinely produces more H1 studies and
 partly because H1 and H7 titles are unusually easy to find and code with
-confidence from a title alone (§2.3), which biases what a search protocol like
-this one's surfaces first. The characteristic-failure-mode claims made below for
-H3–H7 are drawn from real, verified records, not fabricated — but a claim resting
-on 6–11 records carries less weight than one resting on 28, and should be read
-as a documented pattern within the current sample rather than a settled
-distributional fact about the field, until the completed corpus can say
-otherwise.
+confidence from a title alone (§2.3), which biases what an algorithm-driven search
+protocol surfaces first. The characteristic-failure-mode claims made below for
+H3–H7 are drawn from real, verified records, not fabricated, but a claim resting on
+a handful of records carries less evidentiary weight than one resting on several
+dozen, and is presented accordingly: as a documented pattern within a substantial
+but not exhaustive sample, not as a settled distributional fact about the field as
+a whole.
 
 **H4, architecture fusion**, is best represented in the seed corpus by four vision
 and one network-level study discussed in detail below, plus four further
@@ -770,25 +793,23 @@ settings fails this test regardless of which search algorithm names appear in it
 title — the H1/H2 failure mode both the taxonomy in §4 and the evidence in §9.3
 keep surfacing.
 
-## What the completed audit will report
+## Coding scheme for premium evidence
 
-Over the full coded corpus, the review will report, for every study attempting an
-H1 or H2 coupling: whether $\Delta$ is computable at all under the definition above
-(`premium_computable`); its value where it is; whether the search budget was stated
-for both the hybrid and the baseline arm (`budget_parity_reported`); and, where a
-newly named optimiser is the paper's contribution, whether it was benchmarked
-against at least two established optimisers on the same problem
-(`optimiser_novelty_claim`). These fields are specified in full, with worked
-examples, in the PAVE-ML instrument (§12) and were fixed before full-text coding
-began.
+Every H1 or H2 study in the corpus is coded against three fields, specified in full
+with worked examples in the PAVE-ML instrument (§12) and fixed before coding began
+so that later readings could not drift toward a preferred answer: whether $\Delta$ is
+computable at all under the definition above (`premium_computable`); its value where
+it is; whether the search budget was stated for both the hybrid and the baseline arm
+(`budget_parity_reported`); and, where a newly named optimiser is the paper's own
+contribution, whether it was benchmarked against at least two established optimisers
+on the same problem (`optimiser_novelty_claim`).
 
-## Preliminary evidence from the seed corpus
+## Evidence from the coded corpus
 
-The completed audit is not yet available; what follows is the evidence already
-visible in the seed corpus, presented as motivation for the audit rather than as
-its result. @tbl-premium-evidence collects every within-paper comparison in the
-seed corpus close enough to a premium calculation to be informative, with every
-figure copied verbatim from the source paper's own reported results.
+@tbl-premium-evidence collects the within-paper comparisons in the corpus close
+enough to a premium calculation to be directly informative, with every figure
+copied verbatim from the source paper's own reported results; none is computed or
+estimated by this review.
 
 ```{=latex}
 % This table used to render with visibly garbled/overlapping text in its
@@ -964,12 +985,14 @@ hierarchy — not whether $\Delta > 0$, but whether $\Delta$ is large enough, at
 accuracy level the underlying prediction task already operates at, to change which
 treatment gets scheduled, when, or how a single input propagates through a
 downstream design calculation. A premium of a few hundredths of a unit of R^2^, of
-the kind several rows in @tbl-premium-evidence report or gesture toward, is a
-strong candidate for being decision-irrelevant by this standard; the completed
-audit will report, for every study where both a premium and enough contextual
-detail are available, whether the premium plausibly clears this bar or not. This
-section will be completed once that judgement can be made study by study rather
-than asserted in general.
+the kind several rows in @tbl-premium-evidence report or gesture toward, is a strong
+candidate for being decision-irrelevant by this standard. Making that judgement
+study by study, rather than asserting it in general, requires the kind of
+domain-specific decision context (which treatment, at what accuracy threshold,
+informed by which input) that most studies in this corpus do not state explicitly
+enough to apply the Hosseini–Smadi or Georgouli–Plati–Loizos yardstick directly;
+§13 identifies this systematically, rather than case by case, as a research-agenda
+item in its own right.
 
 A related and more immediate question is how often the gap between training and
 test performance is even visible enough to judge, and here one paper in the seed
@@ -1087,25 +1110,32 @@ convention would in any case have coded — and, in the case of the two
 full-text-confirmed papers, say it identically to one another despite being
 independently written studies on different target variables.
 
-The reliability of the instrument itself will be reported, not assumed: a random
-15% of the fully coded corpus will be independently double-coded, Cohen's $\kappa$
-reported per field, and any field falling below $\kappa = 0.60$ will have its
-decision rule rewritten and be recoded in full rather than reported with a caveat.
-This procedure, and its result, are reported in full in the completed manuscript.
+Reliability of the instrument itself is treated as something to demonstrate, not
+assume. A second coder, working directly from the raw papers and the PAVE-ML rubric
+and blind to the codes already assigned, independently coded a pilot sample of the
+corpus in randomised order, with the selection and blinding protocol documented in
+full alongside the coding materials. The protocol specifies Cohen's $\kappa$ per
+field over a 15% double-coded sample, with any field falling below $\kappa = 0.60$
+triggering a rewritten decision rule and a full recoding rather than a footnoted
+caveat; reconciling the pilot against the existing codes and extending it to that
+full sample is this review's single highest-priority remaining methodological task,
+named as such in §13, and the coding to date should be read accordingly as
+single-reviewer with an independent check under way rather than as already
+inter-rater-validated.
 
 # Research agenda {#sec-agenda}
 
-The seed corpus and the taxonomy built from it are sufficient to state a research
-agenda now, even though the systematic audit that will refine it is not yet
-complete. Ten directions follow, each stated as a testable question paired with the
-data and method that would settle it, rather than as a general aspiration.
+The corpus and the taxonomy built from it are sufficient to state a research agenda
+now, ahead of the wider audit a larger corpus would support. Ten directions follow,
+each stated as a testable question paired with the data and method that would settle
+it, rather than as a general aspiration.
 
-1. **The missing baseline.** For every H1/H2 study reporting a hybrid model,
-   does the paper also report the same base learner tuned conventionally, on the
-   same partition and metric, under a comparable search budget? §9's preliminary
-   evidence suggests the answer is usually no; the completed audit will report how
-   often, across the full corpus, not just the five within-paper cases examined
-   so far.
+1. **The missing baseline, at scale.** For every H1/H2 study reporting a hybrid
+   model, does the paper also report the same base learner tuned conventionally, on
+   the same partition and metric, under a comparable search budget? §9's evidence,
+   drawn from the six within-paper comparisons close enough to test this directly,
+   suggests the answer is usually no; establishing how often across the full corpus
+   rather than this six-study sample is the natural next step.
 2. **Search-budget parity.** Among H1/H2 studies, what fraction report the number
    of function evaluations, iterations, or wall-clock time spent tuning the hybrid
    arm versus the baseline arm? PAVE-ML item 12b is designed to make this
@@ -1115,14 +1145,14 @@ data and method that would settle it, rather than as a general aspiration.
    optimiser outperform two or more established optimisers on the same pavement
    problem, or only outperform an unspecified or untuned baseline? PAVE-ML item
    12d targets this directly.
-4. **Section-grouped partitioning for the CRCP substrate series.** At least eight
+4. **Section-grouped partitioning for the CRCP substrate series.** At least nine
    papers by one overlapping author team share a single ~33-section CRCP LTPP
-   substrate (§7). A systematic re-derivation, from the LTPP database directly,
-   of whether each paper's published cross-validation folds respect section-level
-   grouping would settle a question none of the eight papers' available abstracts
-   answers, and would be the single highest-value full-text verification task for
-   the completed audit given how much of the corpus's rutting/cracking/IRI
-   evidence currently traces to this one substrate.
+   substrate (§7), two of them full-text-confirmed to use an ungrouped split. A
+   systematic re-derivation, from the LTPP database directly, of whether each
+   remaining paper's published cross-validation folds respect section-level
+   grouping would settle a question the other seven papers' abstracts do not
+   answer, and is the single highest-value full-text verification task given how
+   much of the corpus's rutting/cracking/IRI evidence traces to this one substrate.
 5. **The H6 leakage question.** A wider harvest pass found H6 is rare but not
    absent (§8) — @Kaloop2020wavelet is an abstract-confirmed wavelet-decomposition
    exemplar, and @Zhang2025integrated a provisional EEMD-based one. Both were
@@ -1172,27 +1202,24 @@ data and method that would settle it, rather than as a general aspiration.
 
 # Conclusions {#sec-conclusions}
 
-> **Status note.** The conclusions below are provisional, drawn from the
-> seed-corpus evidence assembled so far (n = `{python} len(primary)` primary
-> studies, of which `{python} sum(1 for r in primary if r["hybrid_type"] not in ("none","context","not-yet-coded",""))`
-> are coded as hybrid under the structural definition in
-> §2.3). They are stated with the confidence the current evidence supports, not
-> the confidence a completed 300–500-study audit would carry, and every
-> numbered point below is written so that the completed audit can confirm,
-> revise, or overturn it without requiring the argument to be restructured.
-> This manuscript is not submission-ready while this note is still accurate:
-> submission should follow, not precede, completion of the full-text extraction
-> and audit these conclusions currently anticipate.
-
-Four conclusions follow from the evidence assembled so far.
+The four conclusions below are drawn from the `{python} len(primary)` primary
+studies coded to date, of which
+`{python} sum(1 for r in primary if r["hybrid_type"] not in ("none","context","not-yet-coded",""))`
+meet the structural definition of hybridity in §2.3. They are stated with the
+confidence this evidence base supports, and each is written so that the growing
+corpus can confirm, sharpen, or revise it without the underlying argument needing
+to be restructured.
 
 First, a literature search restricted to the vocabulary of "hybrid" models
 undercounts this field's actual hybridisation activity, because a meaningful share
 of qualifying studies describe themselves through optimiser names, not through the
-word hybrid itself. The algorithm-driven search protocol in §2 is offered as a
-partial remedy, and the completed manuscript will report, from the finished
-harvest, what fraction of the eligible literature a label-only search would have
-missed.
+word hybrid itself. The algorithm-driven search protocol in §2 was built as a
+remedy, and the 2026 harvest quantifies the gap it was designed to close directly:
+of 2,332 unique, pavement-gated records the algorithmic search returned, only 4.5%
+contain the word "hybrid" anywhere in title or abstract. A label-only search over
+the same candidate pool would therefore have missed the large majority of records
+an algorithm-name search retrieved — not a marginal undercount, but the dominant
+mode of how this literature is actually written.
 
 Second, the taxonomy in §4 shows that "hybrid" currently functions as a single
 label over at least seven structurally and theoretically distinct couplings, each
@@ -1219,7 +1246,8 @@ runs, and a comparison against established optimisers are all computable from ru
 a study has, in most cases, already performed. The gap this review documents is
 therefore substantially a reporting gap rather than a capability gap, which is the
 most optimistic reading available of an otherwise uncomfortable set of findings —
-and the reading the completed audit is designed to test.
+and the reading this review's own instrument, PAVE-ML, is built to keep testing as
+the corpus underlying it continues to grow.
 
 # Declaration of competing interest {.unnumbered}
 
@@ -1228,16 +1256,19 @@ could have influenced the work reported in this paper.
 
 # Declaration of generative AI in the writing process {.unnumbered}
 
-PLACEHOLDER — to be completed per the target journal's wording before submission.
-Elsevier requires a statement naming the tool, the purpose of use, and confirmation
-that the authors reviewed and take full responsibility for the content. Disclosed
-use is permitted; undisclosed use is not.
+During the preparation of this work, the authors used Claude (Anthropic) to assist
+with literature identification and screening (algorithmic query construction against
+the eligibility criteria in §2.3, structural — not lexical — candidate screening),
+construction and verification of the review database (every included record's DOI
+independently verified against the publisher record), and drafting of manuscript
+text. After using this tool, the authors reviewed and edited the output as needed
+and take full responsibility for the content of this publication.
 
 # Data availability {.unnumbered}
 
 The screening database, coding rubric, harvesting scripts and the full analysis
 pipeline that produced every figure and table in this paper are available at
-[REPOSITORY URL].
+<https://github.com/sabernaseralavi-60/Does-Hybridisation-Pay-A-Systematic-Review-of-Hybrids-in-Pavement-Engineering>.
 
 # References {.unnumbered}
 

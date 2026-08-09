@@ -2,149 +2,177 @@
 """
 fig_review_flow.py
 ====================
-Figure 5: the review's identification/screening/inclusion process as it
-actually stands on 2026-08-09 -- not a completed PRISMA 2020 flow diagram.
+Figure 5: the review's identification/screening/inclusion process, styled after
+the PRISMA 2020 flow-diagram convention (two identification streams merging into
+one screening/inclusion path, with excluded/pending counts as labelled side
+branches) rather than as a generic box-and-arrow chart. Every count is read
+directly from data/corpus_raw.csv, data/corpus_screened.csv and
+data/seed_bibliography.csv -- recompute and update if the corpus changes.
 
-WHY THIS IS LABELLED "interim status", NOT "PRISMA flow diagram"
--------------------------------------------------------------------
-A real PRISMA 2020 flow diagram reports final identification, screening and
-exclusion counts for a COMPLETED review. This review's screening is not
-complete: 138 structural candidates from the 2026-08-09 Crossref harvest are
-still unreviewed (see analysis/screen_corpus.py's output,
-data/corpus_screened.csv), and the raw pool itself (2,332 records) has only
-had an automated structural PROXY filter applied, not full title/abstract
-screening against the eligibility criteria in Sec2.3. Labelling this a PRISMA
-diagram would overstate how far the identification/screening process has
-actually gotten. What CAN be reported honestly, and is reported here, is the
-real, counted state of the pipeline as it stands right now -- every number
-below is read directly from data/corpus_raw.csv, data/corpus_screened.csv and
-data/seed_bibliography.csv, none is estimated or projected forward.
-
-Numbers (recompute and update if the corpus changes):
-  261 queries -> 25,750 records returned (with duplication across queries)
-  -> 2,332 unique, pavement-gated records (dedup + hard pavement-term gate)
-  -> 25 already in the pre-existing database; 2,307 new
-  -> 191 flagged as structural candidates by the automated proxy filter
-     (screen_corpus.py); 2,116 did not match the proxy (may include missed
-     true positives -- the proxy is a recall aid, not a ground truth)
-  -> 53 hand-reviewed against the structural definition in Sec2.3 and added
-     (batch 4: 44, batch 5: 9); 138 structural candidates remain unreviewed
-  -> corpus as of this run: 147 total records (131 primary + 16 prior
-     reviews), of which 93 primary studies are coded H1-H7, 27 `none`
-     (fail the structural test), 11 `context` (kept for citation only)
-
-Plus the pre-2026-08-09 manual-search phases that built the original 94-record
-seed corpus, shown as a separate parallel input feeding the same final box.
+Deliberately NOT presented as a completed PRISMA 2020 diagram: screening of the
+2026 algorithmic harvest is ongoing (126 structural candidates remain
+unreviewed), and the caption says so. See manuscript.qmd Sec2.2 for why this
+distinction is stated explicitly rather than left implicit.
 """
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+import matplotlib.font_manager as fm
+from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
 
-fig, ax = plt.subplots(figsize=(9, 11))
+plt.rcParams["font.family"] = "sans-serif"
+plt.rcParams["font.sans-serif"] = ["DejaVu Sans", "Arial", "Helvetica"]
+
+# -- palette (validated categorical set; used sparingly -- one accent, one muted) --
+INK = "#0b0b0b"
+INK_SECONDARY = "#52514e"
+INK_MUTED = "#898781"
+BORDER = "#c3c2b7"
+SURFACE = "#ffffff"
+ACCENT_FILL = "#eaf1fb"     # light tint of categorical slot 1 (blue #2a78d6)
+ACCENT_BORDER = "#2a78d6"
+NEUTRAL_FILL = "#f4f3f0"    # light neutral for side/exclusion boxes
+FINAL_FILL = "#e8f5ee"      # light tint of aqua/green slot for the terminal box
+FINAL_BORDER = "#1baf7a"
+
+fig, ax = plt.subplots(figsize=(7.2, 9.6))
 ax.set_xlim(0, 10)
-ax.set_ylim(0, 15)
+ax.set_ylim(0, 15.6)
 ax.axis("off")
 
-BOX = dict(boxstyle="round,pad=0.35,rounding_size=0.12", linewidth=1.2)
-COL_MANUAL = "#e8eef7"
-COL_HARVEST = "#eaf3e8"
-COL_MERGE = "#f7f0e3"
-COL_FINAL = "#f2e6ea"
-EDGE = "#444444"
+MAIN_W = 5.7
+SIDE_W = 3.4
 
 
-def box(x, y, w, h, text, color, fontsize=9.2, weight="normal"):
-    b = FancyBboxPatch((x - w / 2, y - h / 2), w, h, facecolor=color,
-                        edgecolor=EDGE, **BOX)
+def box(cx, cy, w, h, text, fill=SURFACE, border=INK, lw=1.1, fontsize=8.6,
+        weight="normal", color=INK, style="normal"):
+    b = FancyBboxPatch((cx - w / 2, cy - h / 2), w, h,
+                        boxstyle="round,pad=0.10,rounding_size=0.09",
+                        facecolor=fill, edgecolor=border, linewidth=lw, zorder=2)
     ax.add_patch(b)
-    ax.text(x, y, text, ha="center", va="center", fontsize=fontsize,
-             weight=weight, linespacing=1.35)
-    return (x, y, w, h)
+    ax.text(cx, cy, text, ha="center", va="center", fontsize=fontsize,
+             weight=weight, color=color, style=style, linespacing=1.4, zorder=3,
+             wrap=True)
+    return (cx, cy, w, h)
 
 
-def arrow(b1, b2, label=None, label_dx=0.35):
-    x1, y1, w1, h1 = b1
-    x2, y2, w2, h2 = b2
-    start = (x1, y1 - h1 / 2) if y1 > y2 else (x1, y1 + h1 / 2)
-    end = (x2, y2 + h2 / 2) if y1 > y2 else (x2, y2 - h2 / 2)
-    a = FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=14,
-                         color=EDGE, linewidth=1.1, shrinkA=2, shrinkB=2)
-    ax.add_patch(a)
-    if label:
-        midx, midy = (start[0] + end[0]) / 2, (start[1] + end[1]) / 2
-        ax.text(midx + label_dx, midy, label, fontsize=8.2, color="#333333",
-                 ha="left", va="center", style="italic")
+def down_arrow(b, gap=0.62, color=INK_SECONDARY):
+    cx, cy, w, h = b
+    y0, y1 = cy - h / 2, cy - h / 2 - gap
+    ax.add_patch(FancyArrowPatch((cx, y0), (cx, y1), arrowstyle="-|>",
+                                  mutation_scale=11, color=color, linewidth=1.0, zorder=1))
 
 
-# --- Left column: pre-2026 manual search phases (phases 1-13) ---
-b_manual1 = box(2.4, 13.6, 4.2, 1.05,
-                "Manual search, phases 1–13\n"
-                "(pre-2026-08-09)\nOpenAlex / Scopus / WoS / Semantic\n"
-                "Scholar connector, one query at a time",
-                COL_MANUAL)
-b_manual2 = box(2.4, 11.7, 4.2, 0.95,
-                "94 records verified and\nhand-classified\n"
-                "(the pre-existing seed corpus)",
-                COL_MANUAL)
-arrow(b_manual1, b_manual2)
+def side_arrow(b_from, cx_to, cy_to, color=INK_MUTED):
+    cx, cy, w, h = b_from
+    start = (cx + w / 2, cy)
+    end = (cx_to - 0.05, cy_to)
+    ax.add_patch(FancyArrowPatch(start, end, arrowstyle="-|>", mutation_scale=10,
+                                  color=color, linewidth=0.9, linestyle=(0, (3, 2)),
+                                  zorder=1))
 
-# --- Right column: 2026-08-09 algorithmic harvest ---
-b_h1 = box(7.3, 13.6, 4.4, 1.05,
-           "analysis/harvest_crossref.py\n2026-08-09\n"
-           "261 queries (optimiser × learner ×\n"
-           "label vocabulary, Sec2.3)",
-           COL_HARVEST)
-b_h2 = box(7.3, 12.1, 4.4, 0.85,
-           "25,750 records returned\n(with duplication across queries)",
-           COL_HARVEST)
-arrow(b_h1, b_h2)
-b_h3 = box(7.3, 10.7, 4.4, 0.95,
-           "2,332 unique, pavement-gated\nrecords (dedup + hard\npavement-term filter)",
-           COL_HARVEST)
-arrow(b_h2, b_h3)
-b_h4 = box(7.3, 9.15, 4.4, 1.05,
-           "2,307 new (25 already in the\nexisting database)\n→ 191 flagged as structural\ncandidates (automated proxy)",
-           COL_HARVEST)
-arrow(b_h3, b_h4)
-b_h5 = box(7.3, 7.55, 4.4, 0.95,
-           "53 hand-verified against Sec2.3\nand added (batch 4: 44, batch 5: 9)",
-           COL_HARVEST, weight="bold")
-arrow(b_h4, b_h5, label="138 structural candidates\nstill unreviewed →", label_dx=-4.7)
 
-# --- Merge point ---
-b_merge = box(4.85, 5.9, 7.2, 0.85,
-              "Combined database: data/seed_bibliography.csv",
-              COL_MERGE, weight="bold")
-arrow(b_manual2, b_merge, label=None)
-arrow(b_h5, b_merge, label=None)
+def stage_label(y, text):
+    ax.text(0.15, y, text, ha="left", va="center", fontsize=8.3, weight="bold",
+             color=INK_SECONDARY, rotation=90, rotation_mode="anchor")
 
-# --- Final breakdown ---
-b_final = box(4.85, 3.9, 8.0, 1.55,
-              "147 records total\n"
-              "131 primary studies + 16 prior reviews (§1)\n"
-              "Of the primary studies: 93 coded H1–H7 (an actual\n"
-              "structural hybrid), 27 `none` (fail the Sec2.3 test),\n"
-              "11 `context` (kept for citation, outside the taxonomy)",
-              COL_FINAL, weight="bold", fontsize=9.5)
-arrow(b_merge, b_final)
 
-b_target = box(4.85, 1.7, 6.4, 0.95,
-               "Target: 150–500 records for a completed\nsystematic audit — not yet reached;\nscreening continues from the 138 candidates above",
-               "#ffffff", fontsize=8.8)
-arrow(b_final, b_target)
+CX_MANUAL = 2.85
+CX_HARVEST = 6.95
 
-# dashed border around the whole diagram + status label
-fig.text(0.5, 0.985,
-          "Review process status — 2026-08-09 (interim, not a completed PRISMA 2020 flow diagram)",
-          ha="center", fontsize=11.5, weight="bold")
+# ---------------------------------------------------------------- IDENTIFICATION
+y = 14.9
+b_manual0 = box(CX_MANUAL, y, MAIN_W * 0.62, 0.95,
+                "Manual literature search\n(2024–2026, phases 1–13)",
+                fontsize=8.4)
+b_harvest0 = box(CX_HARVEST, y, MAIN_W * 0.62, 0.95,
+                 "Algorithmic harvest\n(analysis/harvest_crossref.py, 261 queries)",
+                 fontsize=8.4)
+
+y -= 1.55
+b_manual1 = box(CX_MANUAL, y, MAIN_W * 0.62, 0.85,
+                "94 records identified\nand verified",
+                fontsize=8.4)
+down_arrow(b_manual0, gap=1.55 - 0.475 - 0.425)
+
+b_harvest1 = box(CX_HARVEST, y, MAIN_W * 0.62, 0.85,
+                 "25,750 records returned\n(with duplication across queries)",
+                 fontsize=8.4)
+down_arrow(b_harvest0, gap=1.55 - 0.475 - 0.425)
+
+y -= 1.35
+b_harvest2 = box(CX_HARVEST, y, MAIN_W * 0.62, 0.85,
+                 "2,332 unique records\n(deduplicated, pavement-term gated)",
+                 fontsize=8.4)
+down_arrow(b_harvest1, gap=1.35 - 0.425 - 0.425)
+
+y -= 1.55
+
+# --------------------------------------------------------------------- SCREENING
+b_screen = box(CX_HARVEST, y, MAIN_W * 0.62, 1.05,
+               "2,307 new records screened\n(25 already in the database)",
+               fontsize=8.4)
+down_arrow(b_harvest2, gap=1.55 - 0.425 - 0.525)
+
+y -= 1.55
+b_flagged = box(CX_HARVEST, y, MAIN_W * 0.62, 0.85,
+                "191 flagged as structural\nhybridisation candidates",
+                fontsize=8.4)
+down_arrow(b_screen, gap=1.55 - 0.525 - 0.425)
+side_excl1 = box(SIDE_W / 2 + 0.25, y + 0.85, SIDE_W, 0.85,
+                  "2,116 records did not match the\nstructural-candidate proxy filter",
+                  fill=NEUTRAL_FILL, border=BORDER, color=INK_SECONDARY, fontsize=7.9)
+side_arrow(b_screen, side_excl1[0] + SIDE_W / 2 - SIDE_W, side_excl1[1])
+
+y -= 1.55
+b_verified = box(CX_HARVEST, y, MAIN_W * 0.62, 1.05,
+                 "65 candidates hand-verified against the\nstructural definition (§2.3) and added",
+                 fill=ACCENT_FILL, border=ACCENT_BORDER, fontsize=8.4, weight="bold")
+down_arrow(b_flagged, gap=1.55 - 0.425 - 0.525)
+side_excl2 = box(SIDE_W / 2 + 0.25, y + 0.05, SIDE_W, 0.85,
+                  "126 flagged candidates remain\nunreviewed (next screening pass)",
+                  fill=NEUTRAL_FILL, border=BORDER, color=INK_SECONDARY, fontsize=7.9)
+side_arrow(b_flagged, side_excl2[0] + SIDE_W / 2 - SIDE_W, side_excl2[1])
+
+# ----------------------------------------------------------------------- MERGE
+y -= 1.7
+merge_y = y
+b_merge = box(4.9, merge_y, 7.0, 0.85, "Combined review database",
+              fill=NEUTRAL_FILL, border=INK, fontsize=8.8, weight="bold")
+down_arrow(b_manual1, gap=(b_manual1[1] - merge_y) - b_manual1[3] / 2 - b_merge[3] / 2)
+down_arrow(b_verified, gap=(b_verified[1] - merge_y) - b_verified[3] / 2 - b_merge[3] / 2)
+
+# ------------------------------------------------------------------------ INCLUDED
+y = merge_y - 1.7
+b_final = box(4.9, y, 7.6, 1.55,
+              "159 records\n143 primary studies + 16 prior reviews (§1)\n"
+              "103 of the primary studies structurally coded H1–H7,\n"
+              "29 coded ‘none’, 11 coded ‘context’",
+              fill=FINAL_FILL, border=FINAL_BORDER, fontsize=8.9, weight="bold")
+down_arrow(b_merge, gap=1.7 - 0.425 - 0.775)
+
+y -= 1.55
+b_target = box(4.9, y, 6.6, 0.85,
+               "Target for the completed audit: 150–500 records\n"
+               "(screening continues from the 126 candidates above)",
+               fill=SURFACE, border=BORDER, color=INK_SECONDARY, fontsize=8.0,
+               style="italic")
+down_arrow(b_final, gap=1.55 - 0.775 - 0.425)
+
+# ---- stage labels (PRISMA convention: vertical labels along the left margin) ----
+stage_label((14.9 + 12.0) / 2, "Identification")
+stage_label((10.65 + 7.55) / 2, "Screening")
+stage_label((5.55 + 1.6) / 2, "Included")
+
+fig.text(0.5, 0.985, "Review process, 2026–08–09", ha="center",
+          fontsize=12.5, weight="bold", color=INK)
 fig.text(0.5, 0.965,
-          "Every count is read directly from data/corpus_raw.csv, data/corpus_screened.csv and data/seed_bibliography.csv — none is projected or estimated.",
-          ha="center", fontsize=8.3, style="italic", color="#333333")
+          "Reported as the process currently stands, not as a completed PRISMA 2020 "
+          "flow diagram — every count traces to the harvest logs and working database.",
+          ha="center", fontsize=8.0, style="italic", color=INK_SECONDARY)
 
-plt.tight_layout(rect=[0, 0, 1, 0.95])
+plt.tight_layout(rect=[0.02, 0.0, 1, 0.955])
 plt.savefig("fig05_review_flow.png", dpi=300, bbox_inches="tight", facecolor="white")
 plt.savefig("fig05_review_flow.pdf", bbox_inches="tight", facecolor="white")
 print("wrote fig05_review_flow.png / .pdf")

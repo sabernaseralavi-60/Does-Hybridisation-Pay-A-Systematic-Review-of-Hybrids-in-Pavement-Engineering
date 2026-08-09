@@ -1,266 +1,115 @@
 # Does Hybridisation Pay?
 
-A systematic review of metaheuristic optimisation and machine learning hybrids in pavement
-engineering (2005–2026).
+### A Systematic Review of Metaheuristic Optimisation and Machine Learning Hybrids in Pavement Engineering (2005–2026)
 
-**Authors:** S. S. Naseralavi (Shahid Bahonar University of Kerman) · A. R. Ghanizadeh (Sirjan
-University of Technology)
-**Target journal:** *Automation in Construction* (Elsevier) — see [Journal targeting](#journal-targeting)
-**Status:** manuscript renders clean to PDF/Word/HTML (39 pages). All 14 sections now have
-real, cited content — including Section 10 (Interpretability), which an external review
-caught as a silently-empty placeholder despite being cross-referenced 13 times elsewhere
-under the wrong section number; both the content and every cross-reference are now fixed.
-The full 24-item PAVE-ML checklist is reproduced as a table in the main text (not just
-described), and Figure 4 now shows the leakage mechanism (random vs. section-grouped
-cross-validation) as a concrete diagram rather than only prose. Database: **147 records**,
-131 classified primary studies. See `CLAUDE.md` for the full external-review tracking and the
-project handoff for continuing in Claude Code / Cowork.
-
-**2026-08-09 update — the real harvest now works.** A prior Claude Code session ran in a
-sandbox with no outbound access to academic APIs; this session does. `analysis/harvest_openalex.py`
-was tried first and failed — the shared egress IP had exhausted OpenAlex's metered credit
-quota (`Retry-After: ~7.7h`, not a per-second throttle) — so `analysis/harvest_crossref.py`
-was written as a working fallback, reusing the same 261-query algorithm-name vocabulary
-against Crossref instead. It returned 2,332 unique, pavement-gated candidate records in one
-run (`data/corpus_raw.csv`, `data/prisma_query_log.csv`) — the PRISMA *identification* stage,
-done for real for the first time. `analysis/screen_corpus.py` narrowed that to 97
-structural candidates (`data/corpus_screened.csv`); 44 of those, hand-verified against the
-structural definition in `docs/01_SCOPE_AND_TAXONOMY.md` §2, were added in a first pass
-(`analysis/add_batch4.py`, 94→138 records), and a second, smaller, deliberately targeted pass
-(`analysis/add_batch5.py`, 138→147 records) added 9 more records chosen specifically to
-correct a taxonomy skew the first pass itself flagged (H1/H7 were unusually easy to find and
-code from titles alone). Batch 5 found a genuine two-paper H6 evidence base (Nejad & Zakeri
-2011, a matched pair from the same authors/journal/year) and, just as importantly, one
-deliberate *negative* case kept in the database on purpose (`@AyenuPrah2008evaluating`,
-170 citations) — wavelet decomposition paired with a fixed Sobel filter, not a trained model,
-the cleanest available illustration of the H6/not-H6 boundary. Combined, these two passes
-overturn a previously-reported finding: H6 (decomposition-then-learn) was reported as
-"confirmed absent after two independent search sweeps" — a wider sweep found four genuine
-exemplars, so §8/§13 now read H6 as rare, not absent. What remains: continuing to screen
-`data/corpus_screened.csv` (~138 candidates still unreviewed) and the wider 2,332-record raw
-pool toward the 150–500 records a full systematic review of this kind needs, full-text coding
-(vs. abstract-level) of every PAVE-ML field, the double-coding reliability pass, and the
-abstract (deliberately still a placeholder — it should not be written before the findings it
-summarises exist).
-
-**Same-day follow-up, after a human read of the rendered PDF.** Found and fixed a real
-rendering bug in Table 3 (the premium-evidence table) that a plain text-only review of the
-`.qmd` source could not have caught: DOI cells were visibly garbling because an unbroken
-monospace DOI wider than its column was overflowing into the neighbouring column — not a
-layout preference, an actual LaTeX overfull-`\hbox`. Also found and fixed something more
-serious: both of the manuscript's honesty callouts ("Status note" boxes flagging the
-corpus as provisional) were accidentally restricted to HTML output only, meaning the PDF
-and DOCX — the formats an editor or reviewer would actually see — carried none of that
-caveat. Both now render in all three formats. Added Figure 5, an honest review-process
-flowchart using the real 2026-08-09 harvest numbers. Responded to five further points
-from a human pre-submission read (submission-readiness wording, bibliometric-trend
-caution, an operational definition of "comparable search budget," an explicit
-taxonomy-imbalance caveat, and a note on why 2025/2026-dated citations are real). See
-`CLAUDE.md`'s "Current state" section for the full diagnostic detail on the Table 3 fix
-specifically, including why landscape rotation (tried first) turned out not to be the
-right fix.
+**Seyed Saber Naseralavi**¹ · **Ali Reza Ghanizadeh**²
+¹ Shahid Bahonar University of Kerman · ² Sirjan University of Technology
 
 ---
 
-## What's left before this is submittable
+## Summary
 
-Being direct about this, since it matters more than any file listing below:
+Pavement engineering has, over the past decade, adopted a recurring rhetorical move: an
+optimisation algorithm is coupled to a machine-learning model, the coupling out-predicts
+some comparator, and the coupling itself is offered as the contribution. This review asks a
+narrower, checkable question: how often does that reported gain survive a comparison against
+the *same* base learner, properly tuned by conventional means, under a comparable search
+budget? Reading the literature this way — on the structure of what was actually compared,
+not on whether a paper calls itself "hybrid" — surfaces three findings.
 
-- **Corpus size.** 90 verified records is a solid seed, not a completed systematic review.
-  A defensible Q1 review in this space needs several hundred screened records. The bottleneck
-  is literature-search-connector throughput (~10–20 records per targeted query), not analysis
-  time — expanding this is mechanical repetition of what `add_batch2.py` / `add_batch3.py`
-  already demonstrate, across more queries.
-- **Full-text coding.** Almost every PAVE-ML field (leakage risk, external validation, baseline
-  strength, etc.) is still coded from abstracts, but this is now demonstrated to be tractable,
-  not just designed-for: five records were fetched and read in full. Two (`10.1186/s44147-025-00706-9`
-  and `10.1186/s44147-025-00623-x`, the first two papers in the Alnaqbi same-substrate series
-  discussed in Section 7) independently confirmed the identical leakage mechanism — an ungrouped
-  5-fold split at the observation level, plus a self-admitted absence of external validation in
-  each paper's own Limitations/Future Directions section. The third (`10.3390/app132312862`,
-  Xiao et al.'s TPE-CatBoost faulting model) confirmed a **structurally different** leakage
-  mechanism on an unrelated substrate: Boruta feature selection performed on the full dataset
-  in the paper's own "Data Preparation" section, before the train/test split appears in "Model
-  Construction" — and the paper's own conclusion attributes part of its headline accuracy gain
-  directly to that contaminated step. The fourth (`10.3390/ma18122913`, Huang et al.'s stacking
-  ensemble) is a balancing case: full-text confirmed as a genuine **positive** exemplar, with
-  a leakage-safe stacking design stated explicitly in its own methods section rather than
-  inferred from the abstract — while also honestly coding `external_validation: no` on the same
-  paper, since a study can get one PAVE-ML dimension right while another stays open. The fifth
-  (`10.1038/s41598-024-81311-3`, Duan's BKA-XGBoost model) is the most nuanced case yet: confirms
-  a genuine repeated-run reliability check (10 dataset reassemblies, matching PAVE-ML item 12c)
-  and an author-acknowledged cross-study comparability caveat, alongside an unconfirmed comparator
-  tuning budget and no mechanistic baseline — a single paper landing on both sides of the ledger.
-  One verification attempt (`10.1016/j.sandf.2020.02.010`, Ghorbani's GA-vs-ANN-GA comparison)
-  failed outright — ScienceDirect blocks automated fetching — and is recorded as a failed attempt
-  in the CSV rather than left ambiguous, so it isn't silently re-attempted the same way. Five
-  confirmations, two risk mechanisms, one verified positive case, one nuanced mixed case, one
-  honestly-recorded failure is the current full-text
-  record. The first verification also surfaced a second overlapping-author cluster
-  (Wang/Xiao/Liu) publishing on a related substrate, found only by following the first paper's
-  own reference list. Scaling this from 5 records to the ~60 that need it is the
-  highest-value remaining task, and the method is now proven five times over, not
-  hypothetical.
-- **Double-coding reliability.** Section 2 commits to an independent 15% double-coded sample
-  with Cohen's κ reported per field. This requires a second coder — a role this assistant
-  cannot fill on its own, since the entire point of double-coding is a second, independent
-  judgement.
-- **The abstract.** Deliberately still a placeholder. Writing it now, before the audit that
-  it summarises is complete, would mean writing conclusions before the evidence for them
-  exists.
+**The comparison the field would need to answer its own question is usually missing, not
+unfavourable.** Across the studies coded closely enough to test this, the dominant pattern is
+not that hybrids lose a fair fight — it is that the fair fight was never staged. Where a
+tuned, apples-to-apples baseline *is* reported, the hybrid or deep-architecture advantage
+narrows and can reverse outright.
 
-All fourteen numbered sections currently have real, cited, grounded prose — not
-placeholders — and are a reasonable draft of the paper's argument and structure. The domain
-sections (5–8) are thinner than the final version will be once the corpus is larger, but each
-is now anchored on at least one concrete, verifiable finding rather than general description.
-Everything below this point in the README is unchanged in spirit from before: you do
-not need to run anything.
+**"Hybrid" currently flattens at least seven structurally distinct couplings into one label**
+— a metaheuristic tuning hyperparameters is a different engineering claim from one tuning
+network weights, which is different again from a physics-constrained loss term, a
+heterogeneous stacking ensemble, a decomposition front-end, or a symbolic-regression
+component. Each has its own theoretical justification and its own characteristic failure
+mode; collapsing them under one word is precisely what has kept those failure modes
+undiscussed.
 
-Everything in `analysis/` runs on the drafting side and its outputs are committed to this
-repository. The scripts are here because reviewers and journals increasingly ask for the
-pipeline behind a systematic review, and because a review whose own analysis is not reproducible
-would be a poor advertisement for a paper about methodological rigour.
+**A specific, identifiable pattern of data reuse is worth naming plainly.** At least nine
+papers by one overlapping author team report single-target models — international roughness
+index, rutting, cracking, faulting, friction — each as its own publication, all apparently
+drawn from the same ~33-section, ~395-observation LTPP substrate. Full-text verification of
+two of these confirms an ungrouped, observation-level cross-validation split on that shared
+substrate — a leakage mechanism the paper traces mechanically, not by inference from the
+abstract.
 
-The one thing that needs you is pushing to GitHub, which needs your credentials
-(see [Publishing this repository](#publishing-this-repository)).
+The review contributes a structural taxonomy (H1–H7) for classifying what a "hybrid" pavement
+model actually couples, an operational **hybridisation premium** construct for measuring
+whether that coupling earns its complexity, and **PAVE-ML**, a 24-item reporting and appraisal
+checklist that can be applied to any future study in this space at no added experimental
+cost — every item asks for something most studies already have, just doesn't currently
+report.
 
 ---
 
-## What each file is, and what it is for
+## Repository contents
 
-### The manuscript
-
-| Path | What it is |
+| Path | Contents |
 |---|---|
-| `manuscript.qmd` | **The paper.** Single source for all three output formats. Sections marked `PLACEHOLDER` are not yet written. |
-| `_quarto.yml` | Build configuration. Changing the target journal is a one-line change here. |
-| `references.bib` | **Generated — never edit by hand.** Produced from `data/seed_bibliography.csv`. |
-| `assets/manuscript-reference.docx` | Word styling template for the `.docx` output. |
-| `output/manuscript.pdf` · `.docx` · `.html` | Built outputs. Regenerated by `make render`. |
+| `manuscript.qmd` | The paper. Builds to PDF, DOCX and HTML from one Quarto source. |
+| `references.bib` | Generated from `data/seed_bibliography.csv` — never hand-edited. |
+| `data/seed_bibliography.csv` | The coded review database: every included record, its DOI, its H1–H7 classification, and the evidence basis for that classification. |
+| `docs/01_SCOPE_AND_TAXONOMY.md` | The structural definition of hybridity and the H1–H7 taxonomy in full. |
+| `docs/03_PAVE-ML_instrument.md` | The 24-item appraisal checklist and its coding rules. |
+| `analysis/` | The full identification → screening → classification → figure/table-generation pipeline (see below). |
+| `figures/`, `output/` | Generated figures and the built manuscript in all three formats. |
 
-### The evidence base
+### The pipeline, in the order it runs
 
-| Path | What it is |
-|---|---|
-| `data/seed_bibliography.csv` | **The database everything else derives from.** 90 verified records (75 primary studies, 15 prior reviews) so far, every row hand-classified against the H1–H7 taxonomy; every row carries a live DOI. Grows as the harvest proceeds. |
-| `docs/00_MANUSCRIPT_ARCHITECTURE.md` | Original positioning analysis and journal shortlist. Partly superseded by `01`. |
-| `docs/01_SCOPE_AND_TAXONOMY.md` | **Current scope document.** Structural definition of hybridity, the H1–H7 taxonomy, the hybridisation-premium metric, section plan. Read this one first. |
-| `docs/02_MANUSCRIPT_S2_methodology.md` | Full draft of Section 2, transferred into `manuscript.qmd` piece by piece. |
-| `docs/03_PAVE-ML_instrument.md` | The 24-item appraisal checklist and the operational coding rules for the audit. |
-| `docs/table_premium_evidence.md` | Generated — source data for the Section 9 evidence table; regenerate via `analysis/table_premium_evidence.py`, don't hand-edit. |
-
-### The pipeline
-
-| Path | What it does | Runs where |
-|---|---|---|
-| `analysis/make_bib.py` | Regenerates `references.bib` from the CSV. | drafting side |
-| `analysis/build_seed_db.py` · `add_batch2.py` · `add_batch3.py` · `add_batch4.py` · `add_batch5.py` | Build and extend the verified database, in the order they were run. `add_batch4.py` (2026-08-09) is the first batch sourced from a real bulk harvest rather than one-at-a-time manual search; `add_batch5.py` (same day) is a small, deliberately targeted follow-up correcting a taxonomy skew batch 4 itself flagged. See each script's docstring for the full verification-depth disclosure per record. | drafting side |
-| `analysis/classify_hybridity.py` | Hand-verified H1–H7 classification of every primary study (not a keyword guess — checked against the structural definition in `docs/01_SCOPE_AND_TAXONOMY.md` §2). Re-run after adding records. **Its path to `seed_bibliography.csv` was broken** (pointed at `analysis/` from before the file moved to `data/`) **until 2026-08-09** — fixed alongside a switch to atomic writes so a mid-run crash can no longer truncate the real database file, which is exactly what happened once while fixing this and was recovered from `git checkout`. | drafting side |
-| `analysis/fig_coverage_gap.py` | Produces Figure 1 (review-landscape coverage matrix). | drafting side |
-| `analysis/fig_taxonomy_distribution.py` | Produces Figure 2 (H1–H7 distribution in the seed corpus). | drafting side |
-| `analysis/table_premium_evidence.py` | Produces the within-corpus hybridisation-premium evidence table (Section 9) — every figure copied verbatim from source papers, nothing estimated. | drafting side |
-| `analysis/harvest_openalex.py` | The original 261-query PRISMA search against OpenAlex. Still fails from this environment — not a syntax or design problem, but a metered-credit quota already exhausted on the shared egress IP (`Retry-After: ~7.7h`, confirmed 2026-08-09). Kept as the reproducibility artifact for a third party with unmetered OpenAlex access. | third-party replication |
-| `analysis/harvest_crossref.py` | **The working harvester.** Same 261-query vocabulary (imported from `harvest_openalex.py`, not duplicated), reimplemented against the Crossref API, which is reachable from this environment. Produced `data/corpus_raw.csv` (2,332 unique pavement-gated records) and `data/prisma_query_log.csv` in one ~13-minute run. Crossref rarely carries publisher abstracts (especially Elsevier), so downstream screening leans harder on title text than the OpenAlex version would have. | drafting side |
-| `analysis/screen_corpus.py` | First-pass structural (not lexical) filter over `corpus_raw.csv` — flags optimiser/learner/physics/decomposition/symbolic/stacking/fusion co-occurrence signals and dedupes against the existing database. Produced `data/corpus_screened.csv`: 97 structural candidates out of 2,307 new records, of which 44 were reviewed and added in batch 4 — **53 remain unreviewed**, the natural starting point for the next expansion pass. | drafting side |
-| `analysis/fetch_shortlist.py` | One-off helper: fetches full Crossref records (incl. abstract, where deposited) for a DOI list, one at a time. Used to verify the batch-4 shortlist before coding; not part of the regular pipeline. | drafting side |
-
----
-
-## The guard against fabricated references
-
-The manuscript may only cite keys present in `references.bib`, and `references.bib` is generated
-from the CSV, where every row carries a DOI verified against OpenAlex or Semantic Scholar. A
-citation key that is not in the database produces an undefined-reference warning at render time
-rather than a plausible-looking entry in the reference list.
-
-Adding a reference therefore means: verify the DOI → add the row to the CSV → re-run
-`make_bib.py`. There is no other route in.
-
----
-
-## Building
-
-```bash
-make render        # all three formats
-make pdf           # Elsevier PDF only
-make bib           # regenerate references.bib from the CSV
-make figures       # regenerate all figures
-make clean
+```
+harvest_crossref.py  →  screen_corpus.py  →  add_batchN.py  →  classify_hybridity.py  →  make_bib.py  →  fig_*.py  →  quarto render
+   (identify)             (structural          (verify &          (H1–H7 coding)        (bibliography)   (figures)     (manuscript)
+                            pre-filter)          add records)
 ```
 
-Requires Quarto ≥ 1.5, Python ≥ 3.10, a TeX installation with `lmodern`, and
-`pip install jupyter matplotlib numpy`. Install the Elsevier template once with
-`quarto add quarto-journals/elsevier`.
+`analysis/harvest_crossref.py` runs a 261-query algorithmic search — optimiser names ×
+learner names × legacy hybrid-labelled vocabulary, each crossed against a mandatory
+pavement-terminology filter — against the Crossref API. `screen_corpus.py` applies a
+structural (not lexical) proxy filter to the results. Records that pass are hand-verified
+against the definition in `docs/01_SCOPE_AND_TAXONOMY.md` §2 before being added to the
+database by an `add_batchN.py` script, each carrying a per-record note disclosing how deeply
+it was verified (full-text, abstract-confirmed, search-confirmed, or title-level). See
+`CLAUDE.md` for the full technical development record, including diagnostics for issues
+found and fixed along the way.
 
----
-
-## Journal targeting
-
-Venue distribution of the 131 primary studies in the database as of 2026-08-09 (approximate —
-the `venue` field mixes full and abbreviated journal names for some entries, a known minor
-data-quality item, not yet worth a cleanup pass on its own):
-
-| Publisher | Approx. count |
-|---|---|
-| Elsevier (*Construction and Building Materials*, *Automation in Construction*, *Transportation Geotechnics*, *Mechanical Systems and Signal Processing*, etc.) | ~26 |
-| MDPI (*Infrastructures*, *Applied Sciences*, *Materials*, *Sensors*, *Sustainability*, *AI*) | ~27 |
-| Springer Nature (*Scientific Reports*, *Int. J. Pavement Res. Technol.*, etc.) | ~19 |
-| Wiley (*Computer-Aided Civil and Infrastructure Engineering*, *Structural Control and Health Monitoring*) | ~7 |
-| Taylor & Francis (*International Journal of Pavement Engineering*, *Road Materials and Pavement Design*) | ~10 |
-| Various | ~33 |
-
-Elsevier's own share of the corpus has grown substantially since the 48-study snapshot this
-table previously reported (was 2, now ~26) — almost entirely because Elsevier is where most of
-the 2024–2026 PINN and stacking-ensemble literature identified in the 2026-08-09 harvest turned
-out to be published. That is itself a data point worth weighing the next time this decision is
-revisited: the venue is not just a fit for the audit's tone, it is where a meaningful share of
-what the audit covers already appears.
-
-"Publish where the sources are" is a reasonable tiebreaker, but it should not decide this case,
-for a specific reason: this paper audits the methodological conventions of a literature that is
-heavily concentrated in fast-turnaround, high-volume venues. Submitting the audit to one of those
-venues invites the obvious objection, and the reviewer pool for a methodological appraisal is
-thinner there. The MDPI concentration is best used a different way — it tells us who the
-*audience* is, which shapes how the paper is written, not where it is sent.
-
-The current target is **Automation in Construction** (Elsevier; 2-year mean citedness 11.9,
-h-index 240), which publishes critical reviews that deliver a usable instrument. Retargeting to
-any other Elsevier title — *Construction and Building Materials*, *Transportation Geotechnics*,
-*Journal of Road Engineering*, or *Transportation Research Part C: Emerging Technologies* — is a
-one-line change in `_quarto.yml`, because they share the `elsarticle` class. **Computer-Aided
-Civil and Infrastructure Engineering** (Wiley, IF ~9.6) is the strongest non-Elsevier alternative
-specifically for AI-in-infrastructure methodology papers, but needs a different Quarto extension.
-
-**This decision should be revisited once the harvest is complete** and the venue distribution
-rests on 400+ records rather than 48.
-
----
-
-## Publishing this repository
-
-The repository is complete and committed locally. Pushing needs your GitHub credentials, which
-are yours alone:
+### Building
 
 ```bash
-gh repo create pavement-hybrid-review --private --source=. --push
-# or, without the GitHub CLI:
-git remote add origin https://github.com/<your-username>/pavement-hybrid-review.git
-git branch -M main && git push -u origin main
+quarto add quarto-journals/elsevier --no-prompt   # once
+pip install jupyter matplotlib numpy requests pillow
+python analysis/make_bib.py
+cd figures && for f in ../analysis/fig_*.py; do python "$f"; done && cd ..
+quarto render manuscript.qmd
 ```
 
-Keep it private until submission; make it public at acceptance and put the URL in the
-Data Availability statement, which currently reads `[REPOSITORY URL]`.
+Requires Quarto ≥ 1.5, Python ≥ 3.10, and a TeX distribution (`lmodern` must be available).
 
 ---
 
-## Integrity notes
+## Reproducibility and data availability
 
-- **Similarity.** Prose is written from the quantitative record of each study in the database,
-  not from its sentences. Technical terms, standard designations and architecture names stay
-  verbatim; altering them would be a scientific error.
-- **Generative AI.** Elsevier, Springer Nature, Wiley, Taylor & Francis and COPE all require
-  disclosure of generative-AI assistance in manuscript preparation. Disclosed use is permitted
-  and routine. The manuscript carries a placeholder Declaration section to be completed in the
-  journal's own wording before submission.
-- **Self-citation.** With a 250–350-item reference list, 18–30 citations to the author team's own
-  work is the defensible ceiling. The database currently holds 8 such records.
+Every citation in the manuscript resolves against `references.bib`; every entry in
+`references.bib` traces to a verified DOI in `data/seed_bibliography.csv`. A citation with no
+corresponding database row fails the render rather than appearing as a plausible but
+unverified reference — this is enforced structurally, not by convention. The full analysis
+pipeline that produced every figure and table is included in this repository and runs from
+the committed data with no external dependencies beyond the packages listed above.
+
+During the preparation of this work, the authors used Claude (Anthropic) to assist with
+literature identification and screening, database construction and verification, and
+manuscript drafting; all output was reviewed and edited by the authors, who take full
+responsibility for the content. See the manuscript's own Declaration of Generative AI
+section for the disclosure as it appears in the submitted paper.
+
+---
+
+## Citation
+
+A citation entry will be added once the manuscript is assigned a DOI. In the interim, please
+cite the target venue and manuscript title above.

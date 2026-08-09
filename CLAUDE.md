@@ -117,10 +117,62 @@ them silently would be a serious failure, not a minor one.
    source: "Wei, X." was actually "Xiao, W."). When a name looks uncertain, check the
    publisher page directly rather than trusting a citation aggregator's parsing.
 
-## Current state (as of 2026-08-09 — the real-harvest session)
+## Current state (as of 2026-08-10 — the submission-readiness session)
 
-**Read this before re-reading "What actually changed" below — it's now history, not a live
-question.** This session confirmed real internet access, but not to OpenAlex: the shared
+**Most recent update first.** After the real-harvest session below, the human author
+(S. S. Naseralavi) asked for a full submission-readiness pass ahead of sending the repo to
+Dr. Ghanizadeh for review: technical and writing polish, a professional-looking flowchart,
+a GitHub repo that leads with findings rather than process narration, an evaluation of
+whether the reference count was sufficient, prose revised toward a more human academic
+register, and — the load-bearing instruction — **no placeholder left for later**, since the
+next reader is a co-author reviewing what should already be the best available version, not
+a draft with visible seams. This was done, not partially:
+
+- **Batch 6** (`analysis/add_batch6.py`) added 12 more verified records, 147→159 (143
+  primary, 16 reviews); one of them, `Alnaqbi2026approach`, extends the documented CRCP
+  same-substrate series to at least nine papers — §7 updated accordingly.
+- **Figure 5 was completely redesigned** as a PRISMA-inspired flow diagram (two
+  identification streams merging into screening/inclusion, labelled side-branches for
+  excluded/pending counts, a restrained validated-palette accent) — the original box-and-
+  arrow version was functional but visibly unpolished, per direct feedback. Script:
+  `analysis/fig_review_flow.py`.
+- **README.md was rewritten from scratch.** The prior version led with build-process
+  narration, an AI-disclosure debate and a journal-targeting argument — exactly what was
+  flagged as unprofessional for a repo a reviewer or co-author will actually look at. It now
+  leads with the paper's real findings (the premium construct, the taxonomy, the Alnaqbi
+  leakage finding, PAVE-ML) in the register of an actual project README, with process detail
+  kept here in CLAUDE.md instead.
+- **A systemic issue was found and fixed across the whole manuscript**: roughly fifteen
+  sentences and one full subsection heading used future-tense "the completed audit/review/
+  manuscript will report..." framing — language that reads, correctly, as an unfinished
+  draft rather than a submission-ready paper with an honestly stated scope. Every instance
+  was rewritten either to state plainly what the current corpus already shows, or to move
+  the open question into §13 (Research Agenda) as a properly framed future-work item rather
+  than a promise about this document's own future state. **If you add new prose, do not
+  reintroduce this pattern** — grep for `will report|completed audit|completed review|
+  completed manuscript|completed corpus|completed harvest` before considering a section
+  finished.
+- **The abstract is written** (not a placeholder any more) — ~290 words, grounded strictly
+  in findings already established elsewhere in the document (159/143/103 corpus counts, the
+  missing-baseline pattern, the Alnaqbi leakage finding, PAVE-ML). The "Declaration of
+  generative AI," "Data availability" (now the real GitHub URL) and the stale "Draft status"
+  callout at the top of the file are also filled in / removed. Grep for `PLACEHOLDER` to
+  confirm none remain if you're auditing this.
+- **The two "Status note" HTML-only callout boxes were converted into normal integrated
+  prose** (see the entry below for why they existed and why HTML-only was a real bug) —
+  they now read as ordinary scholarly hedging within the paragraph, not as a jarring
+  dev-note box, while keeping the same honest content.
+- **Prose was polished for em-dash overuse** (144→~110 instances across a 10.5k-word body,
+  concentrated fixes in the Introduction, the positioning-vs-prior-reviews paragraph, and
+  the Alnaqbi leakage finding — the sections most likely to get close reading). This is a
+  real but secondary issue; further reduction is a reasonable next task if there's time, not
+  a blocker.
+- Manuscript renders clean at 41 pages, zero warnings, all three formats, after every edit
+  above.
+
+**Read the rest of this "Current state" section below for the real-harvest session's own
+detail — it's still accurate, just superseded on record counts (147→159) and a few other
+numbers that are called out where they occur.** This session confirmed real internet access, but not to OpenAlex: the shared
 egress IP had already exhausted OpenAlex's metered credit quota (`Retry-After: ~7.7h` —
 a multi-hour wall, not a backoff-able rate limit). `analysis/harvest_crossref.py` was written
 as a working fallback, reusing `harvest_openalex.py`'s exact 261-query vocabulary against
@@ -136,7 +188,7 @@ work is already done and sitting on disk. When selecting the next batch, keep we
 toward H2/H4/H5/H6 the way batch 5 did — a third batch that just grabs the next easiest
 PINN/GEP titles will re-introduce the same skew.
 
-- **147 records** in `data/seed_bibliography.csv`: 131 primary studies (all hand-classified
+- **159 records** in `data/seed_bibliography.csv` (was 147 as of the real-harvest session, +12 from batch 6): 143 primary studies (all hand-classified
   against the H1–H7 taxonomy), 16 prior reviews used for positioning (§1).
 - **H1–H7 distribution among classified primaries:** H1=28 (+1 joint H1;H4, +3 joint H1;H5),
   H2=11 (+1 joint H2;H4), H3=11 (+1 joint H3;H4, +1 joint H3;H6), H4=9, H5=6, **H6=4** (no
@@ -191,7 +243,7 @@ PINN/GEP titles will re-introduce the same skew.
   still honest at 147 records, though less true than it was at 90.
 - **The abstract is deliberately still a placeholder.** Do not write it until the
   findings it would summarize are actually final — this is intentional, not an oversight.
-- **Builds clean**: `quarto render manuscript.qmd` → 39-page PDF, DOCX, HTML, zero
+- **Builds clean**: `quarto render manuscript.qmd` → 41-page PDF, DOCX, HTML, zero
   citation warnings, zero LaTeX errors, as of the last commit. Two more stray `\textendash`
   LaTeX macros were found and fixed this session (rule 5 below) — this bug class keeps
   recurring; grep for it before every render, not just when told to.
