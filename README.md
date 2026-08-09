@@ -6,11 +6,42 @@ engineering (2005–2026).
 **Authors:** S. S. Naseralavi (Shahid Bahonar University of Kerman) · A. R. Ghanizadeh (Sirjan
 University of Technology)
 **Target journal:** *Automation in Construction* (Elsevier) — see [Journal targeting](#journal-targeting)
-**Status:** manuscript scaffold complete and rendering; corpus harvest in progress; Sections 1, 3–14 unwritten
+**Status:** manuscript renders clean to PDF/Word/HTML (23 pages). Sections 1–4 and 9–14 have
+real, cited content grounded in a 74-record verified database. Sections 5–8 (domain deep dives)
+also now have grounded content. What remains: expanding the corpus from 74 to the 300–500
+records a full systematic review of this kind needs, full-text coding (vs. abstract-level) of
+every PAVE-ML field, the double-coding reliability pass, and the abstract (deliberately still a
+placeholder — it should not be written before the findings it summarises exist).
 
 ---
 
-## You do not need to run anything
+## What's left before this is submittable
+
+Being direct about this, since it matters more than any file listing below:
+
+- **Corpus size.** 74 verified records is a solid seed, not a completed systematic review.
+  A defensible Q1 review in this space needs several hundred screened records. The bottleneck
+  is literature-search-connector throughput (~10–20 records per targeted query), not analysis
+  time — expanding this is mechanical repetition of what `add_batch2.py` / `add_batch3.py`
+  already demonstrate, across more queries.
+- **Full-text coding.** Every PAVE-ML field (leakage risk, external validation, baseline
+  strength, etc.) is currently coded from abstracts. The rubric is designed for full-text
+  coding; several records in the database are explicitly flagged in their `note` field as
+  needing full-text verification (e.g. whether a cross-validation fold respects section-level
+  grouping in the LTPP-derived studies discussed in Section 7).
+- **Double-coding reliability.** Section 2 commits to an independent 15% double-coded sample
+  with Cohen's κ reported per field. This requires a second coder — a role this assistant
+  cannot fill on its own, since the entire point of double-coding is a second, independent
+  judgement.
+- **The abstract.** Deliberately still a placeholder. Writing it now, before the audit that
+  it summarises is complete, would mean writing conclusions before the evidence for them
+  exists.
+
+Sections 1–4 and 9–14 currently have real, cited, grounded prose — not placeholders — and are
+a reasonable draft of the paper's argument and structure. Sections 5–8 (domain deep dives) also
+now have grounded content, though thinner than the final version will be once the corpus is
+larger. Everything below this point in the README is unchanged in spirit from before: you do
+not need to run anything.
 
 Everything in `analysis/` runs on the drafting side and its outputs are committed to this
 repository. The scripts are here because reviewers and journals increasingly ask for the
@@ -38,20 +69,24 @@ The one thing that needs you is pushing to GitHub, which needs your credentials
 
 | Path | What it is |
 |---|---|
-| `data/seed_bibliography.csv` | **The database everything else derives from.** 61 verified records so far; every row carries a live DOI. Grows as the harvest proceeds. |
+| `data/seed_bibliography.csv` | **The database everything else derives from.** 74 verified records (59 primary studies, 15 prior reviews) so far, every row hand-classified against the H1–H7 taxonomy; every row carries a live DOI. Grows as the harvest proceeds. |
 | `docs/00_MANUSCRIPT_ARCHITECTURE.md` | Original positioning analysis and journal shortlist. Partly superseded by `01`. |
 | `docs/01_SCOPE_AND_TAXONOMY.md` | **Current scope document.** Structural definition of hybridity, the H1–H7 taxonomy, the hybridisation-premium metric, section plan. Read this one first. |
 | `docs/02_MANUSCRIPT_S2_methodology.md` | Full draft of Section 2, transferred into `manuscript.qmd` piece by piece. |
 | `docs/03_PAVE-ML_instrument.md` | The 24-item appraisal checklist and the operational coding rules for the audit. |
+| `docs/table_premium_evidence.md` | Generated — source data for the Section 9 evidence table; regenerate via `analysis/table_premium_evidence.py`, don't hand-edit. |
 
 ### The pipeline
 
 | Path | What it does | Runs where |
 |---|---|---|
 | `analysis/make_bib.py` | Regenerates `references.bib` from the CSV. | drafting side |
-| `analysis/build_seed_db.py` · `add_batch2.py` | Build and extend the verified database. | drafting side |
-| `analysis/fig_coverage_gap.py` | Produces Figure 1. | drafting side |
-| `analysis/harvest_openalex.py` | **Reproducibility artifact for supplementary material.** The full 261-query PRISMA search, documented so a third party can re-execute the identification stage. It is not part of the drafting workflow. | third-party replication |
+| `analysis/build_seed_db.py` · `add_batch2.py` · `add_batch3.py` | Build and extend the verified database, in the order they were run. | drafting side |
+| `analysis/classify_hybridity.py` | Hand-verified H1–H7 classification of every primary study (not a keyword guess — checked against the structural definition in `docs/01_SCOPE_AND_TAXONOMY.md` §2). Re-run after adding records. | drafting side |
+| `analysis/fig_coverage_gap.py` | Produces Figure 1 (review-landscape coverage matrix). | drafting side |
+| `analysis/fig_taxonomy_distribution.py` | Produces Figure 2 (H1–H7 distribution in the seed corpus). | drafting side |
+| `analysis/table_premium_evidence.py` | Produces the within-corpus hybridisation-premium evidence table (Section 9) — every figure copied verbatim from source papers, nothing estimated. | drafting side |
+| `analysis/harvest_openalex.py` | **Reproducibility artifact for supplementary material.** The full 261-query PRISMA search, documented so a third party can re-execute the identification stage. It is not part of the drafting workflow — this environment's network cannot reach api.openalex.org directly (`403 host_not_allowed`); the actual corpus is being built via a literature-search connector instead. | third-party replication |
 
 ---
 
