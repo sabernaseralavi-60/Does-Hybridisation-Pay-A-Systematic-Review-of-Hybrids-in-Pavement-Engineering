@@ -7,7 +7,7 @@ engineering (2005–2026).
 University of Technology)
 **Target journal:** *Automation in Construction* (Elsevier) — see [Journal targeting](#journal-targeting)
 **Status:** manuscript renders clean to PDF/Word/HTML (26 pages). Sections 1–14 all have
-real, cited content grounded in an 84-record verified database (69 classified primary
+real, cited content grounded in a 90-record verified database (75 classified primary
 studies). A significant finding emerged this round: at least 8 papers by one overlapping
 author team share a single ~33-section LTPP substrate, each pairing a different
 metaheuristic/learner combination with a different target variable — and one of them has
@@ -24,7 +24,7 @@ placeholder — it should not be written before the findings it summarises exist
 
 Being direct about this, since it matters more than any file listing below:
 
-- **Corpus size.** 84 verified records is a solid seed, not a completed systematic review.
+- **Corpus size.** 90 verified records is a solid seed, not a completed systematic review.
   A defensible Q1 review in this space needs several hundred screened records. The bottleneck
   is literature-search-connector throughput (~10–20 records per targeted query), not analysis
   time — expanding this is mechanical repetition of what `add_batch2.py` / `add_batch3.py`
@@ -92,7 +92,7 @@ The one thing that needs you is pushing to GitHub, which needs your credentials
 
 | Path | What it is |
 |---|---|
-| `data/seed_bibliography.csv` | **The database everything else derives from.** 84 verified records (69 primary studies, 15 prior reviews) so far, every row hand-classified against the H1–H7 taxonomy; every row carries a live DOI. Grows as the harvest proceeds. |
+| `data/seed_bibliography.csv` | **The database everything else derives from.** 90 verified records (75 primary studies, 15 prior reviews) so far, every row hand-classified against the H1–H7 taxonomy; every row carries a live DOI. Grows as the harvest proceeds. |
 | `docs/00_MANUSCRIPT_ARCHITECTURE.md` | Original positioning analysis and journal shortlist. Partly superseded by `01`. |
 | `docs/01_SCOPE_AND_TAXONOMY.md` | **Current scope document.** Structural definition of hybridity, the H1–H7 taxonomy, the hybridisation-premium metric, section plan. Read this one first. |
 | `docs/02_MANUSCRIPT_S2_methodology.md` | Full draft of Section 2, transferred into `manuscript.qmd` piece by piece. |
