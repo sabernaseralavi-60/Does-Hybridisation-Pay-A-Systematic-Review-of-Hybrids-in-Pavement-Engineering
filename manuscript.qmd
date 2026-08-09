@@ -388,6 +388,28 @@ is held fair across all competitors, and it is the paper this review returns to
 repeatedly (§1, §9) as the standard the rest of the sub-domain should be read
 against.
 
+Duan [@Duan2024resilient] supplies a genuinely mixed case worth reading in full
+rather than reducing to a single verdict, because full-text verification surfaces
+both a real strength and a real gap in the same paper. On the positive side, the
+metaheuristic-tuned BKA-XGBoost model (H1) reports its own search budget
+explicitly (population 10, 20 iterations) and, unusually for this corpus, checks
+its own reliability by reassembling the dataset ten times and reporting
+performance across all ten combinations rather than a single best run — exactly
+the repeated-run practice PAVE-ML item 12c asks for. The paper also states
+outright, discussing four comparator models drawn from the literature, that
+"direct performance comparisons are unconvincing" because those models were
+fitted on different datasets — an author-acknowledged version of the
+cross-study comparability problem this review is built around, and one of the
+only such acknowledgements found in the corpus so far. On the other side of the
+same paper: the nine within-paper comparator models are given listed parameter
+settings but no stated search budget, so whether they received tuning effort
+comparable to BKA-XGBoost's own cannot be confirmed from the text — and no
+mechanistic resistance-modulus model is included as a comparator, so
+baseline_strength codes moderate rather than strong despite the nine-model
+comparison looking exhaustive at a glance. The lesson is the same one §11 draws
+more generally: a paper can do real, citable work toward some PAVE-ML items while
+leaving others exactly as unaddressed as the rest of the field.
+
 On the symbolic side, Ghanizadeh et al. [@Ghanizadeh2024formulation] fit a
 TLBO-optimised evolutionary polynomial regression and multi-gene genetic
 programming model (H7) for asphalt air-void evolution, producing a closed-form,
