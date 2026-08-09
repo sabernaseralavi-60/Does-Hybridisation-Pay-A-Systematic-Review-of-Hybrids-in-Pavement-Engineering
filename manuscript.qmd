@@ -579,29 +579,29 @@ considerably stronger prior than one.
 
 Two further pieces of evidence extend the pattern beyond one author team, and one
 of them is now full-text confirmed rather than ambiguous. Xiao et al.'s
-TPE-CatBoost faulting model [@Xiao2023optimizing], read in full, resolves its
-own ambiguity definitively: the paper's Boruta feature-selection step is
-performed in Section 3 ("Data Preparation"), applied to the full 160-observation
-pool, and only in Section 4 ("Model Construction") does an 80/20 train-test split
-appear — meaning Boruta selected the six variables the final model uses with the
-benefit of information from what later became the test partition. This is a
-different leakage mechanism from the CRCP series above — a real held-out test
-set exists here, contaminated only by feature selection performed before the
-split, rather than an entirely ungrouped cross-validation — and the paper's own
-conclusion attributes part of its headline result directly to the contaminated
-step: the six-variable model improves R^2^ by 0.007 over the seventeen-variable
-version, "attributed to the capability of Boruta to identify relevant
-variables." The two mechanisms, read together, make the point this review is
-built to make more sharply than either alone: `leakage_risk` in PAVE-ML (§12)
-catches structurally different failures — no partition grouping in one case,
-preprocessing fitted before the partition in the other — under a single item,
-which is exactly why the item is framed around the outcome (does information
-from the test set influence training) rather than around one specific
-mechanism. A citation search while verifying this paper separately surfaced a
-second, seemingly independent overlapping-author cluster — Wang, Xiao and Liu
-[@Wang2023developing], sharing two of the same three surnames as the
-TPE-CatBoost paper — publishing a separate improved-XGBoost model for rigid
-pavement IRI on what appears to be a related LTPP substrate. Whether this reflects
+TPE-CatBoost faulting model [@Xiao2023optimizing], read in full, resolves its own
+ambiguity definitively. The paper's Boruta feature-selection step is performed in
+Section 3 ("Data Preparation"), applied to the full 160-observation pool, and only
+in Section 4 ("Model Construction") does an 80/20 train-test split appear, meaning
+Boruta selected the six variables the final model uses with the benefit of
+information from what later became the test partition. This is a different leakage
+mechanism from the CRCP series above: a real held-out test set exists here,
+contaminated only by feature selection performed before the split, rather than an
+entirely ungrouped cross-validation. The paper's own conclusion attributes part of
+its headline result directly to the contaminated step, reporting that the
+six-variable model improves R^2^ by 0.007 over the seventeen-variable version,
+"attributed to the capability of Boruta to identify relevant variables." The two
+mechanisms, read together, make the point this review is built to make more
+sharply than either alone: `leakage_risk` in PAVE-ML (§12) catches structurally
+different failures (no partition grouping in one case, preprocessing fitted before
+the partition in the other) under a single item, which is exactly why the item is
+framed around the outcome (does information from the test set influence training)
+rather than around one specific mechanism. A citation search while verifying this
+paper separately surfaced a second, seemingly independent overlapping-author
+cluster: Wang, Xiao and Liu [@Wang2023developing], sharing two of the same three
+surnames as the TPE-CatBoost paper, publishing a separate improved-XGBoost model
+for rigid pavement IRI on what appears to be a related LTPP substrate. Whether this
+reflects
 a second, independent instance of the single-target-per-paper pattern, or
 overlapping personnel with the first cluster, is not resolved by this review's
 corpus and is flagged in §13 as a specific question a wider, full-text-verified
