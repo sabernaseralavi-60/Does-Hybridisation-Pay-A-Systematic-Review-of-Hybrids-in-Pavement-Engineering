@@ -581,12 +581,14 @@ single-section, hybridisation evidence.
 **H5, heterogeneous stacking**, has one clear positive and one ambiguous exemplar
 in the corpus, both already introduced in §9: Huang et al.
 [@Huang2025rheological] train their meta-learner on cross-validated rather than
-in-fold base-model predictions specifically to avoid leakage, and is cited
-throughout this review (§9, §10) as the type's positive case; Yu et al.
-[@Yu2020highway] stack five heterogeneous learners for tunnel pavement performance
-within a digital-twin framework and report strong deployment integration, but
-without the explicit leakage-avoidance statement that distinguishes Huang et al.'s
-design.
+in-fold base-model predictions specifically to avoid leakage — full-text
+verification confirms the design does what its abstract claims, with a formal
+description of the fold structure matching a textbook leakage-safe stacking
+implementation — and is cited throughout this review (§9, §10) as the type's
+positive case; Yu et al. [@Yu2020highway] stack five heterogeneous learners for
+tunnel pavement performance within a digital-twin framework and report strong
+deployment integration, but without the explicit leakage-avoidance statement
+that distinguishes Huang et al.'s design.
 
 **H6, decomposition then learn**, is the one taxonomy type with, at the time of
 writing, no confirmed pavement-specific exemplar in the seed corpus, and the
@@ -732,15 +734,23 @@ both with and without the hybridising component on the same partition and metric
 (12b); to run stochastic optimisers more than once and report the spread rather
 than the best run (12c); and, where a newly named optimiser is the contribution, to
 benchmark it against at least two established optimisers on the same problem (12d).
-@Huang2025rheological is, at the time of writing, the clearest example in the seed
-corpus of a study satisfying the spirit of items in this list without having been
-written against it — its stacking meta-learner is trained on cross-validated,
-not in-fold, predictions specifically to avoid leakage, which is exactly the
-practice item 7 of the general instrument (grouped/blocked partitioning respected
-by all fitted preprocessing) is written to detect the absence of. The mirror-image
-worked example — full-text confirmation of the failure mode item 7 is written to
-catch, rather than of its avoidance — is the pair @Alnaqbi2025learning and
-@Alnaqbi2025predictive (§7): both papers' methods sections state their five-fold
+@Huang2025rheological is, and is now full-text confirmed to be, the clearest
+example in the seed corpus of a study satisfying the spirit of items in this list
+without having been written against it — its stacking meta-learner is trained on
+cross-validated, not in-fold, predictions specifically to avoid leakage, stated
+explicitly in the paper's own methods section rather than inferred, which is
+exactly the practice item 7 of the general instrument (grouped/blocked
+partitioning respected by all fitted preprocessing) is written to detect the
+absence of. One caveat keeps this a partial rather than a complete positive case:
+the same paper's external validation still codes `no` under the strict criterion
+in §2.3, since all data come from the authors' own laboratory tests rather than
+an independently sourced dataset — a reminder that a study can get one PAVE-ML
+dimension right while another remains open, and that the instrument is built to
+report per-item findings rather than a single pass/fail verdict per paper. The
+mirror-image worked example — full-text confirmation of the failure mode item 7
+is written to catch, rather than of its avoidance — is the pair
+@Alnaqbi2025learning and @Alnaqbi2025predictive (§7): both papers' methods
+sections state their five-fold
 splits plainly as random partitions of individual observations, with no grouping
 by the 33 physical sections those observations are drawn from, and both papers'
 own Limitations or Future Directions sections separately confirm the absence of
