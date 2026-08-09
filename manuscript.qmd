@@ -684,37 +684,58 @@ figure copied verbatim from the source paper's own reported results.
 ```{python}
 #| label: tbl-premium-evidence
 #| tbl-cap: "Within-corpus evidence bearing on the hybridisation premium. Every figure is copied verbatim from the cited paper's own reported results; none is computed by the present review."
+#| tbl-colwidths: [12,20,12,16,16,10,14]
 import csv
+import re
 from IPython.display import Markdown
 with open("docs/table_premium_evidence.md", encoding="utf-8") as f:
     content = f.read()
 table_start = content.index("| Source")
-Markdown(content[table_start:])
+table_md = content[table_start:]
+# Give LaTeX a break opportunity inside bare DOIs (no spaces/hyphens of their
+# own), otherwise a long DOI overflows a narrow PDF column into the next cell.
+table_md = re.sub(r'`(10\.\d{4,9}/)([^\s`]+)`',
+                   lambda m: f"`{m.group(1)}\u200b{m.group(2)}`", table_md)
+Markdown(table_md)
 ```
 
-Two readings of this table matter more than any single row. First,
+Three readings of this table matter more than any single row. First,
 **the comparison the premium requires is usually absent, not unfavourable.**
-Of the five rows, only two [@Azam2022resilient; @Huang2025rheological] involve a
-paper that reports enough to attempt a premium calculation at all, and
-@Azam2022resilient's own six-optimiser comparison never includes the one
-comparator — a conventionally tuned, non-hybrid version of the same LSSVM — that
-would let a reader compute $\Delta$. This is the pattern the full audit is built to
-quantify: the missing baseline, not a negative result, is the dominant finding so
-far. Second, **where tuning parity is closest to being honoured, the hybrid or
-deep-architecture advantage narrows.** @Zeiada2025benchmarking tunes eight
-architectures individually, including deep networks, against both each other and
-two established mechanistic models; the winner is a tuned bagging ensemble. Neither
-a hybrid nor a deep architecture prevailed once every competitor received its own
-search budget. @Huang2025rheological is, so far, the seed corpus's clearest positive
-counter-example — a heterogeneous stacking ensemble (H5) that both reports a
-credible premium over single models and states explicitly that its meta-learner was
-trained on cross-validated, not in-fold, base-model predictions specifically to
-avoid the leakage pathway characteristic of that hybridisation type (§4, H5). It is
-cited in §12 as the positive PAVE-ML exemplar for exactly this reason.
+Of the six rows, only three [@Azam2022resilient; @Huang2025rheological;
+@Nguyen2019intelligence] involve a paper that reports enough to attempt a premium
+calculation at all, and @Azam2022resilient's own six-optimiser comparison never
+includes the one comparator — a conventionally tuned, non-hybrid version of the
+same LSSVM — that would let a reader compute $\Delta$. This is the pattern the full
+audit is built to quantify: the missing baseline, not a negative result, is the
+dominant finding so far. Second, **where tuning parity is closest to being
+honoured, the hybrid or deep-architecture advantage narrows — and can reverse
+outright.** @Zeiada2025benchmarking tunes eight architectures individually,
+including deep networks, against both each other and two established mechanistic
+models; the winner is a tuned bagging ensemble. @Nguyen2019intelligence goes
+further: across a 1000-run Monte Carlo comparison, a plain support vector machine
+outperforms both a GA-tuned and a PSO-tuned ANFIS hybrid on the identical data —
+one of the seed corpus's few statistically robust cases where hybridisation is
+outright negative rather than merely unproven. Neither a hybrid nor a deep
+architecture prevailed in either study once every competitor received its own
+search budget. Third, @Huang2025rheological is, so far, the seed corpus's clearest
+positive counter-example — a heterogeneous stacking ensemble (H5) that both
+reports a credible premium over single models and states explicitly that its
+meta-learner was trained on cross-validated, not in-fold, base-model predictions
+specifically to avoid the leakage pathway characteristic of that hybridisation
+type (§4, H5). It is cited in §12 as the positive PAVE-ML exemplar for exactly
+this reason.
 
-Neither reading should be generalised past what five studies can support. They are
+None of these readings should be generalised past what six studies can support. They are
 reported here as the reason the systematic audit in this section is worth
-completing, not as its substitute.
+completing, not as its substitute. It is worth noting, too, that this review is
+not alone in noticing the shape of the problem even if no prior source has
+quantified it the way this section does: a narrower, CBR-specific AI review
+published concurrently with this one independently argues that combining a base
+learner's own hyperparameters with an optimisation algorithm's hyperparameters
+adds a configuration complexity that can itself degrade accuracy
+[@Khatti2025california] — a different diagnosis (configuration complexity rather
+than an unfair baseline) converging on the same underlying concern from a
+different sub-literature.
 
 # Interpretability and uncertainty in hybrid pipelines {#sec-interpretability}
 

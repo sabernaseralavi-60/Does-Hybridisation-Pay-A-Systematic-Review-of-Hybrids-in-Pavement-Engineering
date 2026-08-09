@@ -24,6 +24,13 @@ ROOT = Path(__file__).resolve().parent.parent
 
 # (doi, comparison, metric, comparator_value, hybrid_value, premium, note)
 ROWS = [
+    ("10.3390/app9153172",
+     "Plain SVM vs. GA-ANFIS vs. PSO-ANFIS, all reported within one paper, 1000-run Monte Carlo",
+     "RMSE / MAE / R (Marshall Stability)",
+     "plain SVM (best of three by converged statistical criteria)",
+     "GA-ANFIS and PSO-ANFIS (both hybrids)",
+     "negative — plain SVM outperforms both hybrids",
+     "Rare in this literature: a statistically robust (1000-simulation Monte Carlo) same-paper comparison where a plain, non-hybrid learner beats two separate metaheuristic-hybrid variants. Directly supports the review's central claim rather than merely gesturing at a missing baseline."),
     ("10.1038/s41598-022-17429-z",
      "LSSVM (best single-kernel setting reported) vs. best of 6 swarm-optimised LSSVM variants",
      "R2 / RMSE (MPa)",
