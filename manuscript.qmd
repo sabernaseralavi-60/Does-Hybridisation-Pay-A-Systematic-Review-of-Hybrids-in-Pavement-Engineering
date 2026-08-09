@@ -54,19 +54,97 @@ reviews = [r for r in rows if "prior review" in r["role_in_review"]]
 
 # Introduction {#sec-intro}
 
-PLACEHOLDER — see `docs/01_SCOPE_AND_TAXONOMY.md` §1 for the argument this section
-must carry: hybridisation is the field's dominant claim of novelty, and the marginal
-benefit of hybridisation over a properly tuned base learner is almost never tested.
+Pavement engineering has, over the past decade, adopted a specific and recurring
+rhetorical move: an optimisation algorithm is coupled to a learning model, the
+coupled system is shown to out-predict some comparator, and the coupling itself is
+offered as the paper's contribution. Grey wolf optimisers, whale optimisation,
+teaching-learning-based optimisation, forensic-based investigation, dipper-throated
+optimisation and dozens of similarly named metaheuristics have each, in turn, been
+married to a neural network, a support vector machine, an extreme learning machine
+or a gradient-boosted ensemble, and the resulting hybrid reported as an advance over
+the base learner alone. The pattern is now common enough that "hybrid" is arguably
+the single most frequent claim of novelty in the data-driven pavement literature of
+the 2020s.
 
-The review literature this study builds on is summarised in @fig-coverage. Prior
-surveys catalogue where neural and hybrid methods have been applied
-[@Yang2021research; @Gopalakrishnan2018learning; @Cao2020pavement]; two recent
-contributions name the underlying problem without converting it into per-study
-evidence [@Tamagusko2023learning; @MharziAlaoui2026algorithm].
+This review asks a question that the pattern itself rarely answers: **relative to
+what, exactly, is the hybrid better?** A hybrid model is compared, almost without
+exception, against a base learner running with default or lightly-adjusted settings.
+It is compared far more rarely against the same base learner tuned by a conventional
+procedure under a comparable search budget — the baseline that would isolate what
+the metaheuristic actually contributed. Where that comparison has been made, in the
+small number of cases we have located so far, the hybrid's advantage over a properly
+tuned baseline shrinks, and sometimes reverses. Zeiada et al.
+[@Zeiada2025benchmarking] individually tuned eight learners, including deep
+architectures, against the Witczak and Hirsch mechanistic models for asphalt dynamic
+modulus; the winner was a tuned bagging ensemble, not a hybrid and not a deep
+network. Azam et al. [@Azam2022resilient] compared six swarm-optimised variants of
+one base learner against each other and report top-three results within a fraction
+of a percentage point of R^2^ — a separation well inside what a different random
+seed would produce — but never against a conventionally tuned version of the same
+learner, so no premium can be read from the paper at all. These two studies, sitting
+side by side in the same sub-field, illustrate the gap this review sets out to
+measure at scale: **how often is the hybridisation premium — the gain attributable
+to the coupling itself, over a fairly tuned baseline — actually reported, and how
+large is it when it is?**
+
+Answering this requires solving a prior problem, which turns out to be nontrivial in
+its own right: **finding the studies.** A literature search built on the word
+"hybrid" misses a substantial share of the relevant work, because many qualifying
+studies describe themselves with the vocabulary of optimisation rather than of
+hybridity — "optimised", "improved", "novel X–Y" or simply the two
+algorithm names side by side. Alhussan et al.'s dipper-throated-optimisation random
+forest for pothole classification is a case in point: widely cited, structurally a
+textbook metaheuristic-on-learner hybrid, and retrievable by a search on algorithm
+names but not reliably by a search on the word "hybrid" itself. Section 2 describes
+the algorithm-driven search design this observation motivates, and reports, as one
+of the review's descriptive findings, what share of the eligible literature would
+have been missed by a label-driven search alone.
+
+## Positioning relative to the existing review literature
+
+Prior reviews of artificial-intelligence methods in pavement engineering are
+numerous but occupy different territory, summarised in @fig-coverage. The most
+direct predecessor, Yang et al. [@Yang2021research], catalogues where neural
+networks have been applied across the pavement lifecycle; it stops at the
+MLP/CNN/RNN generation and does not treat hybridisation, optimisation coupling or
+methodological rigour as organising questions. Domain-specific vision surveys
+[@Gopalakrishnan2018learning; @Cao2020pavement; @Hou2020state] cover distress
+detection in depth but do not extend to materials, structural evaluation or
+network-level decisions. Two very recent contributions come closer to the diagnosis
+this review develops: Tamagusko and Ferreira name standardisation, interpretability
+and replicability as open problems specifically for roughness prediction on flexible
+pavements, and M'harzi Alaoui et al. [@MharziAlaoui2026algorithm] describe an
+"interpretability paradox" and a lab-to-field gap across 180 soil-stabilisation
+studies. Both are right, and both are confined to a sub-domain and stop short of a
+per-study coding instrument. What has not been done, in any of this literature, is
+to (i) define hybridity structurally rather than lexically so that the algorithm-
+vocabulary studies are not missed, (ii) code a consistent rigour rubric across the
+full range of pavement sub-domains rather than one at a time, and (iii) convert the
+resulting evidence into a quantified premium and a reusable reporting instrument.
+That is the gap this review occupies.
 
 ![Coverage of the prior review literature on artificial-intelligence methods in
 pavement engineering. Scoring: 2 = substantive dedicated treatment, 1 = touched in
-passing, 0 = absent.](figures/fig01_coverage_gap.png){#fig-coverage width=100%}
+passing, 0 = absent. "This review" is scored on stated scope, to be verified against
+the completed manuscript at
+submission.](figures/fig01_coverage_gap.png){#fig-coverage width=100%}
+
+## Contributions
+
+This review makes four contributions. First, a **structural rather than lexical**
+definition of hybridity (§2.3) and an algorithm-driven search protocol built to
+retrieve studies regardless of how their authors chose to describe them. Second, a
+**taxonomy of seven hybridisation types** (H1–H7, §4), each with a stated
+theoretical justification and a characteristic failure mode, replacing the field's
+undifferentiated use of "hybrid" as a single label. Third, an empirical estimate of
+the **hybridisation premium** — the performance gain attributable to hybridisation
+once the comparison is made against a fairly tuned baseline — reported as a
+distribution across the coded corpus rather than as a single number, since most
+studies do not report the comparison required to compute it at all (§9). Fourth, a
+reporting and appraisal instrument, **PAVE-ML**, extending a general
+data-driven-pavement-model checklist with four items specific to hybrid pipelines
+(§10), so that the next study in this field can report what this review finds
+missing from most of the last two decades of it.
 
 # Review methodology {#sec-method}
 
@@ -75,7 +153,12 @@ section as each is finalised.*
 
 ## Scope and framing question
 
-PLACEHOLDER — transfer from the draft.
+This review asks how much of the performance gain attributed to hybridisation in
+the pavement literature survives a fair comparison against a properly tuned base
+learner. The question differs from "where has hybridisation been applied" — the
+question earlier surveys answer — in that it requires reading each study for a
+specific comparison rather than for topical coverage, and it requires a definition
+of hybridity that does not depend on the authors' own labelling (§2.3).
 
 ## Information sources and search
 
@@ -96,19 +179,146 @@ for r in sorted(reviews, key=lambda x: int(x["year"])):
 Markdown("\n".join(lines))
 ```
 
-## Eligibility
+## Eligibility {#sec-eligibility}
 
-PLACEHOLDER — transfer from the draft, including the structural (not lexical)
-definition of hybridity in `docs/01_SCOPE_AND_TAXONOMY.md` §2.
+**Structural definition of hybridity.** A study is in scope if its predictive
+pipeline couples two or more components drawn from different methodological
+families, at least one of which is a learned data-driven model, where the coupling
+is claimed or demonstrated to affect predictive performance. Three operational
+clarifications resolve most borderline cases. Hyperparameter search counts as
+hybridisation only when the search procedure is itself a metaheuristic or a
+surrogate-based optimiser (e.g. particle swarm optimisation, a genetic algorithm,
+Bayesian optimisation, a tree-structured Parzen estimator); manual tuning and
+exhaustive grid search do not qualify a study as hybrid, though both are recorded,
+since they are the baseline against which the premium (§9) is measured. An ensemble
+of models from a single family (e.g. a random forest) is not a hybrid; a stacked
+ensemble with heterogeneous base learners is (type H5, §4). Self-description is
+irrelevant in both directions: a study is included or excluded on the structure of
+its pipeline, never on whether the authors used the word "hybrid".
+
+This structural test was necessary, not a refinement for its own sake. A pilot
+search restricted to hybrid-labelled vocabulary failed to retrieve at least one
+widely cited, structurally qualifying study — a dipper-throated-optimisation random
+forest for pothole classification [@Alhussan2022pothole] — while an
+algorithm-name-driven search retrieved it immediately. The same algorithm-name
+search, however, drifted heavily into adjacent domains (geopolymer concrete,
+rock-burst prediction, blasting-induced flyrock, and battery remaining-useful-life
+studies all appeared for generic swarm-optimisation queries), which is why every
+query in the harvesting protocol (`analysis/harvest_openalex.py`) carries a
+mandatory, hard-filtered pavement-domain term rather than relying on the
+optimisation vocabulary alone.
+
+**Peer review and language.** Peer-reviewed journal articles and full conference
+papers in English are eligible. Preprints are excluded unless a peer-reviewed
+version is traced; where cited as grey literature (e.g. @Latifi2021reinforcement) that status
+is stated explicitly.
+
+**Exclusions that shaped the corpus.** Three exclusions recur often enough to state
+here rather than only in the PRISMA log. Non-neural, non-metaheuristic machine
+learning without any coupled component — a single tuned random forest or gradient-
+boosted tree, for instance — is not itself in scope, but is retained in a context
+set where it serves as a same-paper tuned-baseline comparator (this is, in fact,
+where several of the review's most useful premium comparisons come from — see
+@Zeiada2025benchmarking and @Guo2025learning). Studies where a metaheuristic and a
+learner are each named in the title but run as separate, non-interacting competing
+models rather than coupled into one pipeline are excluded from the hybrid corpus
+proper under the structural test above, and are flagged as an instance of the
+vocabulary trap in reverse — the label suggests a hybrid that the method does not
+deliver (e.g. @Hanandeh2022introducing, titled around "genetic algorithm and
+artificial neural networks" but reporting the two as independently competing
+models). Reinforcement-learning formulations for network-level maintenance and
+rehabilitation decisions (e.g. @Yao2022large) coordinate a learned policy with
+a simulated or predicted environment in a way that does not map cleanly onto the
+H1–H7 taxonomy, which is built around single-prediction pipelines; these
+are retained as context for §9 and §11 rather than coded into the taxonomy.
 
 # Bibliometric landscape {#sec-biblio}
 
-PLACEHOLDER — written after the harvest completes.
+::: {.content-visible when-format="html"}
+> **Status note.** The figures in this section describe the seed corpus
+> (`data/seed_bibliography.csv`, n = `{python} len(primary)` primary studies)
+> assembled during protocol development and taxonomy design, not the completed
+> systematic harvest. The full bibliometric analysis — publication trajectory,
+> architecture share over time, country co-authorship, venue concentration — is
+> deferred to the completed corpus and is not fabricated here from a partial
+> sample. What follows is reported explicitly as a seed-corpus snapshot.
+:::
+
+Of the `{python} len(primary)` primary studies coded so far, @fig-taxonomy shows
+their distribution across the seven hybridisation types defined in §4. A
+substantial share — `{python} sum(1 for r in primary if r["hybrid_type"]=="none")`
+of `{python} len(primary)` — do not qualify as hybrid under the structural test in
+§2.3 despite frequent adjacency to hybrid work in citation networks and, in a few
+cases, despite carrying "hybrid" or an optimiser name in the title while running
+the two components as separate, non-interacting models (§2.3). This is an early
+indication, not yet a corpus-wide estimate, of how much daylight exists between the
+field's vocabulary and its actual methodological content; §9 returns to the
+consequence of that gap for the premium estimate.
+
+![Distribution of hybridisation types among primary studies coded in the seed
+corpus.](figures/fig02_taxonomy_distribution.png){#fig-taxonomy width=100%}
 
 # Taxonomy of hybridisation {#sec-taxonomy}
 
-PLACEHOLDER — the H1--H7 taxonomy with theoretical justification and characteristic
-failure mode, from `docs/01_SCOPE_AND_TAXONOMY.md` §3.
+The field's literature treats "hybrid" as a single, undifferentiated label. This
+flattens together couplings with different theoretical justifications and,
+correspondingly, different characteristic failure modes — a metaheuristic searching
+a hyperparameter space is a different claim from a metaheuristic searching a
+weight space, and a different claim again from a physics-constrained loss function.
+@tbl-taxonomy sets out the seven types this review distinguishes and codes against.
+
+```{python}
+#| label: tbl-taxonomy
+#| tbl-cap: "Taxonomy of hybridisation in data-driven pavement models (H1–H7)."
+from IPython.display import Markdown
+tax = [
+    ("H1", "Metaheuristic → hyperparameters",
+     "Searches a non-convex, discrete hyperparameter space that gradient methods cannot address",
+     "Compared against an untuned base learner, so the reported gain is the tuning, not the metaheuristic"),
+    ("H2", "Metaheuristic → weights / structure",
+     "Escapes local minima of backpropagation; permits non-differentiable objectives",
+     "Vastly more function evaluations than the baseline receives, with no compute-parity reporting"),
+    ("H3", "Physics + data (PINN, mechanistic residual, transfer function as loss)",
+     "Constrains the solution to a mechanically admissible manifold; aids under data scarcity",
+     "Physics-term weight tuned on the test set; constraint too weak to bind in practice"),
+    ("H4", "Architecture fusion (e.g. CNN+transformer, two-stream)",
+     "Complementary inductive biases -- local texture and long-range context together",
+     "Gains confounded with parameter count and training budget rather than the fusion itself"),
+    ("H5", "Heterogeneous stacking / blending",
+     "Decorrelated errors across model families reduce variance",
+     "Meta-learner trained on in-fold predictions; leakage through the stacking layer"),
+    ("H6", "Signal decomposition then learn (VMD, EMD, CEEMDAN, wavelet)",
+     "Separates scales the learner would otherwise have to disentangle unaided",
+     "Decomposition fitted on the full series before the temporal split -- the most common severe leakage in this family"),
+    ("H7", "Symbolic--numeric (GEP, MGGP, EPR + a numeric optimiser)",
+     "Yields a closed-form, inspectable expression rather than an opaque model",
+     "Expression complexity uncontrolled; an overfit equation is then read as if it were physics"),
+]
+lines = ["| Type | Coupling | Theoretical justification | Characteristic failure mode |",
+         "|---|---|---|---|"]
+for t in tax:
+    lines.append("| **{}** | {} | {} | {} |".format(*t))
+Markdown("\n".join(lines))
+```
+
+Two coding notes follow directly from applying this taxonomy to the seed corpus.
+First, a single study can legitimately receive more than one code — @Ghorbani2020genetic
+fits both a GA-derived symbolic equation (H7-adjacent) and an ANN whose weights are
+set by the same GA (H2) on the same data, which is precisely the kind of within-paper
+comparison §9 is built to exploit. Second, several studies that use metaheuristic or
+architecture-fusion vocabulary in their titles fail the structural test on inspection
+— @Hanandeh2022introducing names both a genetic algorithm and an artificial neural
+network but reports them as independently competing models rather than a coupled
+pipeline, and is coded `none` rather than any of H1–H7 as a result. Both
+notes matter for the same reason: the taxonomy is applied to what a pipeline *does*,
+not to what its title or abstract *calls* it.
+
+Reinforcement-learning approaches to network-level maintenance-and-rehabilitation
+policy [@Yao2022large; @Latifi2021reinforcement] sit adjacent to this taxonomy but
+are not coded into it: they couple a learned policy to a simulated or predicted
+environment in a way that does not map onto the single-prediction-pipeline structure
+H1–H7 assumes. They are retained as context for the decision-consequence
+discussion in §11 rather than folded into the hybridisation-type counts in §3.
 
 # Hybrid models in material and mix modelling {#sec-materials}
 
@@ -117,7 +327,7 @@ PLACEHOLDER.
 # Hybrid models in structural evaluation and inverse analysis {#sec-structural}
 
 PLACEHOLDER — anchored on back-calculation [@Ghanizadeh2020neural;
-@Ghanizadeh2025implementing; @Elbagalati2017neural].
+@Ghanizadeh2025metabackcal; @Elbagalati2017neural].
 
 # Hybrid models in performance prediction {#sec-performance}
 
@@ -130,9 +340,74 @@ PLACEHOLDER — @Pasupunuri2024roughness for the physics-informed case;
 
 # The hybridisation premium {#sec-premium}
 
-PLACEHOLDER — the paper's central analysis. Definition and the evidence already in
-hand are in `docs/01_SCOPE_AND_TAXONOMY.md` §4
-[@Azam2022resilient; @Duan2024resilient; @Zeiada2025benchmarking].
+## Definition
+
+For a study reporting a hybrid model $M_{\text{hyb}}$ (optimiser $\oplus$ base
+learner $M_{\text{base}}$) evaluated on a held-out partition, the
+**hybridisation premium** is
+
+$$\Delta = \text{performance}(M_{\text{hyb}}) - \text{performance}(M_{\text{base}}^{\text{tuned}})$$
+
+where $M_{\text{base}}^{\text{tuned}}$ is the same base learner, tuned by a
+conventional procedure under a **comparable evaluation budget**, evaluated on the
+**same** partition with the **same** metric. All three constraints are load-bearing:
+a premium computed against an untuned, default-setting baseline is not a measure of
+what hybridisation contributes — it is a measure of what tuning contributes, mislabelled.
+
+## What the completed audit will report
+
+Over the full coded corpus, the review will report, for every study attempting an
+H1 or H2 coupling: whether $\Delta$ is computable at all under the definition above
+(`premium_computable`); its value where it is; whether the search budget was stated
+for both the hybrid and the baseline arm (`budget_parity_reported`); and, where a
+newly named optimiser is the paper's contribution, whether it was benchmarked
+against at least two established optimisers on the same problem
+(`optimiser_novelty_claim`). These fields are specified in full, with worked
+examples, in the PAVE-ML instrument (§10) and were fixed before full-text coding
+began.
+
+## Preliminary evidence from the seed corpus
+
+The completed audit is not yet available; what follows is the evidence already
+visible in the seed corpus, presented as motivation for the audit rather than as
+its result. @tbl-premium-evidence collects every within-paper comparison in the
+seed corpus close enough to a premium calculation to be informative, with every
+figure copied verbatim from the source paper's own reported results.
+
+```{python}
+#| label: tbl-premium-evidence
+#| tbl-cap: "Within-corpus evidence bearing on the hybridisation premium. Every figure is copied verbatim from the cited paper's own reported results; none is computed by the present review."
+import csv
+from IPython.display import Markdown
+with open("docs/table_premium_evidence.md", encoding="utf-8") as f:
+    content = f.read()
+table_start = content.index("| Source")
+Markdown(content[table_start:])
+```
+
+Two readings of this table matter more than any single row. First,
+**the comparison the premium requires is usually absent, not unfavourable.**
+Of the five rows, only two [@Azam2022resilient; @Huang2025rheological] involve a
+paper that reports enough to attempt a premium calculation at all, and
+@Azam2022resilient's own six-optimiser comparison never includes the one
+comparator — a conventionally tuned, non-hybrid version of the same LSSVM — that
+would let a reader compute $\Delta$. This is the pattern the full audit is built to
+quantify: the missing baseline, not a negative result, is the dominant finding so
+far. Second, **where tuning parity is closest to being honoured, the hybrid or
+deep-architecture advantage narrows.** @Zeiada2025benchmarking tunes eight
+architectures individually, including deep networks, against both each other and
+two established mechanistic models; the winner is a tuned bagging ensemble. Neither
+a hybrid nor a deep architecture prevailed once every competitor received its own
+search budget. @Huang2025rheological is, so far, the seed corpus's clearest positive
+counter-example — a heterogeneous stacking ensemble (H5) that both reports a
+credible premium over single models and states explicitly that its meta-learner was
+trained on cross-validated, not in-fold, base-model predictions specifically to
+avoid the leakage pathway characteristic of that hybridisation type (§4, H5). It is
+cited in §10 as the positive PAVE-ML exemplar for exactly this reason.
+
+Neither reading should be generalised past what five studies can support. They are
+reported here as the reason the systematic audit in this section is worth
+completing, not as its substitute.
 
 # Interpretability and uncertainty in hybrid pipelines {#sec-interpretability}
 
@@ -140,11 +415,61 @@ PLACEHOLDER.
 
 # From premium to decision {#sec-decision}
 
-PLACEHOLDER — built on the cost-of-prediction-error curve in @Hosseini2021accuracy.
+A premium, once measured, still needs to be worth having. Hosseini and Smadi
+[@Hosseini2021accuracy] provide the sharpest available answer to that question,
+though the paper itself is about prediction error rather than hybridisation as
+such: injecting 10–90% error into a pavement performance prediction and
+propagating it through a 20-year network-level maintenance and rehabilitation
+schedule, they price the resulting treatment-cost consequence directly. That result
+supplies the yardstick a hybridisation premium should be measured against — not
+whether $\Delta > 0$, but whether $\Delta$ is large enough, at the accuracy level
+the underlying prediction task already operates at, to change which treatment gets
+scheduled, or when. A premium of a few hundredths of a unit of R^2^, of the kind
+several rows in @tbl-premium-evidence report or gesture toward, is a strong
+candidate for being decision-irrelevant by this standard; the completed audit will
+report, for every study where both a premium and enough contextual detail are
+available, whether the premium plausibly clears this bar or not. This section will
+be completed once that judgement can be made study by study rather than asserted
+in general.
 
 # PAVE-ML: a reporting and appraisal checklist {#sec-paveml}
 
-PLACEHOLDER — instrument in `docs/03_PAVE-ML_instrument.md`.
+The audit this review conducts is only as trustworthy as the coding rules behind
+it, and those rules are only useful to the field if they survive as something other
+than this paper's internal methodology. PAVE-ML is offered as both: the instrument
+this review scores every included study against, and a checklist future studies can
+score themselves against before submission.
+
+The full instrument — twenty items across five domains (data provenance,
+preprocessing and partitioning, modelling and comparison, evaluation and
+interpretation, and generalisation and transparency), plus four items specific to
+hybrid pipelines — is reproduced in full in the supplementary material
+(`docs/03_PAVE-ML_instrument.md`), together with the operational decision rules and
+worked examples that make the coding reproducible rather than a matter of reader
+judgement. Two design choices are worth stating here because they determine how the
+audit's headline numbers should be read. First, **silence is coded as absence, not
+as unclear** — if a study does not state that its test partition was held out
+independently of hyperparameter selection, that is coded `no`, following the
+convention used in clinical prediction-model appraisal (TRIPOD, PROBAST), because it
+is the only convention that cannot be accused of charitable reading. Second, the
+four hybrid-specific items require a study to report its base learner's performance
+both with and without the hybridising component on the same partition and metric
+(item 12a); to state the search budget for both arms so that parity can be assessed
+(12b); to run stochastic optimisers more than once and report the spread rather
+than the best run (12c); and, where a newly named optimiser is the contribution, to
+benchmark it against at least two established optimisers on the same problem (12d).
+@Huang2025rheological is, at the time of writing, the clearest example in the seed
+corpus of a study satisfying the spirit of items in this list without having been
+written against it — its stacking meta-learner is trained on cross-validated,
+not in-fold, predictions specifically to avoid leakage, which is exactly the
+practice item 7 of the general instrument (grouped/blocked partitioning respected
+by all fitted preprocessing) is written to detect the absence of.
+
+The reliability of the instrument itself will be reported, not assumed: a random
+15% of the fully coded corpus will be independently double-coded, Cohen's $\kappa$
+reported per field, and any field falling below $\kappa = 0.60$ will have its
+decision rule rewritten and be recoded in full rather than reported with a caveat.
+This procedure, and its result, are reported in full in the completed manuscript.
 
 # Research agenda {#sec-agenda}
 
