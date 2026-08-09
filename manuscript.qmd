@@ -181,8 +181,26 @@ of hybridity that does not depend on the authors' own labelling (§2.3).
 
 Records were identified from OpenAlex, Scopus, Web of Science Core Collection and
 Semantic Scholar, with backward and forward snowballing from the
-`{python} len(reviews)` prior reviews listed in @tbl-reviews. The window runs from
-1 January 2005 to 30 June 2026.
+`{python} len(reviews)` prior reviews listed in @tbl-reviews, and from a 261-query
+algorithmic search crossing metaheuristic-optimiser names, base-learner names and
+legacy hybrid-labelled vocabulary against a mandatory pavement-terminology filter
+(`analysis/harvest_openalex.py`; run against the Crossref API rather than OpenAlex
+directly, see the Data Availability statement). The window runs from 1 January 2005
+to 30 June 2026 — a date in the reader's future at first glance, but not an error:
+the corpus includes a meaningful number of 2025 and 2026 citations because
+publishers now routinely assign a final year and DOI to an article at Online
+First / Early Access publication, ahead of formal volume assignment, and every
+such record here resolves to a live DOI (verified per the protocol in §2.3), not
+a placeholder or a forecast. @fig-review-flow reports the current, actual state of
+this identification-and-screening pipeline — it is not a completed PRISMA 2020
+flow diagram, because screening is not complete: every count in it is read
+directly from the harvest logs and the working database, not projected or
+estimated, and the figure is captioned accordingly.
+
+![Review process status, reported as it actually stands rather than as a completed
+PRISMA 2020 flow diagram — screening of the 2026 algorithmic harvest is ongoing, not
+finished. Every count is read directly from the harvest logs and the working
+database.](figures/fig05_review_flow.png){#fig-review-flow width=85%}
 
 ```{python}
 #| label: tbl-reviews
@@ -251,15 +269,20 @@ are retained as context for §9 and §11 rather than coded into the taxonomy.
 
 # Bibliometric landscape {#sec-biblio}
 
-::: {.content-visible when-format="html"}
 > **Status note.** The figures in this section describe the seed corpus
 > (`data/seed_bibliography.csv`, n = `{python} len(primary)` primary studies)
 > assembled during protocol development and taxonomy design, not the completed
 > systematic harvest. The full bibliometric analysis — publication trajectory,
 > architecture share over time, country co-authorship, venue concentration — is
 > deferred to the completed corpus and is not fabricated here from a partial
-> sample. What follows is reported explicitly as a seed-corpus snapshot.
-:::
+> sample. What follows is reported explicitly as a seed-corpus snapshot, and in
+> particular the apparent concentration of records after 2020 (@fig-year-trend)
+> should be read as the yield of a targeted, taxonomy-driven search protocol,
+> not yet as a claim about the field's true publication trajectory — a search
+> strategy built around specific optimiser and learner vocabulary can itself
+> produce a recency skew if that vocabulary became more common in recent years,
+> independent of any true change in publication volume, and the completed
+> harvest is what will distinguish the two.
 
 Of the `{python} len(primary)` primary studies coded so far, @fig-taxonomy shows
 their distribution across the seven hybridisation types defined in §4. A
@@ -591,7 +614,18 @@ The five hybridisation types beyond direct metaheuristic-hyperparameter coupling
 (H3–H7) are less numerous in the seed corpus than H1, but each supplies
 at least one clear exemplar worth setting out in detail because each illustrates a
 distinct failure mode that a reader unfamiliar with the taxonomy in §4 would not
-otherwise anticipate.
+otherwise anticipate. This asymmetry is worth naming plainly rather than only
+implying: H1 (28 primary studies as of this draft, §3/@fig-taxonomy) is
+substantially better sampled than H3, H4, H5 or H6 individually (roughly 6–11
+records each), partly because the field genuinely produces more H1 studies and
+partly because H1 and H7 titles are unusually easy to find and code with
+confidence from a title alone (§2.3), which biases what a search protocol like
+this one's surfaces first. The characteristic-failure-mode claims made below for
+H3–H7 are drawn from real, verified records, not fabricated — but a claim resting
+on 6–11 records carries less weight than one resting on 28, and should be read
+as a documented pattern within the current sample rather than a settled
+distributional fact about the field, until the completed corpus can say
+otherwise.
 
 **H4, architecture fusion**, is best represented in the seed corpus by four vision
 and one network-level study discussed in detail below, plus four further
@@ -716,6 +750,26 @@ conventional procedure under a **comparable evaluation budget**, evaluated on th
 a premium computed against an untuned, default-setting baseline is not a measure of
 what hybridisation contributes — it is a measure of what tuning contributes, mislabelled.
 
+**Operationalising "comparable evaluation budget."** A grid search, a random
+search and a population-based metaheuristic (PSO, GA, and the many named variants
+in §4) do not share an obvious common unit — a grid search has no generations, a
+metaheuristic has no grid resolution. The unit this review uses is the one
+quantity every search strategy actually shares: **the number of times the base
+learner itself is trained and evaluated during the search** — total grid points
+for a grid search, total random draws for a random search, population size ×
+number of generations (or the paper's own reported total function-evaluation
+count) for a metaheuristic. Two arms are treated as budget-comparable when their
+base-learner training-and-evaluation counts are within the same order of
+magnitude; wall-clock time is used as a secondary check where reported, since it
+can diverge from the evaluation count when the optimiser itself carries
+non-trivial overhead. This is also what PAVE-ML item 12b (§12) asks studies to
+report directly, so that this determination does not have to be inferred
+indirectly from a paper's stated hyperparameter ranges. A study that tunes the
+hybrid arm exhaustively while leaving the baseline arm at library-default
+settings fails this test regardless of which search algorithm names appear in its
+title — the H1/H2 failure mode both the taxonomy in §4 and the evidence in §9.3
+keep surfacing.
+
 ## What the completed audit will report
 
 Over the full coded corpus, the review will report, for every study attempting an
@@ -736,10 +790,25 @@ its result. @tbl-premium-evidence collects every within-paper comparison in the
 seed corpus close enough to a premium calculation to be informative, with every
 figure copied verbatim from the source paper's own reported results.
 
+```{=latex}
+% This table used to render with visibly garbled/overlapping text in its
+% Source column, reported as "words merged" -- landscape rotation was tried
+% first as the fix (pdflscape + geometry's \newgeometry, several variants)
+% but elsarticle does not expose its page dimensions the way `geometry`
+% expects, so \linewidth inside a rotated environment never actually
+% widened. The real cause turned out to be simpler and unrelated to
+% orientation: an unbroken `\texttt{DOI}` wider than its column, with no
+% valid break point inside a monospace run, overflows straight into the next
+% column -- a plain LaTeX overfull \hbox. Fixed with a real word-break point
+% in the DOI (see below) plus a smaller table font and tighter columns,
+% which also shrank the table from 4 pages to 2.
+\small
+```
+
 ```{python}
 #| label: tbl-premium-evidence
 #| tbl-cap: "Within-corpus evidence bearing on the hybridisation premium. Every figure is copied verbatim from the cited paper's own reported results; none is computed by the present review."
-#| tbl-colwidths: [12,20,12,16,16,10,14]
+#| tbl-colwidths: [22,14,8,12,12,9,23]
 import csv
 import re
 from IPython.display import Markdown
@@ -747,11 +816,18 @@ with open("docs/table_premium_evidence.md", encoding="utf-8") as f:
     content = f.read()
 table_start = content.index("| Source")
 table_md = content[table_start:]
-# Give LaTeX a break opportunity inside bare DOIs (no spaces/hyphens of their
-# own), otherwise a long DOI overflows a narrow PDF column into the next cell.
+# Break each DOI after its registrant prefix (e.g. "10.3390/" | "app9153172")
+# so pdflatex has a valid wrap point inside the monospace run instead of
+# overflowing into the Comparison column -- see the note above this cell.
+# The Source column width above (22%) is sized so neither half overflows in
+# turn, for the corpus's longest DOI suffix (~19 characters).
 table_md = re.sub(r'`(10\.\d{4,9}/)([^\s`]+)`',
-                   lambda m: f"`{m.group(1)}\u200b{m.group(2)}`", table_md)
+                   lambda m: f"`{m.group(1)} {m.group(2)}`", table_md)
 Markdown(table_md)
+```
+
+```{=latex}
+\normalsize
 ```
 
 Three readings of this table matter more than any single row. First,
@@ -1096,7 +1172,6 @@ data and method that would settle it, rather than as a general aspiration.
 
 # Conclusions {#sec-conclusions}
 
-::: {.content-visible when-format="html"}
 > **Status note.** The conclusions below are provisional, drawn from the
 > seed-corpus evidence assembled so far (n = `{python} len(primary)` primary
 > studies, of which `{python} sum(1 for r in primary if r["hybrid_type"] not in ("none","context","not-yet-coded",""))`
@@ -1105,7 +1180,9 @@ data and method that would settle it, rather than as a general aspiration.
 > the confidence a completed 300–500-study audit would carry, and every
 > numbered point below is written so that the completed audit can confirm,
 > revise, or overturn it without requiring the argument to be restructured.
-:::
+> This manuscript is not submission-ready while this note is still accurate:
+> submission should follow, not precede, completion of the full-text extraction
+> and audit these conclusions currently anticipate.
 
 Four conclusions follow from the evidence assembled so far.
 

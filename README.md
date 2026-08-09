@@ -6,7 +6,7 @@ engineering (2005–2026).
 **Authors:** S. S. Naseralavi (Shahid Bahonar University of Kerman) · A. R. Ghanizadeh (Sirjan
 University of Technology)
 **Target journal:** *Automation in Construction* (Elsevier) — see [Journal targeting](#journal-targeting)
-**Status:** manuscript renders clean to PDF/Word/HTML (38 pages). All 14 sections now have
+**Status:** manuscript renders clean to PDF/Word/HTML (39 pages). All 14 sections now have
 real, cited content — including Section 10 (Interpretability), which an external review
 caught as a silently-empty placeholder despite being cross-referenced 13 times elsewhere
 under the wrong section number; both the content and every cross-reference are now fixed.
@@ -42,6 +42,23 @@ pool toward the 150–500 records a full systematic review of this kind needs, f
 (vs. abstract-level) of every PAVE-ML field, the double-coding reliability pass, and the
 abstract (deliberately still a placeholder — it should not be written before the findings it
 summarises exist).
+
+**Same-day follow-up, after a human read of the rendered PDF.** Found and fixed a real
+rendering bug in Table 3 (the premium-evidence table) that a plain text-only review of the
+`.qmd` source could not have caught: DOI cells were visibly garbling because an unbroken
+monospace DOI wider than its column was overflowing into the neighbouring column — not a
+layout preference, an actual LaTeX overfull-`\hbox`. Also found and fixed something more
+serious: both of the manuscript's honesty callouts ("Status note" boxes flagging the
+corpus as provisional) were accidentally restricted to HTML output only, meaning the PDF
+and DOCX — the formats an editor or reviewer would actually see — carried none of that
+caveat. Both now render in all three formats. Added Figure 5, an honest review-process
+flowchart using the real 2026-08-09 harvest numbers. Responded to five further points
+from a human pre-submission read (submission-readiness wording, bibliometric-trend
+caution, an operational definition of "comparable search budget," an explicit
+taxonomy-imbalance caveat, and a note on why 2025/2026-dated citations are real). See
+`CLAUDE.md`'s "Current state" section for the full diagnostic detail on the Table 3 fix
+specifically, including why landscape rotation (tried first) turned out not to be the
+right fix.
 
 ---
 

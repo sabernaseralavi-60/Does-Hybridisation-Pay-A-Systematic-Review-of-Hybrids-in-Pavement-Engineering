@@ -26,6 +26,15 @@ format:
     number-sections: true
     fig-pos: "H"
     linestretch: 1.5
+    # pdflscape: lets Table 3 (the wide premium-evidence table) rotate to
+    # landscape in the PDF only -- ignored by docx/html, where the table just
+    # renders portrait as before. Needed because with 7 columns of prose-length
+    # cells, portrait width forced rows tall enough to trigger a longtable
+    # page-break/row-height bug that visibly overlapped text in DOI cells.
+    include-in-header:
+      text: |
+        \usepackage{pdflscape}
+        \usepackage{geometry}
 
   docx:
     toc: false

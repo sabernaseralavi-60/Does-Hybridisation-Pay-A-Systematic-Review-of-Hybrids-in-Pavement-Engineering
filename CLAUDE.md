@@ -191,10 +191,53 @@ PINN/GEP titles will re-introduce the same skew.
   still honest at 147 records, though less true than it was at 90.
 - **The abstract is deliberately still a placeholder.** Do not write it until the
   findings it would summarize are actually final — this is intentional, not an oversight.
-- **Builds clean**: `quarto render manuscript.qmd` → 38-page PDF, DOCX, HTML, zero
+- **Builds clean**: `quarto render manuscript.qmd` → 39-page PDF, DOCX, HTML, zero
   citation warnings, zero LaTeX errors, as of the last commit. Two more stray `\textendash`
   LaTeX macros were found and fixed this session (rule 5 below) — this bug class keeps
   recurring; grep for it before every render, not just when told to.
+- **A real rendering bug was found and fixed in Table 3** (the premium-evidence table),
+  reported by a human reader as "words wrongly merged." The actual cause was an unbroken
+  `\texttt{DOI}` wider than its column overflowing into the next column (a plain LaTeX
+  overfull `\hbox`) — not a longtable bug, not the specific break character, and *not*
+  fixable by rotating the table to landscape (tried first, at the reader's own suggestion;
+  abandoned after confirming across four different `pdflscape`/`geometry` approaches that
+  `elsarticle` does not expose its page dimensions the way `geometry` expects, so
+  `\linewidth` never actually widened inside the rotated environment — see the comment
+  in `manuscript.qmd` right above `tbl-premium-evidence` for the full diagnostic trail).
+  Fixed with a real word-break point after each DOI's registrant prefix plus a wider
+  Source column and `\small` table font — table went from 4 pages to 2, with the
+  corruption gone. **If a similar "garbled table text" report comes up again, check for
+  an unbroken monospace/`\texttt` string before reaching for `\small` or landscape** —
+  it's a narrower, more specific class of bug than either of those fixes address, and
+  landscape in particular is a real time sink with this document class.
+- **Added a Figure 5** (`analysis/fig_review_flow.py`, §2): an honest "review process
+  status" diagram using the real 2026-08-09 harvest numbers (2,332 identified → 191
+  structural candidates → 53 added), explicitly labelled as an interim status report,
+  not a completed PRISMA 2020 flow diagram — do not relabel it as PRISMA until
+  screening is actually finished.
+- **A genuinely serious, now-fixed bug**: both of the manuscript's "Status note" honesty
+  callouts (§3's seed-corpus-snapshot caveat, and the Conclusions' provisional-findings
+  caveat) were wrapped in `.content-visible when-format="html"` — meaning they were
+  **invisible in the PDF and DOCX**, the formats an editor or reviewer would actually
+  see. A journal reviewer reading the PDF would have seen confident, unhedged
+  conclusions with no indication the underlying corpus is a seed sample. Fixed by
+  removing the format restriction so both notes render in all three formats. **Before
+  trusting any other `.content-visible when-format=` block in this document, check
+  whether it's hiding something load-bearing from the format that actually goes out for
+  review** — this is exactly the kind of thing that's invisible until someone (in this
+  case, a human reader working from the PDF) actually reads the submission-format
+  output rather than the HTML.
+- **Responded to five external-review points** (2026-08-09, forwarded via the human
+  authors): (1) reinforced the submission-readiness caveat directly in the now-visible
+  Conclusions status note; (2) strengthened §3's bibliometric-trend caution (the 2020+
+  surge may be a targeted-search artifact, now stated explicitly); (3) added an
+  operational definition of "comparable evaluation budget" to §9.1 (the common currency
+  across search-algorithm types is base-learner training-and-evaluation count, not a
+  algorithm-specific parameter); (4) added an explicit taxonomy-imbalance caveat to the
+  top of §8 (H1=28 vs. 6–11 for H3–H6 individually, and *why* — H1/H7 are easier to find
+  and code from titles, which biases what a search protocol surfaces first); (5) added a
+  sentence to §2.2 clarifying that 2025/2026-dated citations are genuine Online
+  First/Early Access articles with live DOIs, not errors.
 
 ## Full-text verification protocol (the pattern that worked four times)
 
