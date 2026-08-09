@@ -1,0 +1,262 @@
+﻿lane,query,returned,new_unique
+A,genetic algorithm pavement,100,56
+A,genetic algorithm asphalt pavement,100,83
+A,genetic algorithm subgrade soil,100,74
+A,particle swarm optimization pavement,100,12
+A,particle swarm optimization asphalt pavement,100,10
+A,particle swarm optimization subgrade soil,100,2
+A,differential evolution pavement,100,56
+A,differential evolution asphalt pavement,100,6
+A,differential evolution subgrade soil,100,33
+A,simulated annealing pavement,100,8
+A,simulated annealing asphalt pavement,100,20
+A,simulated annealing subgrade soil,100,0
+A,ant colony optimization pavement,100,1
+A,ant colony optimization asphalt pavement,100,0
+A,ant colony optimization subgrade soil,100,0
+A,artificial bee colony pavement,100,1
+A,artificial bee colony asphalt pavement,100,8
+A,artificial bee colony subgrade soil,100,0
+A,harmony search pavement,100,2
+A,harmony search asphalt pavement,100,8
+A,harmony search subgrade soil,100,0
+A,imperialist competitive algorithm pavement,100,0
+A,imperialist competitive algorithm asphalt pavement,100,0
+A,imperialist competitive algorithm subgrade soil,100,0
+A,cuckoo search pavement,100,3
+A,cuckoo search asphalt pavement,100,0
+A,cuckoo search subgrade soil,100,0
+A,firefly algorithm pavement,100,0
+A,firefly algorithm asphalt pavement,100,4
+A,firefly algorithm subgrade soil,100,0
+A,bat algorithm pavement,100,0
+A,bat algorithm asphalt pavement,100,0
+A,bat algorithm subgrade soil,100,0
+A,biogeography-based optimization pavement,100,7
+A,biogeography-based optimization asphalt pavement,0,0
+A,biogeography-based optimization subgrade soil,50,11
+A,grey wolf optimizer pavement,100,1
+A,grey wolf optimizer asphalt pavement,100,1
+A,grey wolf optimizer subgrade soil,100,0
+A,whale optimization algorithm pavement,100,1
+A,whale optimization algorithm asphalt pavement,100,14
+A,whale optimization algorithm subgrade soil,100,0
+A,salp swarm algorithm pavement,100,1
+A,salp swarm algorithm asphalt pavement,100,0
+A,salp swarm algorithm subgrade soil,100,0
+A,grasshopper optimization algorithm pavement,100,0
+A,grasshopper optimization algorithm asphalt pavement,100,2
+A,grasshopper optimization algorithm subgrade soil,100,0
+A,harris hawks optimization pavement,100,0
+A,harris hawks optimization asphalt pavement,100,1
+A,harris hawks optimization subgrade soil,100,0
+A,slime mould algorithm pavement,100,0
+A,slime mould algorithm asphalt pavement,100,0
+A,slime mould algorithm subgrade soil,100,0
+A,symbiotic organisms search pavement,100,0
+A,symbiotic organisms search asphalt pavement,100,1
+A,symbiotic organisms search subgrade soil,100,0
+A,sine cosine algorithm pavement,100,0
+A,sine cosine algorithm asphalt pavement,100,0
+A,sine cosine algorithm subgrade soil,100,0
+A,teaching-learning-based optimization pavement,100,5
+A,teaching-learning-based optimization asphalt pavement,100,61
+A,teaching-learning-based optimization subgrade soil,100,1
+A,jaya algorithm pavement,100,19
+A,jaya algorithm asphalt pavement,100,3
+A,jaya algorithm subgrade soil,100,0
+A,beetle antennae search pavement,100,2
+A,beetle antennae search asphalt pavement,100,0
+A,beetle antennae search subgrade soil,100,0
+A,marine predators algorithm pavement,100,0
+A,marine predators algorithm asphalt pavement,100,1
+A,marine predators algorithm subgrade soil,100,2
+A,arithmetic optimization pavement,100,24
+A,arithmetic optimization asphalt pavement,100,9
+A,arithmetic optimization subgrade soil,100,3
+A,equilibrium optimizer pavement,100,0
+A,equilibrium optimizer asphalt pavement,100,4
+A,equilibrium optimizer subgrade soil,100,4
+A,political optimizer pavement,100,59
+A,political optimizer asphalt pavement,100,1
+A,political optimizer subgrade soil,100,10
+A,coot optimization pavement,100,0
+A,coot optimization asphalt pavement,100,0
+A,coot optimization subgrade soil,100,0
+A,dipper throated optimization pavement,100,1
+A,dipper throated optimization asphalt pavement,100,0
+A,dipper throated optimization subgrade soil,100,0
+A,black-winged kite algorithm pavement,100,0
+A,black-winged kite algorithm asphalt pavement,100,0
+A,black-winged kite algorithm subgrade soil,100,0
+A,fennec fox optimization pavement,100,1
+A,fennec fox optimization asphalt pavement,100,0
+A,fennec fox optimization subgrade soil,100,0
+A,dingo optimization algorithm pavement,100,6
+A,dingo optimization algorithm asphalt pavement,100,0
+A,dingo optimization algorithm subgrade soil,100,1
+A,forensic-based investigation optimization pavement,100,10
+A,forensic-based investigation optimization asphalt pavement,100,56
+A,forensic-based investigation optimization subgrade soil,100,17
+A,gravitational search algorithm pavement,100,1
+A,gravitational search algorithm asphalt pavement,100,0
+A,gravitational search algorithm subgrade soil,100,1
+A,bayesian optimization pavement,100,22
+A,bayesian optimization asphalt pavement,100,3
+A,bayesian optimization subgrade soil,100,1
+A,tree-structured parzen estimator pavement,100,7
+A,tree-structured parzen estimator asphalt pavement,100,3
+A,tree-structured parzen estimator subgrade soil,100,0
+A,optuna pavement,100,0
+A,optuna asphalt pavement,100,1
+A,optuna subgrade soil,100,3
+A,hyperparameter optimization pavement,100,2
+A,hyperparameter optimization asphalt pavement,100,1
+A,hyperparameter optimization subgrade soil,100,0
+A,metaheuristic optimization pavement,100,3
+A,metaheuristic optimization asphalt pavement,100,1
+A,metaheuristic optimization subgrade soil,100,0
+A,nature-inspired algorithm pavement,100,1
+A,nature-inspired algorithm asphalt pavement,100,2
+A,nature-inspired algorithm subgrade soil,100,1
+A,swarm intelligence pavement,100,4
+A,swarm intelligence asphalt pavement,100,10
+A,swarm intelligence subgrade soil,100,1
+A,evolutionary optimization pavement,100,1
+A,evolutionary optimization asphalt pavement,100,1
+A,evolutionary optimization subgrade soil,100,0
+B,artificial neural network pavement,100,71
+B,artificial neural network asphalt pavement,100,47
+B,artificial neural network subgrade soil,100,16
+B,multilayer perceptron pavement,100,4
+B,multilayer perceptron asphalt pavement,100,2
+B,multilayer perceptron subgrade soil,100,0
+B,deep learning pavement,100,81
+B,deep learning asphalt pavement,100,28
+B,deep learning subgrade soil,100,20
+B,convolutional neural network pavement,100,30
+B,convolutional neural network asphalt pavement,100,8
+B,convolutional neural network subgrade soil,100,3
+B,long short-term memory pavement,100,8
+B,long short-term memory asphalt pavement,100,49
+B,long short-term memory subgrade soil,100,1
+B,recurrent neural network pavement,100,7
+B,recurrent neural network asphalt pavement,100,9
+B,recurrent neural network subgrade soil,100,0
+B,transformer network pavement,100,62
+B,transformer network asphalt pavement,100,7
+B,transformer network subgrade soil,100,3
+B,graph neural network pavement,100,0
+B,graph neural network asphalt pavement,100,1
+B,graph neural network subgrade soil,100,0
+B,physics-informed neural network pavement,100,7
+B,physics-informed neural network asphalt pavement,100,11
+B,physics-informed neural network subgrade soil,100,1
+B,adaptive neuro-fuzzy inference system pavement,100,4
+B,adaptive neuro-fuzzy inference system asphalt pavement,100,3
+B,adaptive neuro-fuzzy inference system subgrade soil,100,1
+B,extreme learning machine pavement,100,34
+B,extreme learning machine asphalt pavement,100,43
+B,extreme learning machine subgrade soil,100,10
+B,wavelet neural network pavement,100,2
+B,wavelet neural network asphalt pavement,100,1
+B,wavelet neural network subgrade soil,100,0
+B,radial basis function network pavement,100,0
+B,radial basis function network asphalt pavement,100,0
+B,radial basis function network subgrade soil,100,0
+B,support vector regression pavement,100,4
+B,support vector regression asphalt pavement,100,16
+B,support vector regression subgrade soil,100,3
+B,least squares support vector machine pavement,100,0
+B,least squares support vector machine asphalt pavement,100,0
+B,least squares support vector machine subgrade soil,100,0
+B,random forest pavement,100,30
+B,random forest asphalt pavement,100,7
+B,random forest subgrade soil,100,3
+B,gradient boosting pavement,100,17
+B,gradient boosting asphalt pavement,100,13
+B,gradient boosting subgrade soil,100,1
+B,extreme gradient boosting pavement,100,0
+B,extreme gradient boosting asphalt pavement,100,2
+B,extreme gradient boosting subgrade soil,100,0
+B,categorical boosting pavement,100,3
+B,categorical boosting asphalt pavement,100,0
+B,categorical boosting subgrade soil,100,0
+B,light gradient boosting pavement,100,0
+B,light gradient boosting asphalt pavement,100,3
+B,light gradient boosting subgrade soil,100,0
+B,gaussian process regression pavement,100,0
+B,gaussian process regression asphalt pavement,100,19
+B,gaussian process regression subgrade soil,100,0
+B,group method of data handling pavement,100,4
+B,group method of data handling asphalt pavement,100,51
+B,group method of data handling subgrade soil,100,3
+B,gene expression programming pavement,100,13
+B,gene expression programming asphalt pavement,100,5
+B,gene expression programming subgrade soil,100,1
+B,multi-gene genetic programming pavement,100,1
+B,multi-gene genetic programming asphalt pavement,100,26
+B,multi-gene genetic programming subgrade soil,100,5
+B,evolutionary polynomial regression pavement,100,10
+B,evolutionary polynomial regression asphalt pavement,100,1
+B,evolutionary polynomial regression subgrade soil,100,4
+B,multivariate adaptive regression splines pavement,100,0
+B,multivariate adaptive regression splines asphalt pavement,100,0
+B,multivariate adaptive regression splines subgrade soil,100,0
+B,stacking ensemble pavement,100,5
+B,stacking ensemble asphalt pavement,100,7
+B,stacking ensemble subgrade soil,100,1
+B,variational mode decomposition pavement,100,0
+B,variational mode decomposition asphalt pavement,50,8
+B,variational mode decomposition subgrade soil,100,0
+B,empirical mode decomposition pavement,100,6
+B,empirical mode decomposition asphalt pavement,100,31
+B,empirical mode decomposition subgrade soil,100,1
+C,hybrid model pavement,100,63
+C,hybrid model asphalt pavement,100,37
+C,hybrid model subgrade soil,100,35
+C,hybrid model asphalt mixture,100,96
+C,hybrid model pavement performance,100,43
+C,hybrid model pavement distress,100,57
+C,hybrid machine learning pavement,100,11
+C,hybrid machine learning asphalt pavement,100,2
+C,hybrid machine learning subgrade soil,100,4
+C,hybrid machine learning asphalt mixture,100,23
+C,hybrid machine learning pavement performance,100,10
+C,hybrid machine learning pavement distress,100,6
+C,hybrid intelligent model pavement,100,11
+C,hybrid intelligent model asphalt pavement,100,5
+C,hybrid intelligent model subgrade soil,100,12
+C,hybrid intelligent model asphalt mixture,100,9
+C,hybrid intelligent model pavement performance,100,3
+C,hybrid intelligent model pavement distress,100,18
+C,optimized machine learning pavement,100,3
+C,optimized machine learning asphalt pavement,100,4
+C,optimized machine learning subgrade soil,100,2
+C,optimized machine learning asphalt mixture,0,0
+C,optimized machine learning pavement performance,50,2
+C,optimized machine learning pavement distress,100,1
+C,soft computing pavement,100,17
+C,soft computing asphalt pavement,100,14
+C,soft computing subgrade soil,100,45
+C,soft computing asphalt mixture,100,5
+C,soft computing pavement performance,100,2
+C,soft computing pavement distress,100,7
+C,data-driven model pavement,100,34
+C,data-driven model asphalt pavement,100,5
+C,data-driven model subgrade soil,100,6
+C,data-driven model asphalt mixture,100,7
+C,data-driven model pavement performance,100,13
+C,data-driven model pavement distress,100,19
+C,surrogate model pavement,100,12
+C,surrogate model asphalt pavement,100,1
+C,surrogate model subgrade soil,100,1
+C,surrogate model asphalt mixture,100,2
+C,surrogate model pavement performance,100,0
+C,surrogate model pavement distress,100,2
+C,explainable machine learning pavement,100,0
+C,explainable machine learning asphalt pavement,100,4
+C,explainable machine learning subgrade soil,100,1
+C,explainable machine learning asphalt mixture,100,3
+C,explainable machine learning pavement performance,100,0
+C,explainable machine learning pavement distress,100,0

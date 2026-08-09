@@ -6,19 +6,36 @@ engineering (2005–2026).
 **Authors:** S. S. Naseralavi (Shahid Bahonar University of Kerman) · A. R. Ghanizadeh (Sirjan
 University of Technology)
 **Target journal:** *Automation in Construction* (Elsevier) — see [Journal targeting](#journal-targeting)
-**Status:** manuscript renders clean to PDF/Word/HTML (32 pages). All 14 sections now have
+**Status:** manuscript renders clean to PDF/Word/HTML (37 pages). All 14 sections now have
 real, cited content — including Section 10 (Interpretability), which an external review
 caught as a silently-empty placeholder despite being cross-referenced 13 times elsewhere
 under the wrong section number; both the content and every cross-reference are now fixed.
 The full 24-item PAVE-ML checklist is reproduced as a table in the main text (not just
 described), and Figure 4 now shows the leakage mechanism (random vs. section-grouped
-cross-validation) as a concrete diagram rather than only prose. Database: 90 records, 75
-classified primary studies. See `CLAUDE.md` for the full external-review tracking and the
-project handoff for continuing in Claude Code / Cowork. What remains: expanding the corpus from 90
-to the 300–500
-records a full systematic review of this kind needs, full-text coding (vs. abstract-level) of
-every PAVE-ML field, the double-coding reliability pass, and the abstract (deliberately still a
-placeholder — it should not be written before the findings it summarises exist).
+cross-validation) as a concrete diagram rather than only prose. Database: **138 records**,
+122 classified primary studies. See `CLAUDE.md` for the full external-review tracking and the
+project handoff for continuing in Claude Code / Cowork.
+
+**2026-08-09 update — the real harvest now works.** A prior Claude Code session ran in a
+sandbox with no outbound access to academic APIs; this session does. `analysis/harvest_openalex.py`
+was tried first and failed — the shared egress IP had exhausted OpenAlex's metered credit
+quota (`Retry-After: ~7.7h`, not a per-second throttle) — so `analysis/harvest_crossref.py`
+was written as a working fallback, reusing the same 261-query algorithm-name vocabulary
+against Crossref instead. It returned 2,332 unique, pavement-gated candidate records in one
+run (`data/corpus_raw.csv`, `data/prisma_query_log.csv`) — the PRISMA *identification* stage,
+done for real for the first time. `analysis/screen_corpus.py` narrowed that to 97
+structural candidates (`data/corpus_screened.csv`); 44 of those, hand-verified against the
+structural definition in `docs/01_SCOPE_AND_TAXONOMY.md` §2, were added to the database this
+session (`analysis/add_batch4.py`), taking the corpus from 94 to 138 records. One of them
+overturns a previously-reported finding: H6 (decomposition-then-learn) was reported as
+"confirmed absent after two independent search sweeps" — a third, wider sweep found a
+genuine, abstract-confirmed H6 exemplar (`@Kaloop2020wavelet`), so §8/§13 now read H6 as
+rare, not absent. What remains: continuing to screen `data/corpus_screened.csv` (53 more
+structural candidates not yet reviewed) and the wider 2,332-record raw pool toward the
+150–500 records a full systematic review of this kind needs, full-text coding (vs.
+abstract-level) of every PAVE-ML field, the double-coding reliability pass, and the abstract
+(deliberately still a placeholder — it should not be written before the findings it
+summarises exist).
 
 ---
 
@@ -114,12 +131,15 @@ The one thing that needs you is pushing to GitHub, which needs your credentials
 | Path | What it does | Runs where |
 |---|---|---|
 | `analysis/make_bib.py` | Regenerates `references.bib` from the CSV. | drafting side |
-| `analysis/build_seed_db.py` · `add_batch2.py` · `add_batch3.py` | Build and extend the verified database, in the order they were run. | drafting side |
-| `analysis/classify_hybridity.py` | Hand-verified H1–H7 classification of every primary study (not a keyword guess — checked against the structural definition in `docs/01_SCOPE_AND_TAXONOMY.md` §2). Re-run after adding records. | drafting side |
+| `analysis/build_seed_db.py` · `add_batch2.py` · `add_batch3.py` · `add_batch4.py` | Build and extend the verified database, in the order they were run. `add_batch4.py` (2026-08-09) is the first batch sourced from a real bulk harvest rather than one-at-a-time manual search — see its docstring for the full verification-depth disclosure per record. | drafting side |
+| `analysis/classify_hybridity.py` | Hand-verified H1–H7 classification of every primary study (not a keyword guess — checked against the structural definition in `docs/01_SCOPE_AND_TAXONOMY.md` §2). Re-run after adding records. **Its path to `seed_bibliography.csv` was broken** (pointed at `analysis/` from before the file moved to `data/`) **until 2026-08-09** — fixed alongside a switch to atomic writes so a mid-run crash can no longer truncate the real database file, which is exactly what happened once while fixing this and was recovered from `git checkout`. | drafting side |
 | `analysis/fig_coverage_gap.py` | Produces Figure 1 (review-landscape coverage matrix). | drafting side |
 | `analysis/fig_taxonomy_distribution.py` | Produces Figure 2 (H1–H7 distribution in the seed corpus). | drafting side |
 | `analysis/table_premium_evidence.py` | Produces the within-corpus hybridisation-premium evidence table (Section 9) — every figure copied verbatim from source papers, nothing estimated. | drafting side |
-| `analysis/harvest_openalex.py` | **Reproducibility artifact for supplementary material.** The full 261-query PRISMA search, documented so a third party can re-execute the identification stage. It is not part of the drafting workflow — this environment's network cannot reach api.openalex.org directly (`403 host_not_allowed`); the actual corpus is being built via a literature-search connector instead. | third-party replication |
+| `analysis/harvest_openalex.py` | The original 261-query PRISMA search against OpenAlex. Still fails from this environment — not a syntax or design problem, but a metered-credit quota already exhausted on the shared egress IP (`Retry-After: ~7.7h`, confirmed 2026-08-09). Kept as the reproducibility artifact for a third party with unmetered OpenAlex access. | third-party replication |
+| `analysis/harvest_crossref.py` | **The working harvester.** Same 261-query vocabulary (imported from `harvest_openalex.py`, not duplicated), reimplemented against the Crossref API, which is reachable from this environment. Produced `data/corpus_raw.csv` (2,332 unique pavement-gated records) and `data/prisma_query_log.csv` in one ~13-minute run. Crossref rarely carries publisher abstracts (especially Elsevier), so downstream screening leans harder on title text than the OpenAlex version would have. | drafting side |
+| `analysis/screen_corpus.py` | First-pass structural (not lexical) filter over `corpus_raw.csv` — flags optimiser/learner/physics/decomposition/symbolic/stacking/fusion co-occurrence signals and dedupes against the existing database. Produced `data/corpus_screened.csv`: 97 structural candidates out of 2,307 new records, of which 44 were reviewed and added in batch 4 — **53 remain unreviewed**, the natural starting point for the next expansion pass. | drafting side |
+| `analysis/fetch_shortlist.py` | One-off helper: fetches full Crossref records (incl. abstract, where deposited) for a DOI list, one at a time. Used to verify the batch-4 shortlist before coding; not part of the regular pipeline. | drafting side |
 
 ---
 
@@ -153,15 +173,25 @@ Requires Quarto ≥ 1.5, Python ≥ 3.10, a TeX installation with `lmodern`, and
 
 ## Journal targeting
 
-Venue distribution of the 48 primary studies in the database so far:
+Venue distribution of the 122 primary studies in the database as of 2026-08-09 (approximate —
+the `venue` field mixes full and abbreviated journal names for some entries, a known minor
+data-quality item, not yet worth a cleanup pass on its own):
 
-| Publisher | Count |
+| Publisher | Approx. count |
 |---|---|
-| MDPI (Infrastructures, Applied Sciences, Materials, Sensors, Sustainability, AI) | 16 |
-| Springer Nature (mostly *Scientific Reports*) | 5 |
-| Wiley (*Computer-Aided Civil and Infrastructure Engineering*) | 4 |
-| Elsevier | 2 |
-| Various | 21 |
+| Elsevier (*Construction and Building Materials*, *Automation in Construction*, *Transportation Geotechnics*, *Mechanical Systems and Signal Processing*, etc.) | ~26 |
+| MDPI (*Infrastructures*, *Applied Sciences*, *Materials*, *Sensors*, *Sustainability*, *AI*) | ~27 |
+| Springer Nature (*Scientific Reports*, *Int. J. Pavement Res. Technol.*, etc.) | ~19 |
+| Wiley (*Computer-Aided Civil and Infrastructure Engineering*, *Structural Control and Health Monitoring*) | ~7 |
+| Taylor & Francis (*International Journal of Pavement Engineering*, *Road Materials and Pavement Design*) | ~10 |
+| Various | ~33 |
+
+Elsevier's own share of the corpus has grown substantially since the 48-study snapshot this
+table previously reported (was 2, now ~26) — almost entirely because Elsevier is where most of
+the 2024–2026 PINN and stacking-ensemble literature identified in the 2026-08-09 harvest turned
+out to be published. That is itself a data point worth weighing the next time this decision is
+revisited: the venue is not just a fit for the audit's tone, it is where a meaningful share of
+what the audit covers already appears.
 
 "Publish where the sources are" is a reasonable tiebreaker, but it should not decide this case,
 for a specific reason: this paper audits the methodological conventions of a literature that is

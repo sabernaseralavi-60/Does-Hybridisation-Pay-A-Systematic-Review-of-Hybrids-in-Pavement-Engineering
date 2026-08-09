@@ -37,29 +37,36 @@ them confirmed ungrouped, leakage-prone cross-validation.
 
 ## What actually changed — and what you should do differently
 
-The prior session hand-searched and hand-verified everything through a connector because
-it had no other option. **Before you replicate that pattern, check whether you can do
-better:**
+**Status: resolved, 2026-08-09 — this is now history, read it for context, not as a live
+instruction.** A prior session hand-searched and hand-verified everything through a connector
+because it had no other option. The 2026-08-09 session confirmed real internet access and
+ran the actual bulk harvest — but not through `harvest_openalex.py` as originally hoped; see
+"Current state" above for what happened and `analysis/harvest_crossref.py` for the working
+replacement. **Do not re-attempt `harvest_openalex.py` from this environment without first
+checking whether the same shared-IP quota exhaustion is still in effect** (a single `curl`
+to `https://api.openalex.org/works?search=pavement&per-page=1` will show a 429 with
+`Retry-After` in the response headers if so) — if it's still blocked, go straight to
+`harvest_crossref.py`, which needs no debugging, or `screen_corpus.py`'s existing output,
+which needs no harvesting at all. The original numbered instructions below are preserved for
+context on the reasoning, not as steps still to be taken.
 
-1. **Try the real harvest first.** `analysis/harvest_openalex.py` is a fully-written,
-   documented, 261-query PRISMA search script against the OpenAlex API. It was never
-   successfully run — only tested for syntax. If you have outbound internet access, run:
-   ```bash
-   pip install requests
-   python analysis/harvest_openalex.py --email <a real email — OpenAlex politeness pool>
-   ```
-   This should return several thousand raw records in `corpus_raw.csv` in one run,
-   which is the entire remaining "collect candidates" problem solved in one command
-   instead of ~15 more manual chat rounds. If it works, your job shifts from *searching*
-   to *screening and coding*, which is a completely different (and much faster) workflow.
-   If OpenAlex rate-limits or blocks you too, fall back to whatever academic search
-   access you do have (web search + fetch, a connected Scopus/WoS tool, etc.) — but try
-   the real API first, because it is categorically faster than anything else available.
+1. ~~Try the real harvest first.~~ Done. `analysis/harvest_openalex.py` failed with a
+   metered-quota 429, not a syntax or design problem. `analysis/harvest_crossref.py` reuses
+   its exact query vocabulary against Crossref and works — see "Current state" above for
+   results (2,332 raw records, 97 screened candidates, 44 added). If you need to extend the
+   corpus further, screening `data/corpus_screened.csv`'s remaining candidates is faster than
+   running either harvester again.
 
 2. **If you have general web browsing** (which the prior session did have, just not for
    bulk API calls), you can fetch full text directly for verification — this worked
    repeatedly and is documented below under "Full-text verification protocol." Prefer
-   this over re-deriving conclusions from abstracts.
+   this over re-deriving conclusions from abstracts. This session found it also works well
+   for confirming a specific abstract sentence when a publisher blocks direct fetch (Taylor &
+   Francis, Elsevier, and Penn State's PURE repository all returned 403 to `WebFetch` this
+   session; a `WebSearch` for the exact title often still surfaces the abstract text via a
+   search-engine snippet or a ResearchGate/ScienceDirect-topics mirror, which is weaker than
+   reading the actual page but stronger than guessing from the title alone — code accordingly,
+   as "abstract obtained via search, not the publisher page" rather than as a full read).
 
 ## Non-negotiable integrity rules — read before writing anything
 
@@ -110,30 +117,74 @@ them silently would be a serious failure, not a minor one.
    source: "Wei, X." was actually "Xiao, W."). When a name looks uncertain, check the
    publisher page directly rather than trusting a citation aggregator's parsing.
 
-## Current state (as of handoff)
+## Current state (as of 2026-08-09 — the real-harvest session)
 
-- **90 records** in `data/seed_bibliography.csv`: 75 primary studies (all hand-classified
-  against the H1–H7 taxonomy), 15 prior reviews used for positioning (§1).
-- **H1–H7 distribution among classified primaries:** H1=20 (+1 joint H1;H4), H2=4, H3=1,
-  H4=5, H5=2, H6=0 (confirmed absent after two independent search sweeps — a reported
-  finding, not an oversight), H7=7; 24 coded `none` (not hybrid under the structural
-  test), 11 coded `context` (kept for citation but outside the taxonomy).
-- **Four records are full-text verified** (fetched and read in full, not just abstract):
-  `10.1186/s44147-025-00706-9`, `10.1186/s44147-025-00623-x` (both confirm identical
+**Read this before re-reading "What actually changed" below — it's now history, not a live
+question.** This session confirmed real internet access, but not to OpenAlex: the shared
+egress IP had already exhausted OpenAlex's metered credit quota (`Retry-After: ~7.7h` —
+a multi-hour wall, not a backoff-able rate limit). `analysis/harvest_crossref.py` was written
+as a working fallback, reusing `harvest_openalex.py`'s exact 261-query vocabulary against
+Crossref instead, and it worked: 2,332 unique pavement-gated records in one ~13-minute run
+(`data/corpus_raw.csv`, `data/prisma_query_log.csv`). `analysis/screen_corpus.py` narrowed
+that to 97 structural candidates (`data/corpus_screened.csv`); 44 were hand-verified and
+added (`analysis/add_batch4.py`). **If you're picking this up next: don't re-run the
+harvest, screen `data/corpus_screened.csv`'s remaining ~53 candidates first** — the
+identification-stage work is already done and sitting on disk.
+
+- **138 records** in `data/seed_bibliography.csv`: 122 primary studies (all hand-classified
+  against the H1–H7 taxonomy), 16 prior reviews used for positioning (§1).
+- **H1–H7 distribution among classified primaries:** H1=27 (+1 joint H1;H4, +3 joint H1;H5),
+  H2=11 (+1 joint H2;H4), H3=10 (+1 joint H3;H6), H4=8, H5=5, **H6=2** (no longer confirmed
+  absent — see below), H7=17; 25 coded `none`, 11 coded `context`.
+- **The H6 finding changed, and this matters.** Earlier phases reported H6 (decomposition-
+  then-learn) as "confirmed absent after two independent search sweeps." That was an honest
+  report of what those two sweeps covered, not a false claim — but a third, wider sweep found
+  a genuine, abstract-confirmed H6 exemplar: `10.1080/10298436.2020.1776281` (Kaloop et al.,
+  wavelet decomposition integrated with OP-ELM for rigid-pavement IRI, benchmarked against
+  plain OP-ELM/ANN/regression on LTPP data — the abstract states the coupling explicitly). A
+  second, more tentative candidate (`10.1016/j.ymssp.2025.112468`) is coded H6 provisionally.
+  Manuscript §8 and §13 (research agenda) were updated to reflect this; do not revert them to
+  the old "H6=0" framing. Full-text access to both records was attempted and blocked (403 from
+  both publishers) — leakage risk on both is honestly coded unknown, not inferred either way.
+  **This is the single highest-priority full-text verification target for the next session.**
+- **Verification depth on the 44 new (batch 4) records is genuinely mixed and disclosed
+  per-record.** ~12 were checked against a real Crossref-deposited abstract (quoted or closely
+  paraphrased in the CSV `note` field and in `add_batch4.py`'s docstring); the rest are coded
+  at title level only, which is defensible for `hybrid_type` in this literature (titles are
+  unusually literal about method) but is NOT full-text verification — every note says which
+  category it's in. Do not upgrade a title-level note to a stronger claim without actually
+  reading the paper.
+- **A real, previously-undocumented bug was found and fixed**: `classify_hybridity.py` (and
+  the historical `add_batch2.py`/`add_batch3.py`/`build_seed_db.py`) resolved
+  `seed_bibliography.csv`'s path relative to `analysis/`, from before the file was moved to
+  `data/` — only `make_bib.py` had ever been fixed. Running `classify_hybridity.py` in this
+  state would have silently written to a wrong, freshly-created `analysis/seed_bibliography.csv`
+  instead of the real database. Fixed by hardcoding the correct path AND switching both
+  `classify_hybridity.py` and `add_batch4.py` to atomic writes (write to `.tmp`, then
+  `replace()`) — this class of bug had already truncated the real 94-record database to empty
+  once during this session (Python's `open(path, "w")` truncates on open, before any write
+  error), recovered via `git checkout HEAD -- data/seed_bibliography.csv`. **If you add a
+  fifth batch script, copy `add_batch4.py`'s path-resolution and atomic-write pattern, not the
+  older scripts'.**
+- **Four records remain full-text verified from earlier phases** (fetched and read in full,
+  not just abstract): `10.1186/s44147-025-00706-9`, `10.1186/s44147-025-00623-x` (identical
   leakage mechanism — ungrouped 5-fold CV — in the Alnaqbi CRCP series), `10.3390/app132312862`
-  (confirms a *different* leakage mechanism — pre-split Boruta feature selection),
-  `10.3390/ma18122913` (confirms a genuine *positive* exemplar — leakage-safe stacking
-  design, with an honest caveat that the same paper still lacks external validation).
-  These four are the template for how the remaining ~70 should eventually be verified —
-  see the protocol below.
-- **All 14 manuscript sections have real, cited prose** — none are empty placeholders —
-  but Sections 5–8 (domain deep-dives) and the bibliometric analysis (§3) are thin
-  relative to what a finished 200-record corpus would support, and figures 2–3 are
-  explicitly captioned as seed-corpus snapshots, not final bibliometric claims.
+  (a *different* leakage mechanism — pre-split Boruta feature selection), `10.3390/ma18122913`
+  (a genuine *positive* exemplar — leakage-safe stacking, with an honest caveat that external
+  validation is still absent). Plus `10.1038/s41598-024-81311-3` (Duan, the nuanced mixed
+  case). These remain the template for full-text verification; the H6 records above are the
+  next natural candidates once full-text access is obtainable.
+- **All 14 manuscript sections have real, cited prose** — none are empty placeholders — and
+  Sections 5–8 grew real content this session (H4 CNN-transformer recurrence, H5 batch-4
+  stacking additions, the corrected H6 finding, the H3/PINN growth-phase framing). §3's
+  figures are still captioned as seed-corpus snapshots, not final bibliometric claims — still
+  true and still honest at 138 records, though less true than it was at 90.
 - **The abstract is deliberately still a placeholder.** Do not write it until the
   findings it would summarize are actually final — this is intentional, not an oversight.
-- **Builds clean**: `quarto render manuscript.qmd` → 26-page PDF, DOCX, HTML, zero
-  citation warnings, zero LaTeX errors, as of the last commit.
+- **Builds clean**: `quarto render manuscript.qmd` → 37-page PDF, DOCX, HTML, zero
+  citation warnings, zero LaTeX errors, as of the last commit. Two more stray `\textendash`
+  LaTeX macros were found and fixed this session (rule 5 below) — this bug class keeps
+  recurring; grep for it before every render, not just when told to.
 
 ## Full-text verification protocol (the pattern that worked four times)
 
@@ -155,26 +206,45 @@ them silently would be a serious failure, not a minor one.
 7. If the finding changes what a manuscript section claims, update that section's prose
    too — don't let the database and the manuscript drift apart.
 
-## Suggested priority order
+## Suggested priority order (revised 2026-08-09 — the harvest step is done)
 
-1. **Try the real OpenAlex harvest** (see above). This is the highest-leverage single
-   action available — it could turn ~15 rounds of manual searching into one run.
-2. **Screen the harvest output** against the eligibility criteria in `manuscript.qmd`
-   §2.3 / `docs/01_SCOPE_AND_TAXONOMY.md` §2 (structural hybridity test, not lexical).
-   Target a final included corpus in the 150–250 range per the original brief.
-3. **Classify each included study** against H1–H7 using `analysis/classify_hybridity.py`
+1. ~~Try the real OpenAlex harvest~~ **Done** (via the Crossref fallback — see "Current
+   state"). 2,332 raw records identified, 97 screened as structural candidates, 44 added.
+2. **Keep screening.** `data/corpus_screened.csv` has ~53 structural candidates from this
+   harvest not yet reviewed, sorted by citation count — start there before running either
+   harvester again. Beyond that, `data/corpus_raw.csv` has ~2,200 more pavement-gated records
+   that never passed the structural filter in `analysis/screen_corpus.py`; that filter is a
+   reasonable but imperfect proxy (see its docstring) and is worth spot-checking against the
+   eligibility criteria in `manuscript.qmd` §2.3 / `docs/01_SCOPE_AND_TAXONOMY.md` §2 rather
+   than trusted blindly. Target a final included corpus in the 150–250 range per the original
+   brief (currently 122 primary studies) — realistically another 1–2 batches of similar size
+   to batch 4 gets there.
+3. **Classify each newly included study** against H1–H7 using `analysis/classify_hybridity.py`
    as the running record — extend `CLASSIFICATION`, don't hand-edit the CSV's
-   `hybrid_type` column without also updating the script.
+   `hybrid_type` column without also updating the script. Watch the H1/H7 skew: batch 4 alone
+   added 5 H1 and 10 H7 records (title-level PINN and GEP papers were unusually easy to find
+   and code with confidence) — if this keeps happening, the corpus's taxonomy balance may
+   start reflecting what's easy to classify from a title rather than the field's true
+   distribution; weight future screening passes toward H2/H4/H5/H6 candidates specifically to
+   counteract that.
 4. **Full-text verify a meaningful stratified sample** — not necessarily every record,
    but enough per domain/hybridisation-type to make Section 9's premium analysis and
    Section 7's leakage findings statistically meaningful rather than anecdotal. Twenty to
    thirty full verifications, chosen to span H1/H2/H7 and all six pavement domains, would
-   be a defensible sample even short of full coverage.
-5. **Only then** flesh out Sections 5–8 and rewrite §3's bibliometric figures from the
-   completed corpus rather than the seed-corpus snapshot.
-6. **Double-coding reliability** (§2's κ commitment) needs a second independent human
-   coder — this is not something you can satisfy alone regardless of how much you read;
-   flag it to the human authors as an open task for them specifically.
+   be a defensible sample even short of full coverage. **The two new H6 records
+   (`10.1080/10298436.2020.1776281`, `10.1016/j.ymssp.2025.112468`) are now the single
+   highest-priority full-text targets** — both are abstract-confirmed or abstract-plausible
+   H6 cases whose leakage risk is completely unknown, and this taxonomy type's characteristic
+   failure mode (decomposition fitted before the split) is exactly the kind of thing only
+   full text can confirm. Both publishers blocked `WebFetch` (403) as of 2026-08-09; try again
+   in case that was transient, and try a direct PDF link or an institutional-access route
+   before concluding it's a repeat of the Ghorbani/ScienceDirect failure.
+5. **Continue fleshing out Sections 5–8** and rewrite §3's bibliometric figures from the
+   completed corpus rather than the seed-corpus snapshot — genuinely closer now (138 records)
+   but still explicitly captioned as provisional, and should stay that way until the corpus is
+   much closer to final.
+6. **Double-coding reliability** (§2's κ commitment) — **already resolved**, see the dedicated
+   section below; do not reopen this as if it were still open.
 7. **Write the abstract last**, from the finished Sections 9 and 11.
 
 ## Build commands

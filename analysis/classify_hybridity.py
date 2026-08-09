@@ -109,11 +109,73 @@ CLASSIFICATION = {
     "10.3390/coatings10111100": ("H2", "genetic algorithm drives random forest structure (RF-GA), published version"),
     "10.1155/2022/9193511": ("H1", "salp swarm algorithm optimizes multiclass SVM"),
     "10.3390/app9153172": ("H1", "GA and PSO separately tune ANFIS (GA-ANFIS, PSO-ANFIS), compared against plain SVM"),
+
+    # --- batch 4 (2026-08-09 Crossref harvest) ---
+    # H1
+    "10.1016/j.conbuildmat.2023.131564": ("H1", "Bayesian optimization tunes RF+XGBoost for GPR density prediction"),
+    "10.1016/j.conbuildmat.2024.136675": ("H1", "Bayesian optimization tunes XGBoost for moisture-damage recognition"),
+    "10.3390/app112411867": ("H1", "PSO tunes SVM for fatigue life prediction"),
+    "10.1088/2631-8695/ae894f": ("H1", "WOA tunes XGBoost hyperparameters; abstract-confirmed +2.8pp over plain XGBoost"),
+    "10.1177/00368504261450035": ("H1", "PSO tunes SVM (c, gamma); abstract-confirmed 70/30 + 5-fold CV protocol"),
+    # H1;H5
+    "10.3390/s25082616": ("H1;H5", "Bayesian optimization tunes hyperparameters AND fusion coefficients over a Stacking meta-learner"),
+    "10.1038/s41598-025-26364-8": ("H1;H5", "APO+GGO tune XGBoost/LightGBM combined via Voting+Stacking"),
+    # H2
+    "10.1080/10298436.2021.2005056": ("H2", "grey wolf optimizer drives ANN weights for dynamic modulus"),
+    "10.1016/j.conbuildmat.2021.123026": ("H2", "GA drives ANN for moduli back-calculation (inverse problem)"),
+    "10.1080/10298430500495113": ("H2", "GA drives ANN for moduli back-calculation, 2006"),
+    "10.1080/10298430500195432": ("H2", "GA drives ANN for pavement maintenance management, 2005"),
+    "10.1139/cjce-2017-0124": ("H2", "GA used AS the ANN training algorithm (not just hyperparameter search), abstract-confirmed"),
+    "10.1007/s00521-018-3426-0": ("H2", "symbiotic organisms search drives least-squares SVR"),
+    # H2;H4
+    "10.1016/j.conbuildmat.2024.139540": ("H2;H4", "CPO tunes a CNN-LSTM fused architecture"),
+    # H3
+    "10.1016/j.trgeo.2024.101409": ("H3", "PINN for subgrade settlement from shield tunnelling"),
+    "10.1016/j.autcon.2025.105983": ("H3", "PINN with fuzzy PDE constraint, published in the review's own target journal"),
+    "10.1016/j.conbuildmat.2025.142179": ("H3", "PINN for asphalt pavement temperature field"),
+    "10.1016/j.conbuildmat.2024.135070": ("H3", "PINN-AFP: PINN for fatigue C-S curve estimation"),
+    "10.1016/j.conbuildmat.2026.146164": ("H3", "PINN for airport pavement thermal property inversion"),
+    "10.1177/03611981251372087": ("H3", "PINN vs conventional ANN on LTPP cracking, abstract-confirmed comparison"),
+    "10.1016/j.neunet.2026.108803": ("H3", "PINN for viscoelastic constitutive modeling of asphalt mechanics"),
+    "10.1016/j.cacaie.2026.100171": ("H3", "DM-PINN-FP for fatigue prediction with cracking preference index"),
+    "10.1080/14680629.2024.2315073": ("H3", "PINN pretrained on suspension response, fine-tuned to IRI -- confirmed primary research via search, not the near-identically-titled 2026 ACME review"),
+    # H3;H6
+    "10.1016/j.ymssp.2026.114232": ("H3;H6", "Wave-PINN: wavelet decomposition front-end feeding a physics-informed network"),
+    # H4
+    "10.3390/app13031999": ("H4", "STrans-YOLOX: CNN(YOLOX)+Swin Transformer fusion, abstract-confirmed"),
+    "10.3390/s26113286": ("H4", "dual-path CNN+Transformer fusion for crack segmentation, abstract-confirmed"),
+    "10.1177/03611981251329046": ("H4", "parallel CNN+Transformer branches for crack detection, abstract-confirmed"),
+    # H5
+    "10.1016/j.conbuildmat.2025.140001": ("H5", "stacking ensemble for flow number prediction"),
+    "10.1016/j.conbuildmat.2025.142704": ("H5", "stacking ensemble for elastic modulus back-calculation"),
+    "10.1080/10298436.2026.2641497": ("H1;H5", "multi-model optimized stacking ensemble framework"),
+    "10.1007/s42947-026-00866-8": ("H5", "stacked ensemble with SHAP-prioritized intervention ranking"),
+    # H6 -- the taxonomically consequential pair; see add_batch4.py docstring
+    "10.1080/10298436.2020.1776281": ("H6", "wavelet decomposition integrated with OP-ELM, abstract-confirmed; CONFIRMS H6 is not empty, overturning the two-sweep 'H6=0' finding"),
+    "10.1016/j.ymssp.2025.112468": ("H6", "EEMD+K-means IMF selection feeding a downstream predictor (downstream model not named in the retrievable snippet -- provisional, top full-text-verification priority)"),
+    # H7
+    "10.1016/j.conbuildmat.2020.120543": ("H7", "GEP for rutting depth prediction"),
+    "10.1080/10298436.2016.1138113": ("H7", "GEP for dynamic modulus prediction"),
+    "10.1016/j.trgeo.2021.100520": ("H7", "GEP (+ANN comparator) for subgrade resilient modulus under freeze-thaw"),
+    "10.1016/j.conbuildmat.2019.03.225": ("H7", "GEP for aggregate angularity effects on permanent deformation"),
+    "10.1007/s41062-021-00504-1": ("H7", "GEP for PCI from IRI"),
+    "10.1371/journal.pone.0301075": ("H7", "GP+EPR vs ANN/RSM for soil-lime UCS; abstract-confirmed GP underperforms ANN (66% vs 85% accuracy) -- §9 hybrid-underperforms evidence"),
+    "10.1080/14680629.2022.2126383": ("H7", "MEP+GEP for bituminous mixture stiffness modulus"),
+    "10.1016/j.jreng.2022.08.002": ("H7", "multi-gene GP explicitly extending AASHTO M-E design procedure"),
+    "10.1016/j.rineng.2023.101242": ("H7", "GEP for theoretical maximum specific gravity"),
+    "10.1061/jpeodx.pveng-1834": ("H7", "GEP for dynamic modulus and phase angle"),
+    # none -- metaheuristic present but not coupled to a data-driven learner
+    "10.3141/2170-08": ("none", "GA fits a semi-empirical curve-shift model directly; ANN run as a separate uncoupled comparator, same exclusion logic as cscm.2022.e00991"),
 }
 
 
 def main() -> None:
-    path = Path(__file__).with_name("seed_bibliography.csv")
+    # NOTE: seed_bibliography.csv lives in data/, not analysis/ -- it was moved there
+    # at some point and this script's path was never updated (found 2026-08-09 while
+    # adding batch 4; make_bib.py had already been fixed, this one and the historical
+    # add_batch2.py/add_batch3.py/build_seed_db.py were not). Hardcoded rather than
+    # re-using the stale with_name() pattern so this can't silently regress again.
+    path = Path(__file__).parent.parent / "data" / "seed_bibliography.csv"
     rows = list(csv.DictReader(path.open(encoding="utf-8-sig")))
     fieldnames = list(rows[0].keys())
     if "hybrid_type" not in fieldnames:
@@ -139,10 +201,12 @@ def main() -> None:
         else:
             r["hybrid_type"] = "not-yet-coded"
 
-    with path.open("w", newline="", encoding="utf-8-sig") as f:
+    tmp = path.with_suffix(".csv.tmp")
+    with tmp.open("w", newline="", encoding="utf-8-sig") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         w.writerows(rows)
+    tmp.replace(path)  # atomic swap -- never leaves the real file truncated mid-write
 
     uncoded = [r["title"][:60] for r in rows
                if r["hybrid_type"] == "not-yet-coded"]

@@ -354,7 +354,7 @@ discussion in §11 rather than folded into the hybridisation-type counts in §3.
 
 Material-property modelling is the sub-domain where the seed corpus shows the
 heaviest concentration of H1 (metaheuristic-tuned hyperparameters) and H7
-(symbolic\textendash numeric) activity, and it is also where the tuned-baseline
+(symbolic–numeric) activity, and it is also where the tuned-baseline
 problem identified in §9 is most visible, because the target properties —
 resilient modulus, dynamic modulus, unconfined compressive strength, air-void
 content — are exactly the properties for which competitor mechanistic or empirical
@@ -588,13 +588,18 @@ not report.
 # Physics-informed, fusion, stacking, decomposition and symbolic hybrids {#sec-other-hybrids}
 
 The five hybridisation types beyond direct metaheuristic-hyperparameter coupling
-(H3\textendash H7) are less numerous in the seed corpus than H1, but each supplies
+(H3–H7) are less numerous in the seed corpus than H1, but each supplies
 at least one clear exemplar worth setting out in detail because each illustrates a
 distinct failure mode that a reader unfamiliar with the taxonomy in §4 would not
 otherwise anticipate.
 
 **H4, architecture fusion**, is best represented in the seed corpus by four vision
-and one network-level study. Sun et al.'s PCDETR [@Sun2023automatic] fuses a
+and one network-level study discussed in detail below, plus three further
+CNN–transformer crack-detection studies added from a 2026 harvest pass
+[@Luo2023strans; @Zhang2026dual; @Deng2025enhancing] that were coded at title/abstract
+level rather than full-text verified — together they show the CNN+transformer fusion
+pattern recurring from 2023 through 2026 rather than appearing once. Sun et al.'s
+PCDETR [@Sun2023automatic] fuses a
 Swin-Transformer and a ResNet backbone for pavement crack detection and reports
 near-identical average precision on the authors' own dataset and on COCO (45.6% vs.
 45.8%) — a similarity close enough across two very different image domains to
@@ -626,19 +631,37 @@ implementation — and is cited throughout this review (§9, §12) as the type's
 positive case; Yu et al. [@Yu2020highway] stack five heterogeneous learners for
 tunnel pavement performance within a digital-twin framework and report strong
 deployment integration, but without the explicit leakage-avoidance statement
-that distinguishes Huang et al.'s design.
+that distinguishes Huang et al.'s design. Three further stacking studies from the
+2026 harvest pass [@Guan2025enhanced; @Wang2025intelligent; @Gupta2026stacked] are
+coded H5 at title/abstract level only and have not yet been checked for which side
+of the Huang/Yu leakage-practice split they fall on — this is exactly the kind of
+question the full-text verification queue exists to answer, not something to guess
+from a title.
 
-**H6, decomposition then learn**, is the one taxonomy type with, at the time of
-writing, no confirmed pavement-specific exemplar in the seed corpus, and the
-absence has now survived two independent, differently worded search sweeps rather
-than reflecting a single missed query — every wavelet- or VMD-based candidate
-located so far belongs to an adjacent domain (bridge deflection monitoring,
-energy-price forecasting) rather than to pavement engineering directly. Its absence
-is reported here as a tentative finding in its own right, to be confirmed or
-overturned once the completed harvest is available, rather than silently omitted
-or, on the other hand, overstated on the basis of two searches.
+**H6, decomposition then learn**, was reported through the previous phase of this
+review as the one taxonomy type with no confirmed pavement-specific exemplar in the
+seed corpus, after two independent, differently worded search sweeps failed to find
+one. That was an honest report of what those two sweeps actually covered, not a
+structural claim about the literature, and it has not survived a third, larger pass:
+a 2026 harvest search identified Kaloop et al.'s wavelet–OP-ELM model for rigid
+pavement roughness [@Kaloop2020wavelet], whose own abstract states plainly that
+"Optimally Pruned Extreme Learning Machine (OP-ELM) and Wavelet analysis are
+integrated" and benchmarks the coupling against plain OP-ELM, a conventional ANN and
+a regression baseline on LTPP data — a genuine, abstract-confirmed H6 case. A second,
+more tentative candidate [@Zhang2025integrated] pairs ensemble empirical mode
+decomposition with a downstream predictor for pavement modulus, though the
+retrievable abstract snippet does not name that downstream model explicitly, so it
+is coded provisionally pending full-text confirmation. Neither record's leakage risk
+is known: both publishers blocked automated full-text access — the same failure mode
+recorded against a separate, earlier verification attempt on a ScienceDirect-hosted
+paper (documented in the database, not repeated here) — so whether the
+decomposition step was fitted before or after the train/test split — the exact H6
+failure mode this taxonomy names — remains unread rather than assumed either way.
+The corrected finding is therefore that H6 is rare but not absent, and that its
+absence in earlier phases reflected search coverage, not a property of the
+literature; the research agenda in §13 is updated accordingly.
 
-**H3 (physics-informed)** and **H7 (symbolic\textendash numeric)** are each
+**H3 (physics-informed)** and **H7 (symbolic–numeric)** are each
 introduced in §6 and §5 respectively [@Pasupunuri2024roughness;
 @Ghanizadeh2024formulation; @Ghorbani2020genetic] and are not repeated here in
 full; both recur in §10's discussion of what a validated, mechanically consistent
@@ -992,15 +1015,28 @@ data and method that would settle it, rather than as a general aspiration.
    answers, and would be the single highest-value full-text verification task for
    the completed audit given how much of the corpus's rutting/cracking/IRI
    evidence currently traces to this one substrate.
-5. **The H6 gap.** No pavement-specific decomposition-then-learn (H6) study was
-   located in the seed corpus (§8). Is this a genuine absence in the pavement
-   literature, or an artefact of the search terms used so far? The completed
-   harvest, with its wider algorithm-name coverage, will distinguish the two.
-6. **Physics-informed learning beyond one exemplar.** @Pasupunuri2024roughness is
-   presently the seed corpus's only clear H3 case. Does the completed harvest find
-   others, and if genuinely few exist, why has physics-constrained learning been
-   adopted so much more slowly in pavement engineering than in adjacent fields
-   such as structural health monitoring?
+5. **The H6 leakage question.** A wider harvest pass found H6 is rare but not
+   absent (§8) — @Kaloop2020wavelet is an abstract-confirmed wavelet-decomposition
+   exemplar, and @Zhang2025integrated a provisional EEMD-based one. Both were
+   located too late for full-text access before this draft, and both publishers
+   blocked automated fetching. Whether the decomposition step in either was fitted
+   before or after the train/test split — the specific failure mode this taxonomy
+   names for H6 — is the highest-priority open full-text verification task for the
+   type, now that "does an H6 exemplar exist" is no longer the open question.
+6. **Physics-informed learning has moved past one exemplar.** @Pasupunuri2024roughness
+   was, in an earlier phase of this review, the seed corpus's only clear H3 case;
+   a single 2026 harvest pass located nine further PINN studies published between
+   2024 and 2026 [@KargahOstadi2024physics; @Wang2024physics; @Li2025physics;
+   @Quan2025physics; @Han2024pinn; @Xing2026physics; @Taheri2025pavement;
+   @Luo2026physics; @Liu2026physics], none yet full-text verified. That a single
+   targeted search surfaced this many suggests physics-informed learning in
+   pavement engineering is past the single-exemplar stage and entering a genuine
+   growth phase circa 2024–2026 — itself a bibliometric finding worth stating
+   plainly rather than the more cautious one-exemplar framing this item originally
+   posed as an open question. What remains genuinely open is comparative: does
+   this cohort's physics constraint measurably outperform an unconstrained network
+   on the same data, or is "physics-informed" becoming this literature's next
+   under-audited novelty label the way "hybrid" already is (§1)?
 7. **Interpretability on validated models only.** §10 and §11 argue that a SHAP or
    Garson decomposition computed on a model with no external validation ranks the
    structure of the training data rather than the physics of the pavement. What
@@ -1030,10 +1066,11 @@ data and method that would settle it, rather than as a general aspiration.
 
 ::: {.content-visible when-format="html"}
 > **Status note.** The conclusions below are provisional, drawn from the
-> seed-corpus evidence assembled during protocol development (n = 68 primary
-> studies, of which 34 are coded as hybrid under the structural definition in
+> seed-corpus evidence assembled so far (n = `{python} len(primary)` primary
+> studies, of which `{python} sum(1 for r in primary if r["hybrid_type"] not in ("none","context","not-yet-coded",""))`
+> are coded as hybrid under the structural definition in
 > §2.3). They are stated with the confidence the current evidence supports, not
-> the confidence a completed 300\textendash 500-study audit would carry, and every
+> the confidence a completed 300–500-study audit would carry, and every
 > numbered point below is written so that the completed audit can confirm,
 > revise, or overturn it without requiring the argument to be restructured.
 :::
