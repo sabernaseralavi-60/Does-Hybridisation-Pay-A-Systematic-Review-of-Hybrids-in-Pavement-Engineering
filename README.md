@@ -33,7 +33,7 @@ Being direct about this, since it matters more than any file listing below:
   already demonstrate, across more queries.
 - **Full-text coding.** Almost every PAVE-ML field (leakage risk, external validation, baseline
   strength, etc.) is still coded from abstracts, but this is now demonstrated to be tractable,
-  not just designed-for: four records were fetched and read in full. Two (`10.1186/s44147-025-00706-9`
+  not just designed-for: five records were fetched and read in full. Two (`10.1186/s44147-025-00706-9`
   and `10.1186/s44147-025-00623-x`, the first two papers in the Alnaqbi same-substrate series
   discussed in Section 7) independently confirmed the identical leakage mechanism — an ungrouped
   5-fold split at the observation level, plus a self-admitted absence of external validation in
@@ -43,15 +43,23 @@ Being direct about this, since it matters more than any file listing below:
   in the paper's own "Data Preparation" section, before the train/test split appears in "Model
   Construction" — and the paper's own conclusion attributes part of its headline accuracy gain
   directly to that contaminated step. The fourth (`10.3390/ma18122913`, Huang et al.'s stacking
-  ensemble) is the balancing case: full-text confirmed as a genuine **positive** exemplar, with
+  ensemble) is a balancing case: full-text confirmed as a genuine **positive** exemplar, with
   a leakage-safe stacking design stated explicitly in its own methods section rather than
   inferred from the abstract — while also honestly coding `external_validation: no` on the same
-  paper, since a study can get one PAVE-ML dimension right while another stays open. Four
-  confirmations, two risk mechanisms, one verified positive case is the current full-text
+  paper, since a study can get one PAVE-ML dimension right while another stays open. The fifth
+  (`10.1038/s41598-024-81311-3`, Duan's BKA-XGBoost model) is the most nuanced case yet: confirms
+  a genuine repeated-run reliability check (10 dataset reassemblies, matching PAVE-ML item 12c)
+  and an author-acknowledged cross-study comparability caveat, alongside an unconfirmed comparator
+  tuning budget and no mechanistic baseline — a single paper landing on both sides of the ledger.
+  One verification attempt (`10.1016/j.sandf.2020.02.010`, Ghorbani's GA-vs-ANN-GA comparison)
+  failed outright — ScienceDirect blocks automated fetching — and is recorded as a failed attempt
+  in the CSV rather than left ambiguous, so it isn't silently re-attempted the same way. Five
+  confirmations, two risk mechanisms, one verified positive case, one nuanced mixed case, one
+  honestly-recorded failure is the current full-text
   record. The first verification also surfaced a second overlapping-author cluster
   (Wang/Xiao/Liu) publishing on a related substrate, found only by following the first paper's
-  own reference list. Scaling this from 4 records to the ~60 that need it is the
-  highest-value remaining task, and the method is now proven four times over, not
+  own reference list. Scaling this from 5 records to the ~60 that need it is the
+  highest-value remaining task, and the method is now proven five times over, not
   hypothetical.
 - **Double-coding reliability.** Section 2 commits to an independent 15% double-coded sample
   with Cohen's κ reported per field. This requires a second coder — a role this assistant
