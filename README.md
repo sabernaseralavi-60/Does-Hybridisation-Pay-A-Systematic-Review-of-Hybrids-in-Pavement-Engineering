@@ -6,9 +6,13 @@ engineering (2005–2026).
 **Authors:** S. S. Naseralavi (Shahid Bahonar University of Kerman) · A. R. Ghanizadeh (Sirjan
 University of Technology)
 **Target journal:** *Automation in Construction* (Elsevier) — see [Journal targeting](#journal-targeting)
-**Status:** manuscript renders clean to PDF/Word/HTML (23 pages). Sections 1–4 and 9–14 have
-real, cited content grounded in a 74-record verified database. Sections 5–8 (domain deep dives)
-also now have grounded content. What remains: expanding the corpus from 74 to the 300–500
+**Status:** manuscript renders clean to PDF/Word/HTML (24 pages). Sections 1–14 all have
+real, cited content grounded in an 83-record verified database (68 classified primary
+studies). A significant finding emerged this round: at least 8 papers by one overlapping
+author team share a single ~33-section LTPP substrate, each pairing a different
+metaheuristic/learner combination with a different target variable — now documented in
+Section 7 with a concrete leakage-risk argument. What remains: expanding the corpus from 83
+to the 300–500
 records a full systematic review of this kind needs, full-text coding (vs. abstract-level) of
 every PAVE-ML field, the double-coding reliability pass, and the abstract (deliberately still a
 placeholder — it should not be written before the findings it summarises exist).
@@ -19,7 +23,7 @@ placeholder — it should not be written before the findings it summarises exist
 
 Being direct about this, since it matters more than any file listing below:
 
-- **Corpus size.** 74 verified records is a solid seed, not a completed systematic review.
+- **Corpus size.** 83 verified records is a solid seed, not a completed systematic review.
   A defensible Q1 review in this space needs several hundred screened records. The bottleneck
   is literature-search-connector throughput (~10–20 records per targeted query), not analysis
   time — expanding this is mechanical repetition of what `add_batch2.py` / `add_batch3.py`
@@ -37,10 +41,11 @@ Being direct about this, since it matters more than any file listing below:
   it summarises is complete, would mean writing conclusions before the evidence for them
   exists.
 
-Sections 1–4 and 9–14 currently have real, cited, grounded prose — not placeholders — and are
-a reasonable draft of the paper's argument and structure. Sections 5–8 (domain deep dives) also
-now have grounded content, though thinner than the final version will be once the corpus is
-larger. Everything below this point in the README is unchanged in spirit from before: you do
+All fourteen numbered sections currently have real, cited, grounded prose — not
+placeholders — and are a reasonable draft of the paper's argument and structure. The domain
+sections (5–8) are thinner than the final version will be once the corpus is larger, but each
+is now anchored on at least one concrete, verifiable finding rather than general description.
+Everything below this point in the README is unchanged in spirit from before: you do
 not need to run anything.
 
 Everything in `analysis/` runs on the drafting side and its outputs are committed to this
@@ -69,7 +74,7 @@ The one thing that needs you is pushing to GitHub, which needs your credentials
 
 | Path | What it is |
 |---|---|
-| `data/seed_bibliography.csv` | **The database everything else derives from.** 74 verified records (59 primary studies, 15 prior reviews) so far, every row hand-classified against the H1–H7 taxonomy; every row carries a live DOI. Grows as the harvest proceeds. |
+| `data/seed_bibliography.csv` | **The database everything else derives from.** 83 verified records (68 primary studies, 15 prior reviews) so far, every row hand-classified against the H1–H7 taxonomy; every row carries a live DOI. Grows as the harvest proceeds. |
 | `docs/00_MANUSCRIPT_ARCHITECTURE.md` | Original positioning analysis and journal shortlist. Partly superseded by `01`. |
 | `docs/01_SCOPE_AND_TAXONOMY.md` | **Current scope document.** Structural definition of hybridity, the H1–H7 taxonomy, the hybridisation-premium metric, section plan. Read this one first. |
 | `docs/02_MANUSCRIPT_S2_methodology.md` | Full draft of Section 2, transferred into `manuscript.qmd` piece by piece. |
