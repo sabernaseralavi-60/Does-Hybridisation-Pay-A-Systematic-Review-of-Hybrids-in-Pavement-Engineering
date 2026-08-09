@@ -349,3 +349,41 @@ literal failure mode the paper spends its own pages criticizing other authors fo
 Whichever path the human authors choose, the manuscript's methods section needs to
 accurately describe what was actually done — that's the one non-negotiable part.
 
+## A structural fix worth doing, not just noting
+
+The Section 10 bug (real content missing, 13 cross-references pointing at the wrong
+section) happened because `manuscript.qmd` refers to sections with hardcoded prose like
+`§10` rather than Quarto's native `@sec-interpretability` auto-numbering. Hardcoded
+numbers drift silently the moment a section is inserted or reordered; auto-refs cannot
+drift because Quarto recomputes the number at render time. I audited every `§N`
+reference and every `@fig-`/`@tbl-`/`@sec-` anchor programmatically after fixing this
+round's bug (script below, or re-derive it) and everything currently resolves correctly
+— but the underlying fragility is still there for the next person who inserts a section.
+
+If you have a safe window to test a full re-render before a deadline, consider
+converting the hardcoded `§N` references to `@sec-xxx` style throughout — this is
+higher-effort than it sounds (every reference needs the correct anchor identified, not
+just a find-replace) but it would make this entire bug class structurally impossible
+rather than something that has to be re-audited by hand every time. I did not attempt
+this myself because the current build is clean and verified, and a large mechanical edit
+across ~60 references without enough runway left to fully re-verify felt like a worse
+trade than documenting the risk clearly here.
+
+**The audit script, if you want to re-run it after making changes:**
+```python
+import re
+text = open('manuscript.qmd', encoding='utf-8').read()
+headers = re.findall(r'^# (.+?)(?:\s*\{#([\w-]+)\})?$', text, re.MULTILINE)
+section_map = {}
+n = 0
+for title, anchor in headers:
+    if '.unnumbered' in title or anchor is None:
+        continue
+    n += 1
+    section_map[n] = (title.strip(), anchor)
+for num, (title, anchor) in section_map.items():
+    print(f"§{num}  {title}  [{anchor}]")
+# then grep every §N in the prose and eyeball it against this map --
+# a mismatch is exactly the bug class that happened here.
+```
+
