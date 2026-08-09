@@ -122,7 +122,7 @@ explainable and interpretable machine learning specifically in asphalt pavement
 engineering, and proposes a five-layer appraisal framework — data provenance, model
 performance, explanation quality, physical plausibility, decision utility — that
 overlaps conceptually with more than one domain of the instrument this review
-proposes in §10. The honest distinction is not that this territory is unoccupied;
+proposes in §12. The honest distinction is not that this territory is unoccupied;
 it is that Jweihan's review is organised around explainability as the object of
 study and conducted at scoping-review depth (breadth of coverage, not per-study
 methodological coding), whereas the present review is organised around
@@ -131,7 +131,7 @@ a full systematic protocol with per-study rigour coding (leakage risk, external
 validation, baseline strength, search-budget parity), and reports the coded audit
 as a quantified premium rather than as a coverage synthesis. Interpretability is one
 of several PAVE-ML domains in this review, not its organising question; the two
-instruments are complementary rather than competing, and §10 states explicitly
+instruments are complementary rather than competing, and §12 states explicitly
 where PAVE-ML's interpretability items and Jweihan's five-layer framework agree and
 where they diverge. What none of these three contributions does — and what remains
 this review's distinguishing claim — is define hybridity structurally rather than
@@ -160,7 +160,7 @@ distribution across the coded corpus rather than as a single number, since most
 studies do not report the comparison required to compute it at all (§9). Fourth, a
 reporting and appraisal instrument, **PAVE-ML**, extending a general
 data-driven-pavement-model checklist with four items specific to hybrid pipelines
-(§10), so that the next study in this field can report what this review finds
+(§12), so that the next study in this field can report what this review finds
 missing from most of the last two decades of it.
 
 # Review methodology {#sec-method}
@@ -473,7 +473,7 @@ excerpted — mentions grouping by the 33 physical CRCP sections the observation
 are drawn from. With roughly twelve observations per section on average, an
 ungrouped random split places multiple, highly correlated records from the same
 physical section on both sides of most folds — precisely the leakage pathway the
-PAVE-ML rule for `leakage_risk` (§10) is written to catch. Both papers' own
+PAVE-ML rule for `leakage_risk` (§12) is written to catch. Both papers' own
 Limitations or Future Directions sections separately confirm the absence of
 external validation in their own words — the first stating outright that "no
 independent testing was done using additional datasets," the second listing
@@ -486,7 +486,23 @@ against it by observing that RMSE stays within a narrow band across folds
 (0.02791–0.06422) — but fold-to-fold consistency is not evidence against the
 leakage pathway just described, since every fold would share the same
 section-level contamination and so would be expected to perform similarly
-whether or not the model has learned anything section-specific. Both papers also
+whether or not the model has learned anything section-specific. @fig-leakage
+makes the mechanism concrete: with roughly twelve observations per section, an
+ungrouped random assignment (Panel A) all but guarantees that most sections
+contribute records to more than one fold, so a model can be trained on 10–11 of a
+section's 12 observations and then "tested" on the 12th — a near-duplicate,
+spatially correlated record rather than a genuinely unseen one. A section-grouped
+assignment (Panel B), which the reviewed papers' methods sections do not describe
+using, holds each section entirely within one fold, so the test fold contains no
+information the model could have seen during training.
+
+![Random versus section-grouped 5-fold cross-validation on a 33-section, ~12-observation-per-section
+substrate matching the CRCP data audited in this section. Panel A reproduces the
+partitioning @Alnaqbi2025learning's methods section describes; Panel B shows the
+section-grouped alternative not used in the reviewed
+papers.](figures/fig04_leakage_diagram.png){#fig-leakage width=95%}
+
+Both papers also
 describe z-score normalisation, imputation and outlier removal within a single
 "data preprocessing" stage that textually precedes the cross-validation
 description, with no statement in either that these steps were refit inside each
@@ -511,7 +527,7 @@ conclusion attributes part of its headline result directly to the contaminated
 step: the six-variable model improves R^2^ by 0.007 over the seventeen-variable
 version, "attributed to the capability of Boruta to identify relevant
 variables." The two mechanisms, read together, make the point this review is
-built to make more sharply than either alone: `leakage_risk` in PAVE-ML (§10)
+built to make more sharply than either alone: `leakage_risk` in PAVE-ML (§12)
 catches structurally different failures — no partition grouping in one case,
 preprocessing fitted before the partition in the other — under a single item,
 which is exactly why the item is framed around the outcome (does information
@@ -542,7 +558,7 @@ sub-field that the rigour audit is designed to test.
 Deng and Shi's practitioner-facing review of rutting models [@Deng2023rutting] adds
 a data point this review's own audit cannot generate on its own: a survey of which
 rutting-prediction models highway agencies actually report using in practice. That
-detail belongs with the deployment-evidence discussion in §9 and §10 as one of the
+detail belongs with the deployment-evidence discussion in §9 and §12 as one of the
 only direct looks, anywhere in the surrounding literature, at the demand side of
 the deployment gap this review otherwise infers only from what published papers do
 not report.
@@ -584,7 +600,7 @@ in the corpus, both already introduced in §9: Huang et al.
 in-fold base-model predictions specifically to avoid leakage — full-text
 verification confirms the design does what its abstract claims, with a formal
 description of the fold structure matching a textbook leakage-safe stacking
-implementation — and is cited throughout this review (§9, §10) as the type's
+implementation — and is cited throughout this review (§9, §12) as the type's
 positive case; Yu et al. [@Yu2020highway] stack five heterogeneous learners for
 tunnel pavement performance within a digital-twin framework and report strong
 deployment integration, but without the explicit leakage-avoidance statement
@@ -632,7 +648,7 @@ for both the hybrid and the baseline arm (`budget_parity_reported`); and, where 
 newly named optimiser is the paper's contribution, whether it was benchmarked
 against at least two established optimisers on the same problem
 (`optimiser_novelty_claim`). These fields are specified in full, with worked
-examples, in the PAVE-ML instrument (§10) and were fixed before full-text coding
+examples, in the PAVE-ML instrument (§12) and were fixed before full-text coding
 began.
 
 ## Preliminary evidence from the seed corpus
@@ -672,7 +688,7 @@ counter-example — a heterogeneous stacking ensemble (H5) that both reports a
 credible premium over single models and states explicitly that its meta-learner was
 trained on cross-validated, not in-fold, base-model predictions specifically to
 avoid the leakage pathway characteristic of that hybridisation type (§4, H5). It is
-cited in §10 as the positive PAVE-ML exemplar for exactly this reason.
+cited in §12 as the positive PAVE-ML exemplar for exactly this reason.
 
 Neither reading should be generalised past what five studies can support. They are
 reported here as the reason the systematic audit in this section is worth
@@ -680,7 +696,80 @@ completing, not as its substitute.
 
 # Interpretability and uncertainty in hybrid pipelines {#sec-interpretability}
 
-PLACEHOLDER.
+Two constructs recur across the hybrid-model literature under the banner of
+trustworthiness — interpretability and uncertainty quantification — and both are
+applied in this corpus in ways that, on inspection, often do less than their
+presence in a paper's keyword list implies.
+
+## What "interpretability" means for a hybrid pipeline
+
+The interpretability methods visible in the seed corpus fall into two families with
+different epistemic status. The first is **post-hoc attribution on an opaque
+model**: Garson's algorithm and connection-weight decomposition
+[@Ghanizadeh2020neural], SHAP applied to gradient-boosted or stacked ensembles
+[@Xiao2023optimizing; @Huang2025rheological], and neighbourhood component analysis
+[@Ghanizadeh2023soft]. These methods answer a well-defined but narrow question —
+which inputs moved this particular model's output, on this particular data — and
+answer nothing at all about whether the model's predictions are trustworthy off
+that data. The second is **intrinsic interpretability**: symbolic-regression
+methods (GEP, MEP, EPR, MGGP) that yield a closed-form equation rather than a
+black-box function
+[@Mazari2016pavement; @Ghanizadeh2024formulation; @Jalal2023indirect]. An
+equation can be inspected for physical plausibility — does the sign of each
+coefficient match known mechanics, does the functional form saturate or diverge
+where it should — in a way a SHAP plot cannot be, because SHAP explains what the
+model learned, not whether what it learned is correct.
+
+This distinction sharpens the point §7 and §9 make about validation. An
+attribution method applied to a model that has not been externally validated
+(the majority of the corpus, by the audit's own count) ranks the structure of
+that model's training data, not the physics of the pavement — and every one of
+the corpus's SHAP applications identified so far [@Xiao2023optimizing;
+@Huang2025rheological] is computed on a model whose external validation, under
+the criterion in §2.3, codes `no`. This is not a claim that the attributions are
+wrong; it is a claim that their scope is narrower than the surrounding prose
+typically implies. A useful negative case makes the point concretely:
+@Sandamal2023pavement apply SHAP to a two-predictor roughness model (age and
+cumulative traffic) — with only two inputs, a SHAP decomposition can say little a
+simple partial-dependence plot would not already show, and the paper illustrates
+how readily explainability tooling is reached for even where the underlying model
+offers little for it to explain. At the other end, @Jalal2023indirect make the
+trade-off explicit rather than leaving it implicit: their ANN outperforms GEP and
+MEP numerically, and they recommend the symbolic alternatives anyway, stating
+plainly that this is "due to the blackbox nature of the ANN" — one of the only
+studies in the corpus to treat interpretability as a design objective competing
+with accuracy, rather than as a figure added after the fact.
+
+## Uncertainty quantification: absent, not merely under-reported
+
+Where interpretability is present but often narrow, predictive uncertainty is, so
+far, close to absent. None of the studies coded to date reports an interval or
+distributional estimate for an individual prediction — no conformal intervals, no
+deep ensembles, no Gaussian-process variance, no quantile regression. What the
+corpus does report, frequently, is dispersion of the *performance estimate* across
+cross-validation folds (§9's discussion of @Alnaqbi2025learning's fold-consistent
+RMSE is one example), which is a different quantity: it describes how stable the
+model's average skill is across resampling, not how confident any single
+prediction should be treated. The two are easy to conflate and the corpus's
+papers do not, so far, distinguish them explicitly. Reporting this distinction is
+itself one of the audit's findings — a field that quantifies dispersion of its own
+performance estimate but not of its individual predictions has a form of
+uncertainty reporting that looks more complete than it is.
+
+## Physics-informed learning as a third, structural, path
+
+@Pasupunuri2024roughness's PINN offers a genuinely different route to
+trustworthiness than either post-hoc attribution or a closed-form equation: rather
+than explaining a model after fitting or restricting its functional form,
+constrain what the model is permitted to learn to what the underlying MEPDG
+mechanics allow, expressed as a physics-loss term during training. Sensitivity
+analysis is reported as a supplementary check, not the primary trust mechanism —
+the mechanics constraint does that work directly. This is the only example of
+this kind in the seed corpus (§8), and its scarcity is itself the finding: a
+pavement engineering literature that has adopted post-hoc explanation tools
+readily has adopted structural, mechanics-consistent alternatives far more slowly,
+despite the domain's underlying physics being comparatively well characterised
+relative to many fields where PINNs originated.
 
 # From premium to decision {#sec-decision}
 
@@ -730,15 +819,60 @@ The audit this review conducts is only as trustworthy as the coding rules behind
 it, and those rules are only useful to the field if they survive as something other
 than this paper's internal methodology. PAVE-ML is offered as both: the instrument
 this review scores every included study against, and a checklist future studies can
-score themselves against before submission.
+score themselves against before submission. @tbl-paveml reproduces the full
+instrument; the operational decision rules and worked examples that make each
+item's coding reproducible rather than a matter of reader judgement are given in
+full in the supplementary material (`docs/03_PAVE-ML_instrument.md`).
 
-The full instrument — twenty items across five domains (data provenance,
-preprocessing and partitioning, modelling and comparison, evaluation and
-interpretation, and generalisation and transparency), plus four items specific to
-hybrid pipelines — is reproduced in full in the supplementary material
-(`docs/03_PAVE-ML_instrument.md`), together with the operational decision rules and
-worked examples that make the coding reproducible rather than a matter of reader
-judgement. Two design choices are worth stating here because they determine how the
+```{python}
+#| label: tbl-paveml
+#| tbl-cap: "The PAVE-ML checklist: 20 general items across five domains, plus 4 items specific to hybrid pipelines."
+from IPython.display import Markdown
+paveml = [
+    ("D1. Data provenance and structure", [
+        ("1", "Origin of every record stated (lab programme, named field project, named public database, or simulation), with acquisition period."),
+        ("2", "Unit of observation defined; paper states whether records are independent (e.g. repeated measurements on one specimen/section/image)."),
+        ("3", "Sample size reported per split; ratio of records to fitted parameters or candidate inputs is computable from the text."),
+        ("4", "Input and target ranges given; paper states predictions outside those ranges are not supported."),
+    ]),
+    ("D2. Preprocessing and partitioning", [
+        ("5", "Split described precisely enough to reproduce: mechanism, proportions, and random seed (or its absence)."),
+        ("6", "Every fitted preprocessing step (scaling, imputation, resampling, feature selection, augmentation) stated to be fitted inside the training partition only."),
+        ("7", "If records are non-independent (item 2), the split respects the grouping -- no specimen/section/image/site appears in more than one partition."),
+        ("8", "Class imbalance, censoring, or target skew reported, with its treatment described."),
+    ]),
+    ("D3. Modelling and comparison", [
+        ("9", "Architecture fully specified: layers, widths, activations, regularisation; base learner and count for ensembles."),
+        ("10", "Hyperparameter search described (space, method, budget); the selection partition is named and differs from the reported test partition."),
+        ("11", "At least one baseline is a tuned conventional model; the established domain/mechanistic model is included as a comparator where one exists."),
+        ("12", "Where a metaheuristic is used, whether it optimises hyperparameters or weights is stated, with a comparison against a conventionally tuned version of the same learner."),
+        ("12a *(hybrid-specific)*", "Base learner reported both with and without the hybridising component, on the same partition and metric."),
+        ("12b *(hybrid-specific)*", "Search budget stated for both hybrid and baseline arms (function evaluations, iterations \u00d7 population, or wall-clock time)."),
+        ("12c *(hybrid-specific)*", "Stochastic optimisers run more than once; spread across runs reported, not only the best run."),
+        ("12d *(hybrid-specific)*", "A newly named optimiser is compared against at least 2 established optimisers on the same problem; the No-Free-Lunch implication is acknowledged."),
+    ]),
+    ("D4. Evaluation, uncertainty and interpretation", [
+        ("13", "Metrics suit the task (e.g. IoU/F1 with the positive class defined for imbalanced segmentation, never bare pixel accuracy; an absolute-error metric in engineering units alongside R\u00b2 for regression)."),
+        ("14", "Performance reported for training AND held-out partitions, with dispersion (fold SD, CI, or repeated-run range), not a single point estimate."),
+        ("15", "Predictive uncertainty quantified for individual predictions (conformal intervals, deep ensembles, MC dropout, GP variance, quantile regression) or its absence acknowledged."),
+        ("16", "Any interpretation output (SHAP, PDP, Garson, connection weights, NCA, attention) accompanied by the explained model's validation status and a mechanics-consistency check."),
+    ]),
+    ("D5. Generalisation, transparency and use", [
+        ("17", "Evaluated on at least 1 dataset from an independent source (different agency/region/lab/test track/campaign) or the absence of external validation is stated as a limitation in the conclusions."),
+        ("18", "Code and trained weights available at a persistent identifier; data available or the barrier to release named."),
+        ("19", "Computational cost reported: training time, inference time per record/image, and hardware."),
+        ("20", "Intended decision context stated: which engineering decision the output informs, at what level (project/network), and what accuracy that decision requires."),
+    ]),
+]
+lines = ["| # | Item |", "|---|---|"]
+for domain, items in paveml:
+    lines.append(f"| **{domain}** | |")
+    for num, text in items:
+        lines.append(f"| {num} | {text} |")
+Markdown("\n".join(lines))
+```
+
+Two design choices are worth stating here because they determine how the
 audit's headline numbers should be read. First, **silence is coded as absence, not
 as unclear** — if a study does not state that its test partition was held out
 independently of hyperparameter selection, that is coded `no`, following the
@@ -889,7 +1023,7 @@ pattern (§9). Where the comparison approaches fairness, as in
 disappears against a properly tuned conventional alternative.
 
 Fourth, the field has the practical means to fix this at essentially no added
-cost. None of the four hybrid-specific PAVE-ML items (§10) requires new data
+cost. None of the four hybrid-specific PAVE-ML items (§12) requires new data
 collection or a new experiment — reporting the base learner's own tuned
 performance, the search budget for each arm, the spread across repeated stochastic
 runs, and a comparison against established optimisers are all computable from runs
