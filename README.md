@@ -31,21 +31,25 @@ Being direct about this, since it matters more than any file listing below:
   already demonstrate, across more queries.
 - **Full-text coding.** Almost every PAVE-ML field (leakage risk, external validation, baseline
   strength, etc.) is still coded from abstracts, but this is now demonstrated to be tractable,
-  not just designed-for: three records were fetched and read in full, and all three confirmed
-  a leakage-risk coding rather than merely flagging one. Two (`10.1186/s44147-025-00706-9` and
-  `10.1186/s44147-025-00623-x`, the first two papers in the Alnaqbi same-substrate series
-  discussed in Section 7) independently confirmed the identical mechanism — an ungrouped 5-fold
-  split at the observation level, plus a self-admitted absence of external validation in each
-  paper's own Limitations/Future Directions section. The third (`10.3390/app132312862`, Xiao
-  et al.'s TPE-CatBoost faulting model) confirmed a **structurally different** leakage
+  not just designed-for: four records were fetched and read in full. Two (`10.1186/s44147-025-00706-9`
+  and `10.1186/s44147-025-00623-x`, the first two papers in the Alnaqbi same-substrate series
+  discussed in Section 7) independently confirmed the identical leakage mechanism — an ungrouped
+  5-fold split at the observation level, plus a self-admitted absence of external validation in
+  each paper's own Limitations/Future Directions section. The third (`10.3390/app132312862`,
+  Xiao et al.'s TPE-CatBoost faulting model) confirmed a **structurally different** leakage
   mechanism on an unrelated substrate: Boruta feature selection performed on the full dataset
   in the paper's own "Data Preparation" section, before the train/test split appears in "Model
   Construction" — and the paper's own conclusion attributes part of its headline accuracy gain
-  directly to that contaminated step. Three confirmations, two mechanisms, zero exonerations is
-  the current full-text record. The first verification also surfaced a second overlapping-author
-  cluster (Wang/Xiao/Liu) publishing on a related substrate, found only by following the first
-  paper's own reference list. Scaling this from 3 records to the ~60 that need it is the
-  highest-value remaining task, and the method is now proven three times over, not
+  directly to that contaminated step. The fourth (`10.3390/ma18122913`, Huang et al.'s stacking
+  ensemble) is the balancing case: full-text confirmed as a genuine **positive** exemplar, with
+  a leakage-safe stacking design stated explicitly in its own methods section rather than
+  inferred from the abstract — while also honestly coding `external_validation: no` on the same
+  paper, since a study can get one PAVE-ML dimension right while another stays open. Four
+  confirmations, two risk mechanisms, one verified positive case is the current full-text
+  record. The first verification also surfaced a second overlapping-author cluster
+  (Wang/Xiao/Liu) publishing on a related substrate, found only by following the first paper's
+  own reference list. Scaling this from 4 records to the ~60 that need it is the
+  highest-value remaining task, and the method is now proven four times over, not
   hypothetical.
 - **Double-coding reliability.** Section 2 commits to an independent 15% double-coded sample
   with Cohen's κ reported per field. This requires a second coder — a role this assistant
