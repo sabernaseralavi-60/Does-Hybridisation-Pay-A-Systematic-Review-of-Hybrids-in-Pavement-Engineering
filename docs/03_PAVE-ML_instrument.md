@@ -15,7 +15,7 @@ hypothetical one — see `CLAUDE.md` if you're wondering why this note is here.
 
 ## Why the coding rules come first
 
-The audit in §11 is the paper's central claim. Its credibility rests entirely on whether two
+The audit in §12 (with supporting evidence in §7 and §9) is the paper's central claim. Its credibility rests entirely on whether two
 people reading the same paper assign the same codes. Vague criteria produce a κ around 0.4 and
 a reviewer who asks, fairly, whether the audit measures the literature or the auditors. So the
 rules below are written to be applied mechanically, and each has an explicit *default when the
@@ -105,11 +105,11 @@ These map the checklist onto the database fields defined in `00_MANUSCRIPT_ARCHI
 - **cannot-assess** — reserved for papers where the modelling section is too thin to place in any
   of the above. Report this count separately; a large one is itself a finding.
 
-> Worked case. Wei et al. (2023, 10.3390/app132312862) apply Boruta feature selection to 17
+> Worked case. Xiao et al. (2023, 10.3390/app132312862) apply Boruta feature selection to 17
 > candidate variables over 160 LTPP observations and then report R² = 0.906. Unless the full text
 > establishes that Boruta ran inside each training fold, this codes **high**. The paper is a good
 > paper by the field's conventions; that is precisely why it belongs in the audit rather than in
-> a list of bad actors. §11 must be about a systemic convention, not about individuals.
+> a list of bad actors. The audit sections must be about a systemic convention, not about individuals.
 
 ### `external_validation`
 
