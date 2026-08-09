@@ -292,6 +292,22 @@ can verify each is actually closed before submission rather than assuming it is.
 
 ## On double-coding via an AI persona — please read this before trying it
 
+**Status update: this was resolved, not left open.** The human authors chose the correct
+path — option 1 above — and asked for materials to send Dr. Ghanizadeh as a genuine
+independent blind coder. Those materials were prepared and sent:
+`PAVE-ML_Coding_Instructions.docx` (context, task, and field-by-field coding rules),
+`PAVE-ML_pilot_coding_sheet.xlsx` (14 papers, randomised order, dropdown-validated
+columns matching the CSV schema, a worked example row), and
+`PAVE-ML_full_instrument_reference.pdf` (the full instrument for anyone who wants more
+detail than the instructions summary). The exact selection — which 14 papers, in what
+order, and why — is recorded permanently in `docs/04_pilot_double_coding_selection.md`;
+**use that record, don't regenerate the selection**, when his results come back, and
+follow the "When results come back" checklist at the bottom of that file rather than
+eyeballing agreement.
+
+The reasoning below is preserved for context — it's why option 1 was the right call, not
+a hypothetical the authors still need to weigh.
+
 The human authors asked whether the §2/§12 double-coding commitment (independent 15%
 sample, Cohen's κ reported per field) could be satisfied by having you — Claude Code —
 code a sample once, then code it again "as a different researcher persona," with the
