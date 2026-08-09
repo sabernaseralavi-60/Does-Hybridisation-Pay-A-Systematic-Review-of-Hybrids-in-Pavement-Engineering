@@ -458,31 +458,43 @@ identical 395-observation, 33-section pool.
 
 None of this is concealed — @Alnaqbi2025optimizing's own reference list cites six
 other papers from the same series, so the pattern is not hidden, only
-undiscussed. Full-text verification of the first-published member of the series,
-@Alnaqbi2025learning, confirms rather than merely suspects the leakage concern:
-the paper states its partitioning plainly as "the dataset was split into 5
-subsets, and the model was trained and tested 5 times, each time using a
-different subset as the test set and the remaining subsets as the training set"
-— a random split at the observation level, with no mention anywhere in the
-methods section of grouping by the 33 physical CRCP sections the 395 observations
+undiscussed. Full-text verification of the first two published members of the
+series, @Alnaqbi2025learning and @Alnaqbi2025predictive, confirms rather than
+merely suspects the leakage concern, and confirms it identically in both papers
+rather than once. The first states its partitioning plainly as "the dataset was
+split into 5 subsets, and the model was trained and tested 5 times, each time
+using a different subset as the test set and the remaining subsets as the
+training set"; the second, on a different target variable but the identical
+395-observation, 33-section substrate, states it just as plainly as "five
+equal-sized subsets were randomly selected from the dataset... the training and
+testing subsets were switched around in each iteration." Both are random splits
+at the observation level, and neither methods section — read in full, not
+excerpted — mentions grouping by the 33 physical CRCP sections the observations
 are drawn from. With roughly twelve observations per section on average, an
 ungrouped random split places multiple, highly correlated records from the same
 physical section on both sides of most folds — precisely the leakage pathway the
-PAVE-ML rule for `leakage_risk` (§10) is written to catch. The paper's own
-Limitations section separately states that "only fivefold cross-validation was
-used to assess the model... no independent testing was done using additional
-datasets," which independently confirms the `external_validation: no` coding
-under the criterion in §2.3, in the authors' own words rather than by the
-silence-as-absence convention. Worth noting for what it reveals about how such
-concerns are currently addressed in this literature: the paper anticipates an
-overfitting objection and defends against it by observing that RMSE stays within
-a narrow band across folds (0.02791–0.06422) — but fold-to-fold consistency is
-not evidence against the leakage pathway just described, since every fold would
-share the same section-level contamination and so would be expected to perform
-similarly whether or not the model has learned anything section-specific. The
-remaining seven papers in the series are coded `high` risk pending the same
-full-text check now completed for the first; nothing in their abstracts suggests
-a different partitioning procedure was used.
+PAVE-ML rule for `leakage_risk` (§10) is written to catch. Both papers' own
+Limitations or Future Directions sections separately confirm the absence of
+external validation in their own words — the first stating outright that "no
+independent testing was done using additional datasets," the second listing
+"external dataset validation" among unmet future work — which independently
+confirms the `external_validation: no` coding under the criterion in §2.3 twice
+over, rather than by the silence-as-absence convention alone. Worth noting for
+what it reveals about how such concerns are currently addressed in this
+literature: the first paper anticipates an overfitting objection and defends
+against it by observing that RMSE stays within a narrow band across folds
+(0.02791–0.06422) — but fold-to-fold consistency is not evidence against the
+leakage pathway just described, since every fold would share the same
+section-level contamination and so would be expected to perform similarly
+whether or not the model has learned anything section-specific. Both papers also
+describe z-score normalisation, imputation and outlier removal within a single
+"data preprocessing" stage that textually precedes the cross-validation
+description, with no statement in either that these steps were refit inside each
+fold rather than computed once over the full pool. The remaining six papers in
+the series are coded `high` risk pending the same full-text check now completed,
+identically, for the first two; nothing in their abstracts suggests a different
+partitioning procedure was used, and two independent confirmations make that a
+considerably stronger prior than one.
 
 Two further pieces of evidence extend the pattern beyond one author team. Xiao et
 al.'s TPE-CatBoost faulting model [@Xiao2023optimizing] shows the same ambiguity
@@ -501,7 +513,7 @@ not this seed corpus, is positioned to answer.
 
 Two things distinguish this section's treatment of the near-duplicate-substrate
 problem from a general methodological aside. First, the count is now large enough
-— eight identified papers, one of them full-text-confirmed rather than only
+— eight identified papers, two of them full-text-confirmed rather than only
 abstract-flagged, likely more once the full harvest is complete — that the
 completed review can report a systematic, partly-verified finding rather than
 gesture at a concern: what fraction of this specific author team's
@@ -713,15 +725,19 @@ not in-fold, predictions specifically to avoid leakage, which is exactly the
 practice item 7 of the general instrument (grouped/blocked partitioning respected
 by all fitted preprocessing) is written to detect the absence of. The mirror-image
 worked example — full-text confirmation of the failure mode item 7 is written to
-catch, rather than of its avoidance — is @Alnaqbi2025learning (§7): its methods
-section states the five-fold split plainly as a random partition of individual
-observations, with no grouping by the 33 physical sections those observations are
-drawn from, and its own Limitations section separately confirms the absence of
-external validation. The two papers, read together, are what the fully coded
-corpus is expected to look like at scale: a minority explicitly designing around
-the leakage and validation items in this instrument, and a majority whose methods
-sections, once actually read rather than inferred from an abstract, turn out to
-say plainly what §2's silence-as-absence convention would in any case have coded.
+catch, rather than of its avoidance — is the pair @Alnaqbi2025learning and
+@Alnaqbi2025predictive (§7): both papers' methods sections state their five-fold
+splits plainly as random partitions of individual observations, with no grouping
+by the 33 physical sections those observations are drawn from, and both papers'
+own Limitations or Future Directions sections separately confirm the absence of
+external validation, independently of each other. The three papers, read
+together, are what the fully coded corpus is expected to look like at scale: a
+minority explicitly designing around the leakage and validation items in this
+instrument, and a majority whose methods sections, once actually read rather than
+inferred from an abstract, turn out to say plainly what §2's silence-as-absence
+convention would in any case have coded — and, in the case of the two
+full-text-confirmed papers, say it identically to one another despite being
+independently written studies on different target variables.
 
 The reliability of the instrument itself will be reported, not assumed: a random
 15% of the fully coded corpus will be independently double-coded, Cohen's $\kappa$
