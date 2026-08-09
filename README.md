@@ -6,12 +6,13 @@ engineering (2005–2026).
 **Authors:** S. S. Naseralavi (Shahid Bahonar University of Kerman) · A. R. Ghanizadeh (Sirjan
 University of Technology)
 **Target journal:** *Automation in Construction* (Elsevier) — see [Journal targeting](#journal-targeting)
-**Status:** manuscript renders clean to PDF/Word/HTML (24 pages). Sections 1–14 all have
-real, cited content grounded in an 83-record verified database (68 classified primary
+**Status:** manuscript renders clean to PDF/Word/HTML (25 pages). Sections 1–14 all have
+real, cited content grounded in an 84-record verified database (69 classified primary
 studies). A significant finding emerged this round: at least 8 papers by one overlapping
 author team share a single ~33-section LTPP substrate, each pairing a different
-metaheuristic/learner combination with a different target variable — now documented in
-Section 7 with a concrete leakage-risk argument. What remains: expanding the corpus from 83
+metaheuristic/learner combination with a different target variable — and one of them has
+now been full-text-verified (not just abstract-flagged) to confirm ungrouped cross-validation
+and a self-admitted absence of external validation. What remains: expanding the corpus from 84
 to the 300–500
 records a full systematic review of this kind needs, full-text coding (vs. abstract-level) of
 every PAVE-ML field, the double-coding reliability pass, and the abstract (deliberately still a
@@ -23,16 +24,21 @@ placeholder — it should not be written before the findings it summarises exist
 
 Being direct about this, since it matters more than any file listing below:
 
-- **Corpus size.** 83 verified records is a solid seed, not a completed systematic review.
+- **Corpus size.** 84 verified records is a solid seed, not a completed systematic review.
   A defensible Q1 review in this space needs several hundred screened records. The bottleneck
   is literature-search-connector throughput (~10–20 records per targeted query), not analysis
   time — expanding this is mechanical repetition of what `add_batch2.py` / `add_batch3.py`
   already demonstrate, across more queries.
-- **Full-text coding.** Every PAVE-ML field (leakage risk, external validation, baseline
-  strength, etc.) is currently coded from abstracts. The rubric is designed for full-text
-  coding; several records in the database are explicitly flagged in their `note` field as
-  needing full-text verification (e.g. whether a cross-validation fold respects section-level
-  grouping in the LTPP-derived studies discussed in Section 7).
+- **Full-text coding.** Almost every PAVE-ML field (leakage risk, external validation, baseline
+  strength, etc.) is still coded from abstracts, but this is now demonstrated to be tractable,
+  not just designed-for: one record (`10.1186/s44147-025-00706-9`, the Alnaqbi PSO-SVR paper
+  discussed in Section 7) was fetched and read in full, which confirmed — rather than merely
+  flagged — that its 5-fold split is ungrouped at the section level and that the paper's own
+  Limitations section admits no external validation. That single verification also surfaced a
+  second overlapping-author cluster (Wang/Xiao/Liu) publishing on a related substrate, found
+  only by following the first paper's own reference list. Scaling this from 1 record to the
+  ~60 that need it is the highest-value remaining task, and the method is now proven, not
+  hypothetical.
 - **Double-coding reliability.** Section 2 commits to an independent 15% double-coded sample
   with Cohen's κ reported per field. This requires a second coder — a role this assistant
   cannot fill on its own, since the entire point of double-coding is a second, independent
@@ -74,7 +80,7 @@ The one thing that needs you is pushing to GitHub, which needs your credentials
 
 | Path | What it is |
 |---|---|
-| `data/seed_bibliography.csv` | **The database everything else derives from.** 83 verified records (68 primary studies, 15 prior reviews) so far, every row hand-classified against the H1–H7 taxonomy; every row carries a live DOI. Grows as the harvest proceeds. |
+| `data/seed_bibliography.csv` | **The database everything else derives from.** 84 verified records (69 primary studies, 15 prior reviews) so far, every row hand-classified against the H1–H7 taxonomy; every row carries a live DOI. Grows as the harvest proceeds. |
 | `docs/00_MANUSCRIPT_ARCHITECTURE.md` | Original positioning analysis and journal shortlist. Partly superseded by `01`. |
 | `docs/01_SCOPE_AND_TAXONOMY.md` | **Current scope document.** Structural definition of hybridity, the H1–H7 taxonomy, the hybridisation-premium metric, section plan. Read this one first. |
 | `docs/02_MANUSCRIPT_S2_methodology.md` | Full draft of Section 2, transferred into `manuscript.qmd` piece by piece. |
