@@ -31,13 +31,17 @@ Being direct about this, since it matters more than any file listing below:
   already demonstrate, across more queries.
 - **Full-text coding.** Almost every PAVE-ML field (leakage risk, external validation, baseline
   strength, etc.) is still coded from abstracts, but this is now demonstrated to be tractable,
-  not just designed-for: one record (`10.1186/s44147-025-00706-9`, the Alnaqbi PSO-SVR paper
-  discussed in Section 7) was fetched and read in full, which confirmed — rather than merely
-  flagged — that its 5-fold split is ungrouped at the section level and that the paper's own
-  Limitations section admits no external validation. That single verification also surfaced a
-  second overlapping-author cluster (Wang/Xiao/Liu) publishing on a related substrate, found
-  only by following the first paper's own reference list. Scaling this from 1 record to the
-  ~60 that need it is the highest-value remaining task, and the method is now proven, not
+  not just designed-for: two records (`10.1186/s44147-025-00706-9` and
+  `10.1186/s44147-025-00623-x`, the first two papers in the Alnaqbi same-substrate series
+  discussed in Section 7) were fetched and read in full, which confirmed — rather than merely
+  flagged — that both use an ungrouped 5-fold split at the observation level and that both
+  papers' own Limitations/Future Directions sections admit no external validation,
+  independently of each other. That the two confirmations are identical despite being
+  different papers on different target variables is itself evidence the pattern generalises
+  across the rest of the series. The first verification also surfaced a second
+  overlapping-author cluster (Wang/Xiao/Liu) publishing on a related substrate, found only by
+  following the first paper's own reference list. Scaling this from 2 records to the ~60 that
+  need it is the highest-value remaining task, and the method is now proven twice over, not
   hypothetical.
 - **Double-coding reliability.** Section 2 commits to an independent 15% double-coded sample
   with Cohen's κ reported per field. This requires a second coder — a role this assistant
