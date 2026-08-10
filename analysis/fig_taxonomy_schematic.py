@@ -34,11 +34,21 @@ NEUTRAL_FILL = "#f4f3f0"
 NEUTRAL_BORDER = "#c3c2b7"
 
 
+CARD_FILL = "#fbfbfa"
+CARD_BORDER = "#e3e2db"
+RULE_COLOR = "#d9d8d1"
+
+
 def panel(ax, title):
     ax.set_xlim(0, 10)
     ax.set_ylim(0, 10)
     ax.axis("off")
-    ax.text(5, 9.4, title, ha="center", va="top", fontsize=10.5, weight="bold", color=INK)
+    card = FancyBboxPatch((0.12, 0.12), 9.76, 9.26,
+                           boxstyle="round,pad=0,rounding_size=0.22",
+                           facecolor=CARD_FILL, edgecolor=CARD_BORDER, linewidth=1.0, zorder=0)
+    ax.add_patch(card)
+    ax.text(5, 9.32, title, ha="center", va="top", fontsize=10.3, weight="bold", color=INK, zorder=3)
+    ax.plot([0.55, 9.45], [8.68, 8.68], color=RULE_COLOR, linewidth=0.9, zorder=1)
 
 
 def box(ax, cx, cy, w, h, text, fill, border, fontsize=7.6, color=INK):
@@ -55,7 +65,7 @@ def arrow(ax, p1, p2, color=INK_SECONDARY, style="-|>", lw=1.1, ls="-"):
                                   color=color, linewidth=lw, linestyle=ls, zorder=1))
 
 
-fig, axes = plt.subplots(2, 4, figsize=(11.5, 6.4))
+fig, axes = plt.subplots(2, 4, figsize=(12.2, 6.9))
 axes = axes.flatten()
 
 # --- H1: metaheuristic -> hyperparameters ---
@@ -147,7 +157,7 @@ fig.text(0.5, 0.975,
           "General couplings each type names (§4.1); not one specific paper's implementation.",
           ha="center", fontsize=8.3, style="italic", color=INK_SECONDARY)
 
-plt.tight_layout(rect=[0, 0, 1, 0.95])
+fig.subplots_adjust(left=0.012, right=0.988, top=0.90, bottom=0.015, wspace=0.14, hspace=0.16)
 plt.savefig("fig_taxonomy_schematic.png", dpi=300, bbox_inches="tight", facecolor="white")
 plt.savefig("fig_taxonomy_schematic.pdf", bbox_inches="tight", facecolor="white")
 print("wrote fig_taxonomy_schematic.png / .pdf")
