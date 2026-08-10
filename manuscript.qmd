@@ -322,8 +322,33 @@ captioned accordingly rather than presented as a bibliometric trend claim the se
 corpus cannot support on its own.
 
 ![Publication years of primary studies in the seed corpus. This is a targeted-search
-yield, not a claim about the field's true publication trajectory; the completed
-harvest will supersede this figure.](figures/fig03_seed_corpus_years.png){#fig-year-trend width=90%}
+yield, not a claim about the field's true publication
+trajectory.](figures/fig03_seed_corpus_years.png){#fig-year-trend width=90%}
+
+Two further descriptive facts, both read directly from the coded database rather
+than estimated, complete the picture @fig-taxonomy and @fig-year-trend give of
+*what kind* of hybridisation is reported: *where* in pavement engineering it
+concentrates, and *which* optimiser families do the coupling. @fig-domain-optimizer
+shows both. Materials characterisation and performance prediction together account
+for just over half the corpus (38 studies each), consistent with §5 and §7's
+observation that these are the two sub-domains where a competing mechanistic or
+empirical model is most often already available for the tuned-baseline comparison
+§9 is built to test. On the optimiser side, a genetic algorithm or particle swarm
+optimisation account for over half of the 51 studies that name a specific
+optimiser family at all, with the remaining studies spread across more than twenty
+distinctly named metaheuristics appearing once or twice each — the empirical
+counterpart to the "optimiser proliferation" question posed in §13, and consistent
+with a field in which naming a new metaheuristic is, on its own, treated as
+sufficient novelty (§1).
+
+![Where the corpus's hybridisation activity concentrates: (a) primary studies by
+pavement sub-domain, (b) primary studies by named optimiser family, among the 51
+of 143 where a specific family applies. Both panels are tabulated directly from
+`data/seed_bibliography.csv`; panel (b) merges free-text spelling variants of the
+same optimiser (e.g. "PSO" and "particle swarm optimization") under one label, and
+excludes methods named only once each rather than folding them into an
+unrelated
+bucket.](figures/fig_domain_optimizer.png){#fig-domain-optimizer width=100%}
 
 # Taxonomy of hybridisation {#sec-taxonomy}
 
@@ -368,6 +393,105 @@ for t in tax:
     lines.append("| **{}** | {} | {} | {} |".format(*t))
 Markdown("\n".join(lines))
 ```
+
+@fig-taxonomy-schematic gives the same seven types as a diagram, useful for
+distinguishing at a glance couplings that read similarly in prose — H1 and H2
+differ only in whether the metaheuristic's output feeds a hyperparameter or a
+weight, H5 and H6 both fan multiple components into one learner but in the
+opposite direction (converging predictions versus converging decomposed inputs).
+
+![Schematic architecture of the seven hybridisation types. Boxes shown in the
+same colour play the same structural role across panels (base learner, search
+component, or data/physics/decomposition component); the diagram sets out the
+general coupling each type names, not any one paper's specific
+implementation.](figures/fig_taxonomy_schematic.png){#fig-taxonomy-schematic width=100%}
+
+## Formal structure of each type
+
+Naming each type by its coupling, as @tbl-taxonomy does, leaves the coupling
+itself implicit. Stating it mathematically is what lets §9's premium construct be
+posed precisely for H1 and H2, and is done here for the remaining five types with
+the same notation throughout. Let $f_\theta$ denote a base learner with trainable
+parameters $\theta$, $x$ an input vector, and $\hat{y} = f_\theta(x)$ its
+prediction.
+
+**H1 — metaheuristic → hyperparameters.** The base learner's hyperparameters
+$\phi \in \Phi$ (layer width, kernel bandwidth, tree depth, regularisation
+strength) are selected by a metaheuristic search rather than a grid or gradient
+method:
+$$\phi^{*} = \arg\min_{\phi \in \Phi} \; \mathcal{L}_{\text{val}}\big(f_{\theta(\phi)}\big),
+\qquad \theta(\phi) = \arg\min_{\theta} \; \mathcal{L}_{\text{train}}(f_\theta \mid \phi)$$
+with $\phi^{*}$ found by a population-based or trajectory-based search rather than
+by exhaustive or gradient-based enumeration of $\Phi$.
+
+**H2 — metaheuristic → weights or structure.** The metaheuristic instead searches
+the parameter space $\theta$ directly, replacing gradient descent:
+$$\theta^{(t+1)} = \mathcal{M}\Big(\theta^{(t)}, \; \mathcal{L}(f_{\theta^{(t)}}, X, y)\Big)$$
+where $\mathcal{M}$ is the metaheuristic's own update operator — for particle
+swarm optimisation, for example, a velocity-and-position update over a population
+of candidate weight vectors — in place of
+$\theta^{(t+1)} = \theta^{(t)} - \eta \, \nabla_\theta \mathcal{L}$.
+
+**H3 — physics and data.** A physics-informed loss term augments the data loss:
+$$\mathcal{L}_{\text{total}}(\theta) = \mathcal{L}_{\text{data}}\big(f_\theta(x), y\big)
++ \lambda \, \mathcal{L}_{\text{phys}}\Big(\mathcal{N}[f_\theta](x)\Big)$$
+where $\mathcal{N}[\cdot]$ is a mechanistic operator (a governing differential
+equation's residual, a transfer-function constraint) the trained function is
+penalised for violating, and $\lambda$ weights the two terms against each other.
+
+**H4 — architecture fusion.** Two encoders $h_1, h_2$ with different inductive
+biases are combined by a fusion function $g$:
+$$\hat{y} = g\big(h_1(x), h_2(x)\big)$$
+implemented as concatenation, cross-attention, or a learned gate, which is what
+distinguishes fusion from a single-family ensemble in which $h_1$ and $h_2$ share
+one architecture.
+
+**H5 — heterogeneous stacking.** $k$ base learners drawn from different families
+produce predictions a meta-learner combines:
+$$\hat{y} = g_{\text{meta}}\big(f_1(x), f_2(x), \ldots, f_k(x)\big)$$
+The leakage failure mode named in @tbl-taxonomy is precisely when $g_{\text{meta}}$
+is fitted on in-fold predictions, values each $f_i$ produced for inputs it had
+already seen during its own training, rather than on out-of-fold predictions
+generated under cross-validation.
+
+**H6 — decomposition then learn.** A signal $x(t)$ is decomposed into $n$
+components before the learner is applied:
+$$x(t) = \sum_{i=1}^{n} c_i(t), \qquad \hat{y} = f_\theta\big(c_1, c_2, \ldots, c_n\big)$$
+where the $c_i$ are intrinsic mode functions (EMD, CEEMDAN), wavelet coefficients,
+or VMD modes. The characteristic failure mode is the decomposition itself being
+computed over the full series, all $t$ at once, before any train/test split is
+subsequently applied to it.
+
+**H7 — symbolic-numeric.** An expression tree is evolved by a genetic or
+grammatical search (GEP, MGGP) over both its structure and its numeric
+coefficients $c$:
+$$\hat{y} = \text{expr}(x; c), \qquad \text{expr}^{*} = \arg\max_{\text{expr} \,\in\, \mathcal{T}} \; \text{fitness}(\text{expr}, X, y)$$
+where $\mathcal{T}$ is the space of syntactically valid expression trees under the
+method's function and terminal sets — a structural search that distinguishes this
+type from H1 and H2, which search only over a fixed architecture's parameters or
+hyperparameters.
+
+**A representative metaheuristic, for concreteness.** Particle swarm optimisation,
+the single most common search procedure named across the corpus, updates a
+population of candidate solutions $x_i$ each iteration by
+$$v_i^{(t+1)} = w\,v_i^{(t)} + c_1 r_1 \big(p_i - x_i^{(t)}\big) + c_2 r_2 \big(g - x_i^{(t)}\big),
+\qquad x_i^{(t+1)} = x_i^{(t)} + v_i^{(t+1)}$$
+where $p_i$ is particle $i$'s own best position found so far, $g$ the swarm's best
+position overall, $w$ an inertia weight, $c_1, c_2$ acceleration coefficients, and
+$r_1, r_2 \sim U(0,1)$. Applied to H1, $x_i$ encodes a hyperparameter vector
+$\phi$; applied to H2, the same $x_i$ encodes the base learner's own weight vector
+$\theta$ directly. The identical update rule, evaluated against a different loss
+surface, is what distinguishes the two types mechanically, while the structural
+test in §2.3 is what distinguishes them analytically.
+
+This formal statement earns its place for one specific reason beyond notation: it
+makes concrete exactly what §9 asks a fair comparison to hold constant. For H1 and
+H2, the premium $\Delta$ (§9.1) compares $f_{\theta(\phi^{*})}$ or $f_{\theta^{*}}$
+against $f_\theta$ tuned by a conventional procedure under a comparable search
+budget — the same function $f$, reached by a different route to its parameters. A
+study that reports only the metaheuristic-tuned result has reported one point on
+this optimisation landscape without the second point that would say whether the
+metaheuristic, rather than the tuning itself, is what earned the reported gain.
 
 Two coding notes follow directly from applying this taxonomy to the seed corpus.
 First, a single study can legitimately receive more than one code — @Ghorbani2020genetic
